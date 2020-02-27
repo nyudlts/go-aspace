@@ -2,15 +2,14 @@ package go_aspace
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"time"
 )
 
 type Client struct {
-	sessionKey	string
-	rootURL	string
-	nclient	*http.Client
+	sessionKey string
+	rootURL    string
+	nclient    *http.Client
 }
 
 func NewClient(timeout int) (*Client, error) {
@@ -26,15 +25,15 @@ func NewClient(timeout int) (*Client, error) {
 		return client, err
 	}
 
-	aspaceRootURL, err := getSessionKey()
+	aspaceRootURL, err := GetRootURL()
 	if err != nil {
 		return client, err
 	}
 
 	client = &Client{
-		sessionKey:   token,
-		rootURL:	aspaceRootURL,
-		nclient: nclient,
+		sessionKey: token,
+		rootURL:    aspaceRootURL,
+		nclient:    nclient,
 	}
 
 	return client, nil
@@ -43,11 +42,11 @@ func NewClient(timeout int) (*Client, error) {
 func ASGet(client *Client, endpoint string, authenticated bool) (*http.Response, error) {
 
 	var response *http.Response
-	if(authenticated) {
+	if authenticated {
 		return response, nil
 	} else {
 		url := client.rootURL + endpoint
-		log.Println(url)
+
 		response, err := client.nclient.Get(url)
 
 		if err != nil {

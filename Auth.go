@@ -34,7 +34,8 @@ func initConfig() error {
 
 	return nil
 }
-func getRootURL() (string, error) {
+
+func GetRootURL() (string, error) {
 	return conf.url, nil
 }
 
