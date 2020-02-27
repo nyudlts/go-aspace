@@ -2,9 +2,12 @@ package go_aspace
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
-	"log"
+	"net/http"
 )
+
+var aspaceClient *ASClient
 
 type AspaceInfo struct {
 	DatabaseProductName    string `json:"databaseProductName"`
@@ -16,17 +19,84 @@ type AspaceInfo struct {
 	ArchivesSpaceVersion   string `json:"archivesSpaceVersion"`
 }
 
-func GetAspaceInfo(client *ASClient) (AspaceInfo, error) {
+func checkClient() error {
+	if aspaceClient == nil {
+		ASC, err := NewClient(10)
+		if err != nil {
+			return err
+		}
+		aspaceClient = ASC
+	}
 
-	response, err := ASGet(client, "", false)
+	return nil
+}
+
+func GetAspaceInfo() (AspaceInfo, error) {
+	var aspaceInfo AspaceInfo
+
+	err := checkClient()
 	if err != nil {
-		log.Fatal(err)
+		return aspaceInfo, err
+	}
+
+	response, err := aspaceClient.asGet("", false)
+	if err != nil {
+		return aspaceInfo, err
 	}
 	body, _ := ioutil.ReadAll(response.Body)
-	var aspaceInfo AspaceInfo
+
 	err = json.Unmarshal(body, &aspaceInfo)
 	if err != nil {
 		return aspaceInfo, err
 	}
 	return aspaceInfo, nil
+}
+
+func GetResourceIDsByRepository(repositoryId int) ([]int, error) {
+	var repositoryIds []int
+	err := checkClient()
+	if err != nil {
+		return repositoryIds, err
+	}
+	response, err := aspaceClient.asGet(fmt.Sprintf("/repositories/%d/resources?all_ids=true", repositoryId), true)
+	if err != nil {
+		return repositoryIds, err
+	}
+	body, _ := ioutil.ReadAll(response.Body)
+	err = json.Unmarshal(body, &repositoryIds)
+	if err != nil {
+		return repositoryIds, err
+	}
+	return repositoryIds, nil
+}
+
+//private functions
+func (asClient *ASClient) asGet(endpoint string, authenticated bool) (*http.Response, error) {
+
+	var response *http.Response
+
+	url := aspaceClient.rootURL + endpoint
+
+	request, err := http.NewRequest("GET", url, nil)
+
+	if err != nil {
+		return response, err
+	}
+
+	if authenticated {
+		request.Header.Set("X-ArchivesSpace-Session", aspaceClient.sessionKey)
+	}
+
+	response, err = aspaceClient.nclient.Do(request)
+
+	if err != nil {
+		return response, err
+	}
+
+	if response.StatusCode != 200 {
+		return response, fmt.Errorf("Did not return a 200 while authenticating, recieved a %d", response.StatusCode)
+	}
+
+	return response, nil
+
 }

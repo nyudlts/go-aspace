@@ -1,7 +1,6 @@
 package go_aspace
 
 import (
-	"fmt"
 	"net/http"
 	"time"
 )
@@ -37,26 +36,4 @@ func NewClient(timeout int) (*ASClient, error) {
 	}
 
 	return client, nil
-}
-
-func ASGet(client *ASClient, endpoint string, authenticated bool) (*http.Response, error) {
-
-	var response *http.Response
-	if authenticated {
-		return response, nil
-	} else {
-		url := client.rootURL + endpoint
-
-		response, err := client.nclient.Get(url)
-
-		if err != nil {
-			return response, err
-		}
-
-		if response.StatusCode != 200 {
-			return response, fmt.Errorf("Did not return a 200 while authenticating, recieved a %d", response.StatusCode)
-		}
-
-		return response, nil
-	}
 }
