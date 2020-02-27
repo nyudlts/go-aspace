@@ -1,7 +1,11 @@
 package go_aspace
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/spf13/viper"
+	"io/ioutil"
+	"net/http"
 )
 
 type Configuration struct {
@@ -12,7 +16,7 @@ type Configuration struct {
 
 var conf Configuration
 
-func Init() error {
+func initConfig() error {
 	viper.SetConfigFile("conf.json")
 	viper.AddConfigPath("github.com/nyudlts/go-aspace")
 
@@ -29,5 +33,43 @@ func Init() error {
 	conf.url = viper.GetString("url")
 
 	return nil
+}
 
+func getSessionKey() (string, error) {
+
+	sessionKey := ""
+
+	err := initConfig()
+	if err != nil {
+		return sessionKey, err
+	}
+
+	url := fmt.Sprintf("%s/users/%s/login?password=%s", conf.url, conf.username, conf.password)
+
+	request, err := http.Post(url, "text/json", nil)
+	if err != nil {
+		return sessionKey, err
+	}
+
+	if request.StatusCode != 200 {
+		return sessionKey, fmt.Errorf("Did not return a 200 while authenticating, recieved a %d", request.StatusCode)
+	}
+
+	body, err := ioutil.ReadAll(request.Body)
+	if err != nil {
+		return sessionKey, err
+	}
+
+	var result map[string]interface{}
+	err = json.Unmarshal(body, &result)
+	if err != nil {
+		return sessionKey, err
+	}
+	sessionKey = fmt.Sprintf("%v", result["session"])
+
+	if sessionKey != "" {
+		return sessionKey, nil
+	} else {
+		return sessionKey, fmt.Errorf("Session field was empty")
+	}
 }
