@@ -1,4 +1,4 @@
 # go-aspace
-library for intgrations with ArchivesSpace
+a Go library for ArchivesSpace integrations
 
-In order to run tests you will need to copy `conf.json_template` to `conf.json`.
+note: In order to run tests you will need to copy `conf.json_template` to `conf.json`.
