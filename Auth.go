@@ -34,6 +34,9 @@ func initConfig() error {
 
 	return nil
 }
+func getRootURL() (string, error) {
+	return conf.url, nil
+}
 
 func getSessionKey() (string, error) {
 

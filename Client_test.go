@@ -11,7 +11,7 @@ func TestNewClientHasSession(t *testing.T) {
 	}
 
 	want := 64
-	got := len(client.session)
+	got := len(client.sessionKey)
 	if want != got {
 		t.Errorf("wanted key length of %d, got %d", want, got)
 	}
