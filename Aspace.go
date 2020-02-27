@@ -19,6 +19,17 @@ type AspaceInfo struct {
 	ArchivesSpaceVersion   string `json:"archivesSpaceVersion"`
 }
 
+func (a AspaceInfo) String() string {
+	msg := fmt.Sprintf("== ArchivesSpace Version: %s\n", a.ArchivesSpaceVersion)
+	msg = msg + fmt.Sprintf("== Database Type: %s\n", a.DatabaseProductName)
+	msg = msg + fmt.Sprintf("== Database Version: %s\n", a.DatabaseProductVersion)
+	msg = msg + fmt.Sprintf("== Ruby Version: %s\n", a.RubyVersion)
+	msg = msg + fmt.Sprintf("== Host OS: %s\n", a.HostOS)
+	msg = msg + fmt.Sprintf("== Host CPU: %s\n", a.HostCPU)
+	msg = msg + fmt.Sprintf("== Java Version: %s\n", a.Build)
+	return msg
+}
+
 func GetAspaceInfo() (AspaceInfo, error) {
 	var aspaceInfo AspaceInfo
 

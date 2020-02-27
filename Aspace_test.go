@@ -4,10 +4,6 @@ import (
 	"testing"
 )
 
-func init() {
-	seed()
-}
-
 func TestGetAspaceInfo(t *testing.T) {
 
 	info, err := GetAspaceInfo()
