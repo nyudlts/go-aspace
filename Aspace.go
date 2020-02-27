@@ -7,16 +7,16 @@ import (
 )
 
 type AspaceInfo struct {
-	DatabaseProductName string	 `json:"databaseProductName"`
-	DatabaseProductVersion string	 `json:"databaseProductVersion"`
-	RubyVersion	string	 `json:"ruby_version"`
-	HostOS	string	 `json:"host_os"`
-	HostCPU	string	 `json:"host_cpu"`
-	Build	string	 `json:"build"`
-	ArchivesSpaceVersion	string	 `json:"archivesSpaceVersion"`
+	DatabaseProductName    string `json:"databaseProductName"`
+	DatabaseProductVersion string `json:"databaseProductVersion"`
+	RubyVersion            string `json:"ruby_version"`
+	HostOS                 string `json:"host_os"`
+	HostCPU                string `json:"host_cpu"`
+	Build                  string `json:"build"`
+	ArchivesSpaceVersion   string `json:"archivesSpaceVersion"`
 }
 
-func GetAspaceInfo(client *Client) (AspaceInfo, error) {
+func GetAspaceInfo(client *ASClient) (AspaceInfo, error) {
 
 	response, err := ASGet(client, "", false)
 	if err != nil {

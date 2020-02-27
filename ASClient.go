@@ -6,15 +6,15 @@ import (
 	"time"
 )
 
-type Client struct {
+type ASClient struct {
 	sessionKey string
 	rootURL    string
 	nclient    *http.Client
 }
 
-func NewClient(timeout int) (*Client, error) {
+func NewClient(timeout int) (*ASClient, error) {
 
-	var client *Client
+	var client *ASClient
 
 	nclient := &http.Client{
 		Timeout: time.Second * time.Duration(timeout),
@@ -30,7 +30,7 @@ func NewClient(timeout int) (*Client, error) {
 		return client, err
 	}
 
-	client = &Client{
+	client = &ASClient{
 		sessionKey: token,
 		rootURL:    aspaceRootURL,
 		nclient:    nclient,
@@ -39,7 +39,7 @@ func NewClient(timeout int) (*Client, error) {
 	return client, nil
 }
 
-func ASGet(client *Client, endpoint string, authenticated bool) (*http.Response, error) {
+func ASGet(client *ASClient, endpoint string, authenticated bool) (*http.Response, error) {
 
 	var response *http.Response
 	if authenticated {
