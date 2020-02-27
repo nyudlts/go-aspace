@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-var aspaceClient *ASClient
+var client *ASClient
 
 type AspaceInfo struct {
 	DatabaseProductName    string `json:"databaseProductName"`
@@ -19,18 +19,6 @@ type AspaceInfo struct {
 	ArchivesSpaceVersion   string `json:"archivesSpaceVersion"`
 }
 
-func checkClient() error {
-	if aspaceClient == nil {
-		ASC, err := NewClient(10)
-		if err != nil {
-			return err
-		}
-		aspaceClient = ASC
-	}
-
-	return nil
-}
-
 func GetAspaceInfo() (AspaceInfo, error) {
 	var aspaceInfo AspaceInfo
 
@@ -39,7 +27,7 @@ func GetAspaceInfo() (AspaceInfo, error) {
 		return aspaceInfo, err
 	}
 
-	response, err := aspaceClient.asGet("", false)
+	response, err := client.Get("", false)
 	if err != nil {
 		return aspaceInfo, err
 	}
@@ -58,7 +46,8 @@ func GetResourceIDsByRepository(repositoryId int) ([]int, error) {
 	if err != nil {
 		return repositoryIds, err
 	}
-	response, err := aspaceClient.asGet(fmt.Sprintf("/repositories/%d/resources?all_ids=true", repositoryId), true)
+	endpoint := fmt.Sprintf("/repositories/%d/resources?all_ids=true", repositoryId)
+	response, err := client.Get(endpoint, true)
 	if err != nil {
 		return repositoryIds, err
 	}
@@ -70,12 +59,46 @@ func GetResourceIDsByRepository(repositoryId int) ([]int, error) {
 	return repositoryIds, nil
 }
 
+func GetResourceByID(repositoryId int, resourceId int) (map[string]interface{}, error) {
+	var resource map[string]interface{}
+	err := checkClient()
+	if err != nil {
+		return resource, err
+	}
+	endpoint := fmt.Sprintf("/repositories/%d/resources/%d", repositoryId, resourceId)
+	response, err := client.Get(endpoint, true)
+
+	if err != nil {
+		return resource, err
+	}
+
+	body, _ := ioutil.ReadAll(response.Body)
+	err = json.Unmarshal(body, &resource)
+	if err != nil {
+		return resource, err
+	}
+	return resource, nil
+}
+
 //private functions
-func (asClient *ASClient) asGet(endpoint string, authenticated bool) (*http.Response, error) {
+
+func checkClient() error {
+	if client == nil {
+		ASC, err := NewClient(10)
+		if err != nil {
+			return err
+		}
+		client = ASC
+	}
+
+	return nil
+}
+
+func (client *ASClient) Get(endpoint string, authenticated bool) (*http.Response, error) {
 
 	var response *http.Response
 
-	url := aspaceClient.rootURL + endpoint
+	url := client.rootURL + endpoint
 
 	request, err := http.NewRequest("GET", url, nil)
 
@@ -84,10 +107,10 @@ func (asClient *ASClient) asGet(endpoint string, authenticated bool) (*http.Resp
 	}
 
 	if authenticated {
-		request.Header.Set("X-ArchivesSpace-Session", aspaceClient.sessionKey)
+		request.Header.Set("X-ArchivesSpace-Session", client.sessionKey)
 	}
 
-	response, err = aspaceClient.nclient.Do(request)
+	response, err = client.nclient.Do(request)
 
 	if err != nil {
 		return response, err
