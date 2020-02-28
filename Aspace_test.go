@@ -6,16 +6,28 @@ import (
 
 func TestGetAspaceInfo(t *testing.T) {
 
-	info, err := GetAspaceInfo()
+	a, err := NewClient(10)
 	if err != nil {
 		t.Error(err)
 	}
+
+	info, err := a.GetAspaceInfo()
+	if err != nil {
+		t.Error(err)
+	}
+
 	t.Log(info)
 }
 
 func TestGetResourceIDsByRepository(t *testing.T) {
 	repositoryId := 2
-	resourceIds, err := GetResourceIDsByRepository(repositoryId)
+
+	a, err := NewClient(10)
+	if err != nil {
+		t.Error(err)
+	}
+
+	resourceIds, err := a.GetResourceIDsByRepository(repositoryId)
 	if err != nil {
 		t.Error(err)
 	}
@@ -25,8 +37,14 @@ func TestGetResourceIDsByRepository(t *testing.T) {
 }
 
 func TestGetResourceByID(t *testing.T) {
+
+	a, err := NewClient(10)
+	if err != nil {
+		t.Error(err)
+	}
+
 	repositoryId := 2
-	resources, err := GetResourceIDsByRepository(repositoryId)
+	resources, err := a.GetResourceIDsByRepository(repositoryId)
 	if err != nil {
 		t.Error(err)
 	}
@@ -34,7 +52,7 @@ func TestGetResourceByID(t *testing.T) {
 	randomNum := randInt(0, len(resources))
 	resourceId := resources[randomNum]
 
-	resource, err := GetResourceByID(repositoryId, resourceId)
+	resource, err := a.GetResourceByID(repositoryId, resourceId)
 	if err != nil {
 		t.Error(err)
 	}
