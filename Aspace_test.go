@@ -57,13 +57,30 @@ func TestGetResourceByID(t *testing.T) {
 		t.Error(err)
 	}
 
-	title := resource["title"].(string)
-	t.Logf("Retrieved %s", title)
+	title := resource.Title
+	if len(title) < 0 {
+		t.Errorf("Nil title returned")
+	}
 
-	lockVersion := resource["lock_version"].(float64)
+	lockVersion := resource.Lock_Version
 
 	if lockVersion < 0 {
 		t.Errorf("Malformed lock version")
 	}
 
+}
+
+func TestASClient_PostResource(t *testing.T) {
+	a, err := NewClient(10)
+	if err != nil {
+		t.Error(err)
+	}
+
+	resource, err := a.GetResourceByID(2, 2)
+	if err != nil {
+		t.Error(err)
+	}
+
+	//tbc
+	resource = resource
 }

@@ -31,7 +31,7 @@ func (a AspaceInfo) String() string {
 
 func (a *ASClient) GetAspaceInfo() (AspaceInfo, error) {
 	var aspaceInfo AspaceInfo
-	response, err := a.Get("", false)
+	response, err := a.get("", false)
 	if err != nil {
 		return aspaceInfo, err
 	}
@@ -46,7 +46,7 @@ func (a *ASClient) GetAspaceInfo() (AspaceInfo, error) {
 func (a *ASClient) GetResourceIDsByRepository(repositoryId int) ([]int, error) {
 	var repositoryIds []int
 	endpoint := fmt.Sprintf("/repositories/%d/resources?all_ids=true", repositoryId)
-	response, err := a.Get(endpoint, true)
+	response, err := a.get(endpoint, true)
 	if err != nil {
 		return repositoryIds, err
 	}
@@ -58,26 +58,43 @@ func (a *ASClient) GetResourceIDsByRepository(repositoryId int) ([]int, error) {
 	return repositoryIds, nil
 }
 
-func (a *ASClient) GetResourceByID(repositoryId int, resourceId int) (map[string]interface{}, error) {
+func (a *ASClient) GetResourceByID(repositoryId int, resourceId int) (Resource, error) {
 	var resource map[string]interface{}
+	r := Resource{}
+
 	endpoint := fmt.Sprintf("/repositories/%d/resources/%d", repositoryId, resourceId)
-	response, err := a.Get(endpoint, true)
+	response, err := a.get(endpoint, true)
 
 	if err != nil {
-		return resource, err
+		return r, err
 	}
 
 	body, _ := ioutil.ReadAll(response.Body)
+
+	//check for non-200 response
+	if response.StatusCode != 200 {
+		return r, fmt.Errorf("ArchivesSpace responded with a non-200: %d", response.StatusCode)
+	}
+	//check for error response
 	err = json.Unmarshal(body, &resource)
 	if err != nil {
-		return resource, err
+		return r, err
 	}
-	return resource, nil
+
+	if resource["error"] != nil {
+		return r, fmt.Errorf("%s", resource["error"])
+	}
+
+	err = json.Unmarshal(body, &r)
+	if err != nil {
+		return r, err
+	}
+	return r, nil
 }
 
 func (a *ASClient) PostResource(repositoryId int, resourceId int, body string) (*http.Response, error) {
 	endpoint := fmt.Sprintf("/repositories/%d/resources/%d", repositoryId, resourceId)
-	response, err := a.Post(endpoint, true, body)
+	response, err := a.post(endpoint, true, body)
 	if err != nil {
 		return response, err
 	} else {
@@ -87,7 +104,7 @@ func (a *ASClient) PostResource(repositoryId int, resourceId int, body string) (
 
 //private functions
 
-func (a *ASClient) Do(request *http.Request, authenticated bool) (*http.Response, error) {
+func (a *ASClient) do(request *http.Request, authenticated bool) (*http.Response, error) {
 	var response *http.Response
 
 	if authenticated {
@@ -101,7 +118,7 @@ func (a *ASClient) Do(request *http.Request, authenticated bool) (*http.Response
 
 	return response, nil
 }
-func (a *ASClient) Get(endpoint string, authenticated bool) (*http.Response, error) {
+func (a *ASClient) get(endpoint string, authenticated bool) (*http.Response, error) {
 	var response *http.Response
 	url := a.rootURL + endpoint
 
@@ -110,7 +127,7 @@ func (a *ASClient) Get(endpoint string, authenticated bool) (*http.Response, err
 		return response, err
 	}
 
-	response, err = a.Do(request, authenticated)
+	response, err = a.do(request, authenticated)
 	if err != nil {
 		return response, err
 	}
@@ -118,7 +135,7 @@ func (a *ASClient) Get(endpoint string, authenticated bool) (*http.Response, err
 	return response, nil
 }
 
-func (a *ASClient) Post(endpoint string, authenticated bool, body string) (*http.Response, error) {
+func (a *ASClient) post(endpoint string, authenticated bool, body string) (*http.Response, error) {
 	var response *http.Response
 	url := a.rootURL + endpoint
 	request, err := http.NewRequest("Post", url, bytes.NewBufferString(body))
@@ -126,7 +143,7 @@ func (a *ASClient) Post(endpoint string, authenticated bool, body string) (*http
 		return response, err
 	}
 
-	response, err = a.Do(request, authenticated)
+	response, err = a.do(request, authenticated)
 	if err != nil {
 		return response, err
 	}
