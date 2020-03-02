@@ -1,6 +1,7 @@
 package go_aspace
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -74,33 +75,61 @@ func (a *ASClient) GetResourceByID(repositoryId int, resourceId int) (map[string
 	return resource, nil
 }
 
-//private functions
-func (a *ASClient) Get(endpoint string, authenticated bool) (*http.Response, error) {
+func (a *ASClient) PostResource(repositoryId int, resourceId int, body string) (*http.Response, error) {
+	endpoint := fmt.Sprintf("/repositories/%d/resources/%d", repositoryId, resourceId)
+	response, err := a.Post(endpoint, true, body)
+	if err != nil {
+		return response, err
+	} else {
+		return response, nil
+	}
+}
 
+//private functions
+
+func (a *ASClient) Do(request *http.Request, authenticated bool) (*http.Response, error) {
 	var response *http.Response
 
-	url := a.rootURL + endpoint
-
-	request, err := http.NewRequest("GET", url, nil)
-
-	if err != nil {
-		return response, err
-	}
-
 	if authenticated {
-		request.Header.Set("X-ArchivesSpace-Session", a.sessionKey)
+		request.Header.Add("X-ArchivesSpace-Session", a.sessionKey)
 	}
 
-	response, err = a.nclient.Do(request)
-
+	response, err := a.nclient.Do(request)
 	if err != nil {
 		return response, err
-	}
-
-	if response.StatusCode != 200 {
-		return response, fmt.Errorf("Did not return a 200 while authenticating, recieved a %d", response.StatusCode)
 	}
 
 	return response, nil
+}
+func (a *ASClient) Get(endpoint string, authenticated bool) (*http.Response, error) {
+	var response *http.Response
+	url := a.rootURL + endpoint
 
+	request, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return response, err
+	}
+
+	response, err = a.Do(request, authenticated)
+	if err != nil {
+		return response, err
+	}
+
+	return response, nil
+}
+
+func (a *ASClient) Post(endpoint string, authenticated bool, body string) (*http.Response, error) {
+	var response *http.Response
+	url := a.rootURL + endpoint
+	request, err := http.NewRequest("Post", url, bytes.NewBufferString(body))
+	if err != nil {
+		return response, err
+	}
+
+	response, err = a.Do(request, authenticated)
+	if err != nil {
+		return response, err
+	}
+
+	return response, nil
 }
