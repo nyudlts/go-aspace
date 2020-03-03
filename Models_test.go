@@ -4,11 +4,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"testing"
 )
 
 func TestResourceModel(t *testing.T) {
-	var repositoryId, resourceId = 2, 2
+	var repositoryId, resourceId = 2, 2312
 
 	a, err := NewClient(10)
 	if err != nil {
@@ -22,6 +23,7 @@ func TestResourceModel(t *testing.T) {
 
 	r := Resource{}
 	body, _ := ioutil.ReadAll(resource.Body)
+	log.Println(string(body))
 	err = json.Unmarshal(body, &r)
 
 	if err != nil {

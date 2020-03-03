@@ -111,4 +111,3 @@ func getSessionKey() (string, error) {
 		return sessionKey, fmt.Errorf("Session field was empty")
 	}
 }
-
