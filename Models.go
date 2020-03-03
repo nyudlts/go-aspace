@@ -1,58 +1,137 @@
 package go_aspace
 
-type Resource struct {
-	Lock_Version                  int    `json:"lock_version"`
-	Title                         string `json:"title"`
-	Publish                       bool   `json:"publish"`
-	Restrictions                  bool   `json:"restrictions"`
-	Repository_Processing_Note    string `json:"repository_processing_note"`
-	EAD_ID                        string `json:"ead_id"`
-	EAD_Location                  string `json:"ead_location"`
-	Finding_Aid_Title             string `json:"finding_aid_title"`
-	Finding_Aid_Date              string `json:"finding_aid_date"`
-	Finding_Aid_Author            string `json:"finding_aid_author"`
-	Finding_Aid_Language_Note     string `json:"finding_aid_language_note"`
-	Created_By                    string `json:"created_by"`
-	Last_Modified_By              string `json:"last_modified_by"`
-	Supressed                     bool   `json:"supressed"`
-	Is_Slug_Auto                  bool   `json:"is_slug_auto"`
-	ID_0                          string `json:"id_0"`
-	ID_1                          string `json:"id_1"`
-	ID_2                          string `json:"id_2"`
-	ID_3                          string `json:"id_3"`
-	Level                         string `json:"level"`
-	Finding_Aid_Description_rules string `json:"finding_aid_description_rules"`
-	Finding_Aid_Language          string `json:"finding_aid_language"`
-	Finding_Aid_Script            string `json:"finding_aid_script"`
-	Finding_Aid_Status            string `json:"finding_aid_status"`
-	JSONModel_Type                string `json:"jsonmodel_type"`
+import (
+	"time"
+)
+
+type Date struct {
+	LockVersion      int       `json:"lock_version"`
+	Begin            string    `json:"begin"`
+	End              string    `json:"end"`
+	Created_By       string    `json:"created_by"`
+	Last_Modified_By string    `json:"last_modified_by"`
+	Create_Time      time.Time `json:"create_time"`
+	System_Mtime     time.Time `json:"system_mtime"`
+	User_Mtime       time.Time `json:"user_mtime"`
+	Date_Type        string    `json:"date_type"`
+	Label            string    `json:"label"`
+	JSONModel_Type   string    `json:"jsonmodel_type"`
+}
+type External_ID struct {
+	External_ID      string    `json:"external_id"`
+	Source           string    `json:"source"`
+	Created_By       string    `json:"created_by"`
+	Last_Modified_By string    `json:"last_modified_by"`
+	Create_Time      time.Time `json:"create_time"`
+	System_Mtime     time.Time `json:"system_mtime"`
+	User_Mtime       time.Time `json:"user_mtime"`
+	JSONModel_Type   string    `json:"jsonmodel_type"`
 }
 
-//"create_time":"2016-07-14T23:36:59Z","system_mtime":"2019-01-30T14:50:56Z","user_mtime":"2019-01-30T14:50:56Z",
-// "external_ids":[
-//   	{"external_id":"3148","source":"Archivists Toolkit Database::RESOURCE","created_by":"slf8","last_modified_by":"slf8","create_time":"2019-01-30T14:50:56Z","system_mtime":"2019-01-30T14:50:56Z","user_mtime":"2019-01-30T14:50:56Z","jsonmodel_type":"external_id"}],
-//  "subjects":[
-//  	{"ref":"/subjects/1656"},{"ref":"/subjects/1576"},{"ref":"/subjects/25"},{"ref":"/subjects/450"},{"ref":"/subjects/1803"},{"ref":"/subjects/962"},{"ref":"/subjects/8969"},{"ref":"/subjects/1776"},{"ref":"/subjects/7"},{"ref":"/subjects/1561"},{"ref":"/subjects/1565"},{"ref":"/subjects/851"},{"ref":"/subjects/1777"}],
-//  "linked_events":[],
-//  "extents":[
-//  	{"lock_version":0,"number":"46.5","container_summary":"in 15 record cartons, 1 manuscript box, 6 media boxes, 3 oversize flat boxes, and 27 oversize boxes.","created_by":"slf8","last_modified_by":"slf8","create_time":"2019-01-30T14:50:56Z","system_mtime":"2019-01-30T14:50:56Z","user_mtime":"2019-01-30T14:50:56Z","portion":"whole","extent_type":"linear_feet","jsonmodel_type":"extent"}],
-//  "lang_materials":[
-//    	{"lock_version":0,"create_time":"2016-07-14T23:36:59Z","system_mtime":"2019-01-30T14:50:56Z","user_mtime":"2019-01-30T14:50:56Z","jsonmodel_type":"lang_material","notes":[],"language_and_script":{"lock_version":0,"create_time":"2016-07-14T23:36:59Z","system_mtime":"2019-01-30T14:50:56Z","user_mtime":"2019-01-30T14:50:56Z","language":"eng","jsonmodel_type":"language_and_script"}},{"lock_version":0,"create_time":"2019-01-30T14:50:56Z","system_mtime":"2019-01-30T14:50:56Z","user_mtime":"2019-01-30T14:50:56Z","jsonmodel_type":"lang_material","notes":[{"jsonmodel_type":"note_langmaterial","persistent_id":"58d5ac18219bc2521162d309c846dc77","label":"Language of Materials Note","type":"langmaterial","content":["Materials are in English."],"publish":true}]}],"
-//  dates":[
-//    	{"lock_version":0,"begin":"1925","end":"1997","created_by":"slf8","last_modified_by":"slf8","create_time":"2019-01-30T14:50:56Z","system_mtime":"2019-01-30T14:50:56Z","user_mtime":"2019-01-30T14:50:56Z","date_type":"inclusive","label":"creation","jsonmodel_type":"date"},
-//    	{"lock_version":0,"begin":"1940","end":"1990","created_by":"slf8","last_modified_by":"slf8","create_time":"2019-01-30T14:50:56Z","system_mtime":"2019-01-30T14:50:56Z","user_mtime":"2019-01-30T14:50:56Z","date_type":"bulk","label":"creation","jsonmodel_type":"date"}],
-//  "external_documents":[],
-//  "rights_statements":[],
-//  "linked_agents":[
-//  	{"role":"subject","terms":[],"ref":"/agents/corporate_entities/492"},{"role":"subject","terms":[],"ref":"/agents/people/2851"},{"role":"subject","terms":[],"ref":"/agents/people/2950"},{"role":"creator","terms":[],"ref":"/agents/people/327"}],
-//  "revision_statements":[],
-//  "instances":[],
-//  "deaccessions":[],
-//  "related_accessions":[
-//  	{"ref":"/repositories/2/accessions/833"},{"ref":"/repositories/2/accessions/1836"}],
-//  "classifications":[],
-//  "notes":[
-//  	{"jsonmodel_type":"note_multipart","persistent_id":"520bcd998bc1be4940027988dd36d921","label":"Processing Information Note","type":"processinfo","subnotes":[{"jsonmodel_type":"note_text","content":"Inventories are available for the 33 rpm and 78 rpm records, but not for the 45 rpm records.  Some of the reel tapes for <emph render=\"bold\">Series VI</emph> have been transferred to cd.  These instances are noted in the reel listings.  The cds themselves contain a number but no descriptive labels.  These are sometimes found on the related reel tape, but not in all instances.\n\nJames A. Hayden's materials had previously been identified as belonging to a discrete collection, the James A. Hayden Papers (AIA 033), but have been reincorporated into this collection.","publish":true}],"publish":true},{"jsonmodel_type":"note_multipart","persistent_id":"b2fd8550672fe0276e9d114b9a117974","label":"Audiovisual Access Policies and Procedures","type":"phystech","subnotes":[{"jsonmodel_type":"note_text","content":"Researchers interested in using audiovisual materials in this collection (films, cassette tapes, VHS tapes, et cetera) must use a digitized copy, which we refer to as an access copy. Researchers may view an item’s original container, but the media themselves are not available for playback because of preservation concerns. Materials that already have already been digitized are noted in the collection’s finding aid and can be requested in our reading room; materials not yet digitized will need to have access copies made before they can be used. These requests are free of charge and can be made in anticipation of your visit. The process typically takes four to six weeks. To request an access copy, or if you are unsure if an item has been digitized, please contact tamiment.wagner@nyu.edu with the collection name, collection number, and a description of the item(s) requested. A librarian will respond to you with further information.","publish":true}],"publish":true},{"jsonmodel_type":"note_multipart","persistent_id":"55f03241e47b796a744e984ceb47ba73","label":"Related Material at the Tamiment Library/Robert F. Wagner Labor Archives","type":"relatedmaterial","subnotes":[{"jsonmodel_type":"note_text","content":"American Irish Citizens Committee for the Re-election of William O'Dwyer AIA 002\n\nMick Moloney Irish American Music and Popular Culture Collection, Part I: Commercial Recordings AIA 031.1\n","publish":true}],"publish":true},{"jsonmodel_type":"note_multipart","persistent_id":"d57d21fcf3c097b916d57ae53b759a58","label":"Access Restrictions","type":"accessrestrict","rights_restriction":{"local_access_restriction_type":[]},"subnotes":[{"jsonmodel_type":"note_text","content":"Open to users without restriction.","publish":true}],"publish":true},{"jsonmodel_type":"note_multipart","persistent_id":"7e3c11f515947c13a6a8b07979f8a002","label":"Arrangement","type":"arrangement","subnotes":[{"jsonmodel_type":"note_text","content":"Collection is organized into five series, each of which are arranged alphabetically.  (Please note there is no box 38)","publish":true},{"jsonmodel_type":"note_orderedlist","title":"Missing Title","enumeration":"null","publish":true,"items":["Series I. Dorothy Hayden Cudahy, 1936-1991","Series II. John J. Cudahy, 1925-1989","Series III. Photographs, 1919-1988","Series IV. Ephemera, 1940-1997","Series V. Commercial Recordings, 1957-1989","Series VI. Irish Memories Radio Program Recordings, 1944-1997"]}],"publish":true},{"jsonmodel_type":"note_singlepart","persistent_id":"f8d1a0efaeb51132e2ce1f0477172be3","type":"abstract","content":["The collection contains the personal papers of Dorothy Hayden Cudahy, host of <emph render=\"italic\">Irish Memories</emph>, as well as materials from her husband John J. Cudahy and her father, John Hayden. Among the papers are included correspondence, financial documents, editorials written by John Cudahy, and materials related to professional achievements, such as Dorothy Cudahy's position as the first female St. Patrick's Day Parade Grand Marshall and John Cudahy's assignment in the United States Army.  The collection also contains material from the <emph render=\"italic\">Irish Memories</emph> radio program which John Hayden hosted until his death in 1943, after which Dorothy took over. She remained the host until the 1990s.  Of particular interest in the collection is a series of photographs docuemting the life of Irish Americans in New York, many collected by her father of famous musicians, although many others unidentified.  Several photographs of Dorothy Hayden Cudahy at organized events or with the Dorothy Hayden Cudahy's Irish Steppers are also included. A small series of ephemera containing holiday cards and newspaper clippings completes the collection.  "],"publish":true},{"jsonmodel_type":"note_singlepart","persistent_id":"3405d9b18dc64fec5cd8bab5734ed15c","label":"Location Note","type":"physloc","content":["Boxes 1-6, 40, and 42-44 are located on site at the Tamiment Library.  The remainder of the collection is stored offsite and advance notice is required for use.  Please contact tamiment.wagner@nyu.edu at least two business days prior to research visit."],"publish":true},{"jsonmodel_type":"note_multipart","persistent_id":"e1d220492a285ad8958d19c7adae7518","label":"Scope and Content Note","type":"scopecontent","subnotes":[{"jsonmodel_type":"note_text","content":"The Dorothy Hayden Cudahy <emph render=\"italic\">Irish Memories</emph> Collection consists of the personal papers of Dorothy Hayden Cudahy, her husband John J. Cudahy, and her father John Hayden.  Materials include correspondence, photographs, ephemera, financial records, editorials written by John Cudahy, musical recordings, radio broadcast recordings, and material objects.  The majority of the collection consists of materials related to the weekly <emph render=\"italic\">Irish Memories</emph> radio program, including records, recordings of the program, playlists, administrative documents, and notes for interviews.  The collection documents not only a wide range of Irish and Irish American music, but also reflects forty years of radio broadcasting directly aimed at the Irish community in New York City.","publish":true}],"publish":true},{"jsonmodel_type":"note_multipart","persistent_id":"5075eca83a9c3d07a2d351e723dc7a79","label":"Separated Materials","type":"separatedmaterial","subnotes":[{"jsonmodel_type":"note_text","content":"Records separated from the Dorothy Hayden Cudahy Irish Memories Collection are included in the following collections:\n\nJames A. Hayden Papers, AIA 033\n\nGaelic Athletic Association Collection, AIA 028","publish":true},{"jsonmodel_type":"note_orderedlist","title":"Missing Title","enumeration":"null","publish":true,"items":["Gaelic Athletic Association of New York Collection AIA 028","James A. Hayden Papers AIA 033"]}],"publish":true},{"jsonmodel_type":"note_multipart","persistent_id":"888101d0bc72a1bc8a5d87776b27a5e0","label":"Preferred Citation","type":"prefercite","subnotes":[{"jsonmodel_type":"note_text","content":"Published citations should take the following form: <lb/><lb/>Identification of item, date; Collection name; Collection number; box number; folder number; Archives of Irish America, Tamiment Library, New York University Libraries.","publish":true}],"publish":true},{"jsonmodel_type":"note_multipart","persistent_id":"e90f0d12312da9f9f20123f420e76009","label":"Historical/Biographical Note","type":"bioghist","subnotes":[{"jsonmodel_type":"note_text","content":"Dorothy Hayden Cudahy (1922-2010) was born May 29, 1922 in Manhattan.  She is the daughter of James Hayden, a native of Ballyraggett, Co. Kilkenny, and Delia Brennan, a native of Curry, Co. Sligo.  She married John Cudahy (1920 -1994), the son of Co. Clare immigrants, in 1947 and they had one son, Sean (1950 – 1997).  In 1960, Dorothy Hayden became one of the first meter maids for the New York City Department of Traffic and by 1982 retired as the Chief of Administration of the Bureau of Enforcement of the NYC Transportation Department. In 1984 she became the first woman, as well as the first American-born person, to be elected president of the Kilkenny Association.  In 1989 she was again honored as the first woman Grand Marshall of the New York City St. Patrick’s Day Parade.  She and John Cudahy were active all their lives in numerous Irish organizations, both as members and officers.\n\nJames Hayden, a well known emcee and columnist for the <emph render=\"italic\">Irish Echo</emph>, began broadcasting the <emph render=\"italic\">Irish Memories</emph> radio program in 1930 over local station WEVD.  Upon his death in 1943, his daughter succeeded as the program's host and continued broadcasting until the late 1980s.  The weekly programme consisted of musical selections, news, advertisements and occasionally interviews. In addition to her program, in 1950, Ms. Cudahy created a group called the Dorothy Hayden Entertainers with dancers, musicians and entertainers. In 1951 the group appeared on the Ed Sullivan show.\n","publish":true}],"publish":true},{"jsonmodel_type":"note_multipart","persistent_id":"446493a2aedb0b13bd6295832bf79b68","label":"Immediate Source of Acquisition Note","type":"acqinfo","subnotes":[{"jsonmodel_type":"note_text","content":"The papers of Dorothy Hayden Cudahy were personally donated to the Archives of Irish America at New York University in 1995.  Accession numbers associated with this collection are 1997.019 and 2012.027.","publish":true}],"publish":true},{"jsonmodel_type":"note_multipart","persistent_id":"2133a2abcdf7823fec0e7ee8a848d221","label":"Use Restrictions","type":"userestrict","rights_restriction":{"local_access_restriction_type":[]},"subnotes":[{"jsonmodel_type":"note_text","content":"Copyright held by Dorothy Hayden Cuhady, the creator of this collection, was transferred to New York University in 1996.  Permission to publish or reproduce materials must be secured from the Tamiment Library.","publish":true}],"publish":true}],
-//  "uri":"/repositories/2/resources/2",
-//  "repository":{"ref":"/repositories/2"},
-//  "tree":{"ref":"/repositories/2/resources/2/tree"}}
+type Extent struct {
+	Lock_Version      int       `json:"lock_version"`
+	Number            string    `json:"number"`
+	Container_Summary string    `json:"container_summary"`
+	Created_By        string    `json:"created_by"`
+	Last_Modified_By  string    `json:"last_modified_by"`
+	Create_Time       time.Time `json:"create_time"`
+	System_Mtime      time.Time `json:"system_mtime"`
+	User_Mtime        time.Time `json:"user_mtime"`
+	Portion           string    `json:"portion"`
+	Extent_Type       string    `json:"extent_type"`
+	JSONModel_Type    string    `json:"jsonmodel_type"`
+}
+
+type Lang_Material struct {
+	Lock_Version        int                 `json:"lock_version"`
+	Create_Time         time.Time           `json:"create_time"`
+	System_Mtime        time.Time           `json:"system_mtime"`
+	User_Mtime          time.Time           `json:"user_mtime"`
+	JSONModel_Type      string              `json:"json_modeltype"`
+	Notes               []Note_Langmaterial `json:"notes"`
+	Language_And_Script Language_And_Script `json:"language_and_script"`
+}
+
+type Language_And_Script struct {
+	Lock_Version   int       `json:"lock_version"`
+	Create_Time    time.Time `json:"create_time"`
+	System_Mtime   time.Time `json:"system_mtime"`
+	User_Mtime     time.Time `json:"user_mtime"`
+	Language       string    `json:"language"`
+	JSONModel_Type string    `json:"json_modeltype"`
+}
+type Linked_Agent struct {
+	Role  string        `json:"role"`
+	Terms []interface{} `json:"terms"`
+	Ref   string        `json:"ref"`
+}
+
+type Note_Langmaterial struct {
+	JSONModel_Type string   `json:"json_modeltype"`
+	Persistant_ID  string   `json:"persistant_id"`
+	Label          string   `json:"label"`
+	Type           string   `json:"type"`
+	Content        []string `json:"content"`
+	Publish        bool     `json:"publish"`
+}
+
+type Note struct {
+	JSONModel_Type string `json:"jsonmodel_type"`
+	Persistent_ID  string `json:"persistent_id"`
+	Label          string `json:"label"`
+	Type           string `json:"type"`
+	Subnotes       []Note_Text
+}
+
+type Note_Text struct {
+	JSONModel_Type string `json:"jsonmodel_type"`
+	Content        string `json:"content"`
+	Publish        bool   `json:"publish"`
+}
+
+type Resource struct {
+	Lock_Version                  int                 `json:"lock_version"`
+	Title                         string              `json:"title"`
+	Publish                       bool                `json:"publish"`
+	Restrictions                  bool                `json:"restrictions"`
+	Repository_Processing_Note    string              `json:"repository_processing_note"`
+	EAD_ID                        string              `json:"ead_id"`
+	EAD_Location                  string              `json:"ead_location"`
+	Finding_Aid_Title             string              `json:"finding_aid_title"`
+	Finding_Aid_Date              string              `json:"finding_aid_date"`
+	Finding_Aid_Author            string              `json:"finding_aid_author"`
+	Finding_Aid_Language_Note     string              `json:"finding_aid_language_note"`
+	Created_By                    string              `json:"created_by"`
+	Last_Modified_By              string              `json:"last_modified_by"`
+	Supressed                     bool                `json:"supressed"`
+	Is_Slug_Auto                  bool                `json:"is_slug_auto"`
+	ID_0                          string              `json:"id_0"`
+	ID_1                          string              `json:"id_1"`
+	ID_2                          string              `json:"id_2"`
+	ID_3                          string              `json:"id_3"`
+	Level                         string              `json:"level"`
+	Finding_Aid_Description_rules string              `json:"finding_aid_description_rules"`
+	Finding_Aid_Language          string              `json:"finding_aid_language"`
+	Finding_Aid_Script            string              `json:"finding_aid_script"`
+	Finding_Aid_Status            string              `json:"finding_aid_status"`
+	JSONModel_Type                string              `json:"jsonmodel_type"`
+	Create_Time                   time.Time           `json:"create_time"`
+	System_Mtime                  time.Time           `json:"system_mtime"`
+	User_Mtime                    time.Time           `json:"user_mtime"`
+	External_IDs                  []External_ID       `json:"external_ids"`
+	Subjects                      []map[string]string `json:"subjects"`
+	Linked_Events                 []interface{}
+	Extents                       []Extent            `json:"extents"`
+	Lang_Materials                []Lang_Material     `json:"lang_materials"`
+	Dates                         []Date              `json:"dates"`
+	Linked_Agents                 []Linked_Agent      `json:"linked_agents"`
+	Revision_Statements           []interface{}       `json:"revision_statements"`
+	Instances                     []interface{}       `json:"instances"`
+	Deaccessions                  []map[string]string `json:"deaccessions"`
+	Related_Accessions            []map[string]string `json:"related_accessions"`
+	Classifications               []interface{}       `json:"classifications"`
+	Uri                           string              `json:"uri"` //double check this
+	Repository                    map[string]string   `json:"repository"`
+	Tree                          map[string]string   `json:"tree"`
+	Notes                         []interface{}       `json:"notes"`
+}

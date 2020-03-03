@@ -27,7 +27,6 @@ func TestResourceModel(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-
 }
 
 func TestResourceModelFail(t *testing.T) {
