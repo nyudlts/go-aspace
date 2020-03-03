@@ -60,6 +60,7 @@ type Language_And_Script struct {
 	Language       string    `json:"language"`
 	JSONModel_Type string    `json:"json_modeltype"`
 }
+
 type Linked_Agent struct {
 	Role  string        `json:"role"`
 	Terms []interface{} `json:"terms"`
@@ -120,7 +121,7 @@ type Resource struct {
 	User_Mtime                    time.Time           `json:"user_mtime"`
 	External_IDs                  []External_ID       `json:"external_ids"`
 	Subjects                      []map[string]string `json:"subjects"`
-	Linked_Events                 []interface{}
+	Linked_Events                 []interface{}       `json:"linked_events"`
 	Extents                       []Extent            `json:"extents"`
 	Lang_Materials                []Lang_Material     `json:"lang_materials"`
 	Dates                         []Date              `json:"dates"`
@@ -133,5 +134,5 @@ type Resource struct {
 	Uri                           string              `json:"uri"` //double check this
 	Repository                    map[string]string   `json:"repository"`
 	Tree                          map[string]string   `json:"tree"`
-	Notes                         []interface{}       `json:"notes"`
+	Notes                         []Note              `json:"notes"`
 }
