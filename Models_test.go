@@ -4,26 +4,26 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"testing"
 )
 
 func TestResourceModel(t *testing.T) {
-	var repositoryId, resourceId = 2, 2312
+	var repositoryId, resourceId = 2, 2
 
 	a, err := NewClient(10)
+
 	if err != nil {
 		t.Error(err)
 	}
 
-	resource, err := a.get(fmt.Sprintf("/repositories/%d/resources/%d", repositoryId, resourceId), true)
+	response, err := a.get(fmt.Sprintf("/repositories/%d/resources/%d", repositoryId, resourceId), true)
+
 	if err != nil {
 		t.Error(err)
 	}
 
+	body, _ := ioutil.ReadAll(response.Body)
 	r := Resource{}
-	body, _ := ioutil.ReadAll(resource.Body)
-	log.Println(string(body))
 	err = json.Unmarshal(body, &r)
 
 	if err != nil {
@@ -40,7 +40,7 @@ func TestResourceModelFail(t *testing.T) {
 	}
 
 	resource, err := a.get(fmt.Sprintf("/repositories/%d/resources/%d", repositoryId, resourceId), true)
-	if err != nil {
+	if err == nil {
 		t.Error(err)
 	}
 

@@ -66,9 +66,9 @@ type Lang_Material struct {
 	Create_Time         time.Time           `json:"create_time"`
 	System_Mtime        time.Time           `json:"system_mtime"`
 	User_Mtime          time.Time           `json:"user_mtime"`
-	JSONModel_Type      string              `json:"json_modeltype"`
+	JSONModel_Type      string              `json:"jsonmodel_type"`
 	Notes               []Note_Langmaterial `json:"notes"`
-	Language_And_Script Language_And_Script `json:"language_and_script"`
+	Language_And_Script Language_And_Script `json:"language_and_script,omitempty"`
 }
 
 type Language_And_Script struct {
@@ -77,7 +77,7 @@ type Language_And_Script struct {
 	System_Mtime   time.Time `json:"system_mtime"`
 	User_Mtime     time.Time `json:"user_mtime"`
 	Language       string    `json:"language"`
-	JSONModel_Type string    `json:"json_modeltype"`
+	JSONModel_Type string    `json:"jsonmodel_type"`
 }
 
 type Linked_Agent struct {
@@ -87,7 +87,7 @@ type Linked_Agent struct {
 }
 
 type Note_Langmaterial struct {
-	JSONModel_Type string   `json:"json_modeltype"`
+	JSONModel_Type string   `json:"jsonmodel_type"`
 	Persistant_ID  string   `json:"persistant_id"`
 	Label          string   `json:"label"`
 	Type           string   `json:"type"`

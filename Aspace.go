@@ -71,10 +71,6 @@ func (a *ASClient) GetResourceByID(repositoryId int, resourceId int) (Resource, 
 
 	body, _ := ioutil.ReadAll(response.Body)
 
-	//check for non-200 response
-	if response.StatusCode != 200 {
-		return r, fmt.Errorf("ArchivesSpace responded with a non-200: %d", response.StatusCode)
-	}
 	//check for error response
 	err = json.Unmarshal(body, &resource)
 	if err != nil {
@@ -112,6 +108,9 @@ func (a *ASClient) do(request *http.Request, authenticated bool) (*http.Response
 	}
 
 	response, err := a.nclient.Do(request)
+	if response.StatusCode != 200 {
+		return response, fmt.Errorf("ArchivesSpace responded with a non-200: %d", response.StatusCode)
+	}
 	if err != nil {
 		return response, err
 	}
@@ -128,6 +127,8 @@ func (a *ASClient) get(endpoint string, authenticated bool) (*http.Response, err
 	}
 
 	response, err = a.do(request, authenticated)
+	//bodybytes, err := ioutil.ReadAll(request.Body)
+
 	if err != nil {
 		return response, err
 	}
