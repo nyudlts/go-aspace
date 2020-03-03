@@ -77,11 +77,11 @@ type Note_Langmaterial struct {
 }
 
 type Note struct {
-	JSONModel_Type string `json:"jsonmodel_type"`
-	Persistent_ID  string `json:"persistent_id"`
-	Label          string `json:"label"`
-	Type           string `json:"type"`
-	Subnotes       []Note_Text
+	JSONModel_Type string      `json:"jsonmodel_type"`
+	Persistent_ID  string      `json:"persistent_id"`
+	Label          string      `json:"label"`
+	Type           string      `json:"type"`
+	Subnotes       []Note_Text `json:"subnotes"`
 }
 
 type Note_Text struct {
