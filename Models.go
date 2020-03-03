@@ -17,6 +17,7 @@ type Date struct {
 	Label            string    `json:"label"`
 	JSONModel_Type   string    `json:"jsonmodel_type"`
 }
+
 type External_ID struct {
 	External_ID      string    `json:"external_id"`
 	Source           string    `json:"source"`
