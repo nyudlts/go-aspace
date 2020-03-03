@@ -62,22 +62,22 @@ type Extent struct {
 }
 
 type Lang_Material struct {
-	Lock_Version        int                 `json:"lock_version"`
-	Create_Time         time.Time           `json:"create_time"`
-	System_Mtime        time.Time           `json:"system_mtime"`
-	User_Mtime          time.Time           `json:"user_mtime"`
-	JSONModel_Type      string              `json:"jsonmodel_type"`
-	Notes               []Note_Langmaterial `json:"notes"`
-	Language_And_Script Language_And_Script `json:"language_and_script,omitempty"`
+	Lock_Version        int                  `json:"lock_version"`
+	Create_Time         time.Time            `json:"create_time"`
+	System_Mtime        time.Time            `json:"system_mtime"`
+	User_Mtime          time.Time            `json:"user_mtime"`
+	JSONModel_Type      string               `json:"jsonmodel_type"`
+	Notes               []Note_Langmaterial  `json:"notes"`
+	Language_And_Script *Language_And_Script `json:"language_and_script,omitempty"`
 }
 
 type Language_And_Script struct {
-	Lock_Version   int       `json:"lock_version"`
-	Create_Time    time.Time `json:"create_time"`
-	System_Mtime   time.Time `json:"system_mtime"`
-	User_Mtime     time.Time `json:"user_mtime"`
-	Language       string    `json:"language"`
-	JSONModel_Type string    `json:"jsonmodel_type"`
+	Lock_Version   int       `json:"lock_version,omitempty"`
+	Create_Time    time.Time `json:"create_time,omitempty"`
+	System_Mtime   time.Time `json:"system_mtime,omitempty"`
+	User_Mtime     time.Time `json:"user_mtime,omitempty"`
+	Language       string    `json:"language,omitempty"`
+	JSONModel_Type string    `json:"jsonmodel_type,omitempty"`
 }
 
 type Linked_Agent struct {
