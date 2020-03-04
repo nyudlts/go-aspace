@@ -2,10 +2,7 @@ package go_aspace
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
-	"log"
-	"strings"
 	"testing"
 )
 
@@ -81,43 +78,24 @@ func TestASClient_PostResource(t *testing.T) {
 		t.Error(err)
 	}
 
-	repositoryId, resourceId := 2, 2
-
-	resource, err := a.GetResourceByID(repositoryId, resourceId)
+	resource, err := a.GetResourceByID(2, 68)
 	if err != nil {
 		t.Error(err)
 	}
-
-	id_0 := resource.ID_0
-	id_1 := resource.ID_1
-	id_2 := resource.ID_2
-	id_3 := resource.ID_3
-	target := ""
-	if id_0 == "" {
-		log.Println(fmt.Errorf("Resource %s does not have id0 defined", resource.Title))
-	} else {
-		target = id_0
-	}
-	if id_1 != "" {
-		target = target + "_" + id_1
-	}
-	if id_2 != "" {
-		target = target + "_" + id_2
-	}
-	if id_3 != "" {
-		target = target + "_" + id_3
-	}
-	target = strings.ToLower(target)
-
-	resource.EAD_ID = target
-
-	jsonResource, err := json.Marshal(resource)
-
-	r, err := a.PostResource(repositoryId, resourceId, string(jsonResource))
+	//t.Logf("%v\n", resource)
+	resource.EAD_ID = "YYZ"
+	j, err := json.MarshalIndent(resource,"", " ")
+	p, err := a.PostResource(2, 68, string(j))
 	if err != nil {
-		t.Error(r.Status)
-		body, _ := ioutil.ReadAll(r.Body)
-		t.Error(string(body))
+		t.Error(err)
 	}
-
+	pbody, err := ioutil.ReadAll(p.Body)
+	if err != nil {
+		t.Error(err)
+	}
+	r := make(map[string]interface{})
+	json.Unmarshal(pbody, &r)
+	if r["status"] != "Updated" {
+		t.Error(string(pbody))
+	}
 }

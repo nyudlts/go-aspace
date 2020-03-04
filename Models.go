@@ -48,17 +48,30 @@ type External_ID struct {
 }
 
 type Extent struct {
-	Lock_Version      int       `json:"lock_version"`
-	Number            string    `json:"number"`
-	Container_Summary string    `json:"container_summary"`
-	Created_By        string    `json:"created_by"`
-	Last_Modified_By  string    `json:"last_modified_by"`
-	Create_Time       time.Time `json:"create_time"`
-	System_Mtime      time.Time `json:"system_mtime"`
-	User_Mtime        time.Time `json:"user_mtime"`
-	Portion           string    `json:"portion"`
-	Extent_Type       string    `json:"extent_type"`
-	JSONModel_Type    string    `json:"jsonmodel_type"`
+	Lock_Version      	int       	`json:"lock_version"`
+	Number            	string    	`json:"number"`
+	Container_Summary 	string    	`json:"container_summary"`
+	Created_By        	string    	`json:"created_by"`
+	Last_Modified_By  	string    	`json:"last_modified_by"`
+	Create_Time       	time.Time 	`json:"create_time"`
+	System_Mtime      	time.Time 	`json:"system_mtime"`
+	User_Mtime        	time.Time 	`json:"user_mtime"`
+	Portion           	string    	`json:"portion"`
+	Extent_Type       	string    	`json:"extent_type"`
+	JSONModel_Type    	string    	`json:"jsonmodel_type"`
+}
+
+type Instance struct {
+	Create_Time       	time.Time	`json:"create_time"`
+	Created_By        	string		`json:"created_by"`
+	Instance_Type	  	string		`json:"instance_type"`
+	Is_Representative	bool		`json:"is_representative"`
+	JSONModel_Type    	string    	`json:"jsonmodel_type"`
+	Last_Modified_By  	string    	`json:"last_modified_by"`
+	Lock_Version      	int       	`json:"lock_version"`
+	Sub_Container		Sub_Container `json:"sub_container"`
+	System_Mtime      	time.Time 	`json:"system_mtime"`
+	User_Mtime        	time.Time 	`json:"user_mtime"`
 }
 
 type Lang_Material struct {
@@ -132,7 +145,7 @@ type Resource struct {
 	ID_1                          string               `json:"id_1"`
 	ID_2                          string               `json:"id_2"`
 	ID_3                          string               `json:"id_3"`
-	Instances                     []interface{}        `json:"instances"`
+	Instances                     []Instance       	   `json:"instances"`
 	Is_Slug_Auto                  bool                 `json:"is_slug_auto"`
 	JSONModel_Type                string               `json:"jsonmodel_type"`
 	Lang_Materials                []Lang_Material      `json:"lang_materials"`
@@ -169,4 +182,15 @@ type Revision_Statement struct {
 	JSONModel        string            `json:"jsonmodel_type"`
 	URI              string            `json:"uri"`
 	Repository       map[string]string `json:"repository"`
+}
+
+type Sub_Container struct {
+	Create_Time      		time.Time	`json:"create_time"`
+	Created_By       		string		`json:"created_by"`
+	JSONModel        		string      `json:"jsonmodel_type"`
+	Last_Modified_By 		string      `json:"last_modified_by"`
+	Lock_Version     		int       	`json:"lock_version"`
+	System_Mtime     		time.Time   `json:"system_mtime"`
+	Top_Container			map[string]string `json:"top_container"`
+	User_Mtime				time.Time `json:"user_mtime"`
 }
