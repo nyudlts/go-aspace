@@ -2,7 +2,6 @@ package go_aspace
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"testing"
 )
@@ -78,9 +77,9 @@ func TestASClient_PostResource(t *testing.T) {
 		t.Error(err)
 	}
 	//t.Logf("%v\n", resource)
-	resource.EAD_ID = "YYZ"
+	resource.EAD_ID = "zzz"
 	j, err := json.MarshalIndent(resource, "", " ")
-	p, err := a.PostResource(2, 68, string(j))
+	p, err := a.PostResource(2, 89, string(j))
 	if err != nil {
 		t.Error(err)
 	}
@@ -93,30 +92,4 @@ func TestASClient_PostResource(t *testing.T) {
 	if r["status"] != "Updated" {
 		t.Error(string(pbody))
 	}
-}
-
-func TestMyTest(t *testing.T) {
-	a, err := NewClient(10)
-	if err != nil {
-		t.Error(err)
-	}
-
-	resource, err := a.get("/repositories/2/resources/90", true)
-	if err != nil {
-		t.Error(err)
-	}
-	body, err := ioutil.ReadAll(resource.Body)
-	if err != nil {
-		t.Error(err)
-	}
-
-	fmt.Println(string(body))
-
-	r, err := a.GetResourceByID(2, 90)
-	if err != nil {
-		t.Error(err)
-	}
-	j, err := json.MarshalIndent(r, "", "    ")
-	fmt.Println(string(j))
-
 }
