@@ -37,6 +37,16 @@ type Deaccessions struct {
 }
 
 type External_Document struct {
+	Lock_Version     int       `json:"lock_version"`
+	Title            string    `json:"title"`
+	Location         string    `json:"location"`
+	Publish          bool      `json:"publish"`
+	Created_By       string    `json:"created_by"`
+	Last_Modified_By string    `json:"last_modified_by"`
+	Create_Time      time.Time `json:"create_time"`
+	System_Mtime     time.Time `json:"system_mtime"`
+	User_Mtime       time.Time `json:"user_mtime"`
+	JSONModel_Type   string    `json:"jsonmodel_type"`
 }
 
 type External_ID struct {
