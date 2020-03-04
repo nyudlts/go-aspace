@@ -73,7 +73,7 @@ func TestASClient_PostResource(t *testing.T) {
 		t.Error(err)
 	}
 
-	resource, err := a.GetResourceByID(2, 68)
+	resource, err := a.GetResourceByID(2, 89)
 	if err != nil {
 		t.Error(err)
 	}
@@ -101,7 +101,7 @@ func TestMyTest(t *testing.T) {
 		t.Error(err)
 	}
 
-	resource, err := a.get("/repositories/2/resources/1108", true)
+	resource, err := a.get("/repositories/2/resources/90", true)
 	if err != nil {
 		t.Error(err)
 	}
@@ -111,4 +111,12 @@ func TestMyTest(t *testing.T) {
 	}
 
 	fmt.Println(string(body))
+
+	r, err := a.GetResourceByID(2, 90)
+	if err != nil {
+		t.Error(err)
+	}
+	j, err := json.MarshalIndent(r, "", "    ")
+	fmt.Println(string(j))
+
 }

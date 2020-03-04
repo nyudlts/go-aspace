@@ -107,10 +107,10 @@ type Language_And_Script struct {
 }
 
 type Linked_Agent struct {
-	Title string   `json:"title"`
-	Role  string   `json:"role"`
-	Terms []string `json:"terms"`
-	Ref   string   `json:"ref"`
+	Title string `json:"title"`
+	Role  string `json:"role"`
+	Terms []Term `json:"terms"`
+	Ref   string `json:"ref"`
 }
 
 type Note struct {
@@ -197,7 +197,7 @@ type Resource struct {
 	System_Mtime                  time.Time            `json:"system_mtime"`
 	Title                         string               `json:"title"`
 	Tree                          map[string]string    `json:"tree"`
-	URI                           string               `json:"uri"` //double check this
+	URI                           string               `json:"uri"`
 	User_Mtime                    time.Time            `json:"user_mtime"`
 }
 
@@ -254,4 +254,23 @@ type Sub_Container struct {
 	System_Mtime     time.Time         `json:"system_mtime"`
 	Top_Container    map[string]string `json:"top_container"`
 	User_Mtime       time.Time         `json:"user_mtime"`
+}
+
+type Term struct {
+	ID                  int
+	Lock_Version        int       `json:"lock_version"`
+	JSON_Schema_Version int       `json:"json_schema_version"`
+	Vocab_ID            int       `json:"vocab_id"`
+	Term                string    `json:"term"`
+	Term_Type_ID        int       `json:"term_type_id"`
+	Created_By          string    `json:"created_by"`
+	Last_Modified_By    string    `json:"last_modified_by"`
+	Create_Time         time.Time `json:"create_time"`
+	System_Mtime        time.Time `json:"system_mtime"`
+	User_Mtime          time.Time `json:"user_mtime"`
+	X_Foreign_Key_X     int64     `json:"x_foreign_key_x"`
+	Term_Type           string    `json:"term_type"`
+	JSONModel_Type      string    `json:"json_model_type"`
+	URI                 string    `json:"uri"`
+	Vocabulary          string    `json:"vocabulary"`
 }
