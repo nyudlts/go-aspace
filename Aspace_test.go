@@ -2,6 +2,7 @@ package go_aspace
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"testing"
 )
@@ -46,13 +47,7 @@ func TestGetResourceByID(t *testing.T) {
 	}
 
 	repositoryId := 2
-	resources, err := a.GetResourceIDsByRepository(repositoryId)
-	if err != nil {
-		t.Error(err)
-	}
-
-	randomNum := randInt(0, len(resources))
-	resourceId := resources[randomNum]
+	resourceId := 2
 
 	resource, err := a.GetResourceByID(repositoryId, resourceId)
 	if err != nil {
@@ -84,7 +79,7 @@ func TestASClient_PostResource(t *testing.T) {
 	}
 	//t.Logf("%v\n", resource)
 	resource.EAD_ID = "YYZ"
-	j, err := json.MarshalIndent(resource,"", " ")
+	j, err := json.MarshalIndent(resource, "", " ")
 	p, err := a.PostResource(2, 68, string(j))
 	if err != nil {
 		t.Error(err)
@@ -98,4 +93,22 @@ func TestASClient_PostResource(t *testing.T) {
 	if r["status"] != "Updated" {
 		t.Error(string(pbody))
 	}
+}
+
+func TestMyTest(t *testing.T) {
+	a, err := NewClient(10)
+	if err != nil {
+		t.Error(err)
+	}
+
+	resource, err := a.get("/repositories/2/resources/1108", true)
+	if err != nil {
+		t.Error(err)
+	}
+	body, err := ioutil.ReadAll(resource.Body)
+	if err != nil {
+		t.Error(err)
+	}
+
+	fmt.Println(string(body))
 }

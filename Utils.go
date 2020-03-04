@@ -6,7 +6,7 @@ import (
 	math_rand "math/rand"
 )
 
-func seed() {
+func Seed() {
 	var b [8]byte
 	_, err := crypto_rand.Read(b[:])
 	if err != nil {
@@ -15,6 +15,6 @@ func seed() {
 	math_rand.Seed(int64(binary.LittleEndian.Uint64(b[:])))
 }
 
-func randInt(min int, max int) int {
+func RandInt(min int, max int) int {
 	return min + math_rand.Intn(max-min)
 }
