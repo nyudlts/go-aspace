@@ -26,7 +26,7 @@ func TestResourceModel(t *testing.T) {
 
 	r := Resource{}
 	err = json.Unmarshal(body, &r)
-	r.EAD_ID = "XXX"
+	r.EADID = "XXX"
 	if err != nil {
 		t.Error(err)
 	}

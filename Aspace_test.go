@@ -58,7 +58,7 @@ func TestGetResourceByID(t *testing.T) {
 		t.Errorf("Nil title returned")
 	}
 
-	lockVersion := resource.Lock_Version
+	lockVersion := resource.LockVersion
 
 	if lockVersion < 0 {
 		t.Errorf("Malformed lock version")
@@ -77,7 +77,7 @@ func TestASClient_PostResource(t *testing.T) {
 		t.Error(err)
 	}
 	//t.Logf("%v\n", resource)
-	resource.EAD_ID = "zzz"
+	resource.EADID = "zzz"
 	j, err := json.MarshalIndent(resource, "", " ")
 	p, err := a.PostResource(2, 89, string(j))
 	if err != nil {
