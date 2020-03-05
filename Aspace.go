@@ -127,7 +127,6 @@ func (a *ASClient) get(endpoint string, authenticated bool) (*http.Response, err
 	}
 
 	response, err = a.do(request, authenticated)
-	//bodybytes, err := ioutil.ReadAll(request.Body)
 
 	if err != nil {
 		return response, err

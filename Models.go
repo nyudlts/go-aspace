@@ -209,7 +209,7 @@ type Revision_Statement struct {
 	Create_Time      time.Time         `json:"create_time"`
 	System_Mtime     time.Time         `json:"system_mtime"`
 	Publish          bool              `json:"publish"`
-	JSONModel        string            `json:"jsonmodel_type"`
+	JSONModel_type   string            `json:"jsonmodel_type"`
 	URI              string            `json:"uri"`
 	Repository       map[string]string `json:"repository"`
 }
@@ -242,7 +242,7 @@ type Rights_Statements_Act struct {
 	Act_Type         string                      `json:"act_type"`
 	Restriction      string                      `json:"restriction"`
 	JSONModel_Type   string                      `json:"json_model_type"`
-	notes            []Note_Rights_Statement_Act `json:"notes"`
+	Notes            []Note_Rights_Statement_Act `json:"notes"`
 }
 
 type Sub_Container struct {
