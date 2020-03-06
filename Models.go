@@ -65,7 +65,7 @@ type Extent struct {
 	Number           string    `json:"number"`
 	ContainerSummary string    `json:"container_summary"`
 	CreatedBy        string    `json:"created_by"`
-	Last_ModifiedBy  string    `json:"last_modified_by"`
+	LastModifiedBy   string    `json:"last_modified_by"`
 	CreateTime       time.Time `json:"create_time"`
 	SystemMtime      time.Time `json:"system_mtime"`
 	UserMtime        time.Time `json:"user_mtime"`
@@ -154,51 +154,51 @@ type NoteText struct {
 }
 
 type Resource struct {
-	Classifications               []map[string]string `json:"classifications,omitempty"`
-	CreateTime                    time.Time           `json:"create_time"`
-	Created_By                    string              `json:"created_by"`
-	Dates                         []Date              `json:"dates"`
-	Deaccessions                  []Deaccessions      `json:"deaccessions"`
-	EADID                         string              `json:"ead_id"`
-	EADLocation                   string              `json:"ead_location"`
-	Extents                       []Extent            `json:"extents"`
-	ExternalIDs                   []ExternalID        `json:"external_ids"`
-	FindingAid_Author             string              `json:"finding_aid_author"`
-	Finding_Aid_Date              string              `json:"finding_aid_date"`
-	Finding_Aid_Description_rules string              `json:"finding_aid_description_rules"`
-	Finding_Aid_Language          string              `json:"finding_aid_language"`
-	Finding_Aid_Language_Note     string              `json:"finding_aid_language_note"`
-	Finding_Aid_Script            string              `json:"finding_aid_script"`
-	Finding_Aid_Status            string              `json:"finding_aid_status"`
-	Finding_Aid_Title             string              `json:"finding_aid_title"`
-	ID_0                          string              `json:"id_0"`
-	ID_1                          string              `json:"id_1"`
-	ID_2                          string              `json:"id_2"`
-	ID_3                          string              `json:"id_3"`
-	Instances                     []Instance          `json:"instances"`
-	IsSlugAuto                    bool                `json:"is_slug_auto"`
-	JSONModelType                 string              `json:"jsonmodel_type"`
-	LangMaterials                 []LangMaterial      `json:"lang_materials"`
-	LastModifiedBy                string              `json:"last_modified_by"`
-	Level                         string              `json:"level"`
-	LinkedAgents                  []LinkedAgent       `json:"linked_agents"`
-	LinkedEvents                  []map[string]string `json:"linked_events"`
-	LockVersion                   int                 `json:"lock_version"`
-	Notes                         []Note              `json:"notes"`
-	Publish                       bool                `json:"publish"`
-	RelatedAccessions             []map[string]string `json:"related_accessions"`
-	Repository                    map[string]string   `json:"repository"`
-	RepositoryProcessingNote      string              `json:"repository_processing_note"`
-	Restrictions                  bool                `json:"restrictions"`
-	RevisionStatements            []RevisionStatement `json:"revision_statements"`
-	RightsStatements              []Rights_Statement  `json:"rights_statements"`
-	Subjects                      []map[string]string `json:"subjects"`
-	Supressed                     bool                `json:"supressed"`
-	SystemMtime                   time.Time           `json:"system_mtime"`
-	Title                         string              `json:"title"`
-	Tree                          map[string]string   `json:"tree"`
-	URI                           string              `json:"uri"`
-	UserMtime                     time.Time           `json:"user_mtime"`
+	Classifications             []map[string]string `json:"classifications,omitempty"`
+	CreateTime                  time.Time           `json:"create_time"`
+	Created_By                  string              `json:"created_by"`
+	Dates                       []Date              `json:"dates"`
+	Deaccessions                []Deaccessions      `json:"deaccessions"`
+	EADID                       string              `json:"ead_id"`
+	EADLocation                 string              `json:"ead_location"`
+	Extents                     []Extent            `json:"extents"`
+	ExternalIDs                 []ExternalID        `json:"external_ids"`
+	FindingAidAuthor            string              `json:"finding_aid_author"`
+	FindingAidDate              string              `json:"finding_aid_date"`
+	FindingAidDescription_rules string              `json:"finding_aid_description_rules"`
+	FindingAidLanguage          string              `json:"finding_aid_language"`
+	FindingAidLanguage_Note     string              `json:"finding_aid_language_note"`
+	FindingAidScript            string              `json:"finding_aid_script"`
+	FindingAidStatus            string              `json:"finding_aid_status"`
+	FindingAidTitle             string              `json:"finding_aid_title"`
+	ID_0                        string              `json:"id_0"`
+	ID_1                        string              `json:"id_1"`
+	ID_2                        string              `json:"id_2"`
+	ID_3                        string              `json:"id_3"`
+	Instances                   []Instance          `json:"instances"`
+	IsSlugAuto                  bool                `json:"is_slug_auto"`
+	JSONModelType               string              `json:"jsonmodel_type"`
+	LangMaterials               []LangMaterial      `json:"lang_materials"`
+	LastModifiedBy              string              `json:"last_modified_by"`
+	Level                       string              `json:"level"`
+	LinkedAgents                []LinkedAgent       `json:"linked_agents"`
+	LinkedEvents                []map[string]string `json:"linked_events"`
+	LockVersion                 int                 `json:"lock_version"`
+	Notes                       []Note              `json:"notes"`
+	Publish                     bool                `json:"publish"`
+	RelatedAccessions           []map[string]string `json:"related_accessions"`
+	Repository                  map[string]string   `json:"repository"`
+	RepositoryProcessingNote    string              `json:"repository_processing_note"`
+	Restrictions                bool                `json:"restrictions"`
+	RevisionStatements          []RevisionStatement `json:"revision_statements"`
+	RightsStatements            []Rights_Statement  `json:"rights_statements"`
+	Subjects                    []map[string]string `json:"subjects"`
+	Supressed                   bool                `json:"supressed"`
+	SystemMtime                 time.Time           `json:"system_mtime"`
+	Title                       string              `json:"title"`
+	Tree                        map[string]string   `json:"tree"`
+	URI                         string              `json:"uri"`
+	UserMtime                   time.Time           `json:"user_mtime"`
 }
 
 type RevisionStatement struct {
