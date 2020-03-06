@@ -8,7 +8,7 @@ import (
 
 func TestGetAspaceInfo(t *testing.T) {
 
-	a, err := NewClient(10)
+	a, err := NewClient(100)
 	if err != nil {
 		t.Error(err)
 	}
@@ -24,7 +24,7 @@ func TestGetAspaceInfo(t *testing.T) {
 func TestGetResourceIDsByRepository(t *testing.T) {
 	repositoryId := 2
 
-	a, err := NewClient(10)
+	a, err := NewClient(100)
 	if err != nil {
 		t.Error(err)
 	}
@@ -40,13 +40,19 @@ func TestGetResourceIDsByRepository(t *testing.T) {
 
 func TestGetResourceByID(t *testing.T) {
 
-	a, err := NewClient(10)
+	a, err := NewClient(100)
 	if err != nil {
 		t.Error(err)
 	}
 
-	repositoryId := 2
-	resourceId := 2
+	Seed()
+	repositoryId := RepositoryIDs[RandInt(0, 2)]
+	resources, err := a.GetResourceIDsByRepository(repositoryId)
+	if err != nil {
+		t.Error(err)
+	}
+
+	resourceId := resources[RandInt(0, len(resources))]
 
 	resource, err := a.GetResourceByID(repositoryId, resourceId)
 	if err != nil {
@@ -54,6 +60,7 @@ func TestGetResourceByID(t *testing.T) {
 	}
 
 	title := resource.Title
+	t.Log(title)
 	if len(title) < 0 {
 		t.Errorf("Nil title returned")
 	}
@@ -67,19 +74,19 @@ func TestGetResourceByID(t *testing.T) {
 }
 
 func TestASClient_PostResource(t *testing.T) {
-	a, err := NewClient(10)
+	a, err := NewClient(100)
 	if err != nil {
 		t.Error(err)
 	}
 
-	resource, err := a.GetResourceByID(2, 89)
+	resource, err := a.GetResourceByID(9, 3228)
 	if err != nil {
 		t.Error(err)
 	}
 	//t.Logf("%v\n", resource)
 	resource.EADID = "zzz"
 	j, err := json.MarshalIndent(resource, "", " ")
-	p, err := a.PostResource(2, 89, string(j))
+	p, err := a.PostResource(9, 3228, string(j))
 	if err != nil {
 		t.Error(err)
 	}

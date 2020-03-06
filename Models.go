@@ -6,10 +6,11 @@ import (
 
 type Date struct {
 	LockVersion    int       `json:"lock_version"`
-	Begin          string    `json:"begin"`
-	End            string    `json:"end"`
+	Expression     string    `json:"expression,omitempty"`
 	CreatedBy      string    `json:"created_by"`
 	LastModifiedBy string    `json:"last_modified_by"`
+	Begin          string    `json:"begin,omitempty"`
+	End            string    `json:"end,omitempty"`
 	CreateTime     time.Time `json:"create_time"`
 	SystemMtime    time.Time `json:"system_mtime"`
 	UserMtime      time.Time `json:"user_mtime"`
@@ -157,7 +158,7 @@ type Resource struct {
 	Classifications             []map[string]string `json:"classifications,omitempty"`
 	CreateTime                  time.Time           `json:"create_time"`
 	Created_By                  string              `json:"created_by"`
-	Dates                       []Date              `json:"dates"`
+	Dates                       []*Date             `json:"dates"`
 	Deaccessions                []Deaccessions      `json:"deaccessions"`
 	EADID                       string              `json:"ead_id"`
 	EADLocation                 string              `json:"ead_location"`

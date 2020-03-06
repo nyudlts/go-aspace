@@ -8,6 +8,8 @@ import (
 	"net/http"
 )
 
+var RepositoryIDs = [3]int{2, 3, 6}
+
 type AspaceInfo struct {
 	DatabaseProductName    string `json:"databaseProductName"`
 	DatabaseProductVersion string `json:"databaseProductVersion"`
@@ -109,7 +111,8 @@ func (a *ASClient) do(request *http.Request, authenticated bool) (*http.Response
 
 	response, err := a.nclient.Do(request)
 	if response.StatusCode != 200 {
-		return response, fmt.Errorf("ArchivesSpace responded with a non-200: %d", response.StatusCode)
+		//body, _ := ioutil.ReadAll(response.Body)
+		return response, fmt.Errorf("ArchivesSpace responded with a non-200:\nstatus-code: %d\n", response.StatusCode)
 	}
 	if err != nil {
 		return response, err
