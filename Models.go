@@ -171,10 +171,10 @@ type Resource struct {
 	FindingAidScript            string              `json:"finding_aid_script"`
 	FindingAidStatus            string              `json:"finding_aid_status"`
 	FindingAidTitle             string              `json:"finding_aid_title"`
-	ID_0                        string              `json:"id_0"`
-	ID_1                        string              `json:"id_1"`
-	ID_2                        string              `json:"id_2"`
-	ID_3                        string              `json:"id_3"`
+	ID0                         string              `json:"id_0"`
+	ID1                         string              `json:"id_1"`
+	ID2                         string              `json:"id_2"`
+	ID3                         string              `json:"id_3"`
 	Instances                   []Instance          `json:"instances"`
 	IsSlugAuto                  bool                `json:"is_slug_auto"`
 	JSONModelType               string              `json:"jsonmodel_type"`
@@ -209,13 +209,13 @@ type RevisionStatement struct {
 	CreateTime     time.Time         `json:"create_time"`
 	SystemMtime    time.Time         `json:"system_mtime"`
 	Publish        bool              `json:"publish"`
-	JSONModel_type string            `json:"jsonmodel_type"`
+	JSONModeType   string            `json:"jsonmodel_type"`
 	URI            string            `json:"uri"`
 	Repository     map[string]string `json:"repository"`
 }
 
 type Rights_Statement struct {
-	Lock_Version      int                   `json:"lock_version"`
+	LockVersion       int                   `json:"lock_version"`
 	Identifier        string                `json:"identifier"`
 	CreatedBy         string                `json:"created_by"`
 	LastModifiedBy    string                `json:"last_modified_by"`
@@ -246,14 +246,14 @@ type RightsStatementsAct struct {
 }
 
 type Sub_Container struct {
-	CreateTime      time.Time         `json:"create_time"`
-	CreatedBy       string            `json:"created_by"`
-	JSONModel       string            `json:"jsonmodel_type"`
-	LastModified_By string            `json:"last_modified_by"`
-	LockVersion     int               `json:"lock_version"`
-	SystemMtime     time.Time         `json:"system_mtime"`
-	Top_Container   map[string]string `json:"top_container"`
-	UserMtime       time.Time         `json:"user_mtime"`
+	CreateTime     time.Time         `json:"create_time"`
+	CreatedBy      string            `json:"created_by"`
+	JSONModel      string            `json:"jsonmodel_type"`
+	LastModifiedBy string            `json:"last_modified_by"`
+	LockVersion    int               `json:"lock_version"`
+	SystemMtime    time.Time         `json:"system_mtime"`
+	TopContainer   map[string]string `json:"top_container"`
+	UserMtime      time.Time         `json:"user_mtime"`
 }
 
 type Term struct {
