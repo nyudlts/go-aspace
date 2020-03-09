@@ -49,8 +49,4 @@ func TestResourceModelFail(t *testing.T) {
 	r := Resource{}
 	body, _ := ioutil.ReadAll(resource.Body)
 	err = json.Unmarshal(body, &r)
-
-	if err != nil {
-		t.Error(err)
-	}
 }

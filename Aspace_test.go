@@ -65,12 +65,6 @@ func TestGetResourceByID(t *testing.T) {
 		t.Errorf("Nil title returned")
 	}
 
-	lockVersion := resource.LockVersion
-
-	if lockVersion < 0 {
-		t.Errorf("Malformed lock version")
-	}
-
 }
 
 func TestASClient_PostResource(t *testing.T) {

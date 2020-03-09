@@ -24,21 +24,20 @@ type Date struct {
 }
 
 type Deaccession struct {
-	Description   string            `json:"description"`
-	Reason        string            `json:"reason"`
-	Disposition   string            `json:"disposition"`
-	Notification  bool              `json:"notification"`
-	JSONModelType string            `json:"jsonmodel_type"`
-	Extents       []Extent          `json:"extents"`
-	Repository    map[string]string `json:"repository"`
-	Date          Date              `json:"date"`
-	Notes         []Note            `json:"notes"`
+	Scope         string   `json:"scope"`
+	Description   string   `json:"description,omitempty"`
+	Date          Date     `json:"date"`
+	Reason        string   `json:"reason,omitempty"`
+	Disposition   string   `json:"disposition,omitempty"`
+	Notification  bool     `json:"notification,omitempty"`
+	Extents       []Extent `json:"extents,omitempty"`
+	JSONModelType string   `json:"jsonmodel_type"`
 }
 
 type ExternalDocument struct {
 	Title         string `json:"title"`
 	Location      string `json:"location"`
-	Publish       bool   `json:"publish"`
+	Publish       bool   `json:"publish,omitempty"`
 	JSONModelType string `json:"jsonmodel_type"`
 }
 
@@ -49,18 +48,21 @@ type ExternalID struct {
 }
 
 type Extent struct {
-	Number           string `json:"number"`
+	Portion          string `json:"portion,omitempty"`
+	Number           string `json:"number,omitempty"`
+	ExtentType       string `json:"extent_type,omitempty"`
 	ContainerSummary string `json:"container_summary"`
-	Portion          string `json:"portion"`
-	ExtentType       string `json:"extent_type"`
+	PhysicalDetails  string `json:"physical_details"`
+	Dimensions       string `json:"dimensions"`
 	JSONModelType    string `json:"jsonmodel_type"`
 }
 
 type Instance struct {
-	InstanceType     string        `json:"instance_type"`
-	IsRepresentative bool          `json:"is_representative"`
-	JSONModelType    string        `json:"jsonmodel_type"`
-	SubContainer     Sub_Container `json:"sub_container"`
+	InstanceType string        `json:"instance_type"`
+	SubContainer Sub_Container `json:"sub_container,omitempty"`
+	//Digital Objects
+	IsRepresentative bool   `json:"is_representative,omitempty"`
+	JSONModelType    string `json:"jsonmodel_type"`
 }
 
 type LangMaterial struct {
@@ -126,9 +128,9 @@ type NoteText struct {
 }
 
 type Resource struct {
-	Classifications             []map[string]string `json:"classifications,omitempty"`
+	Classifications             []*Classification   `json:"classifications,omitempty"`
 	Dates                       []*Date             `json:"dates"`
-	Deaccessions                []Deaccession       `json:"deaccessions"`
+	Deaccessions                []*Deaccession      `json:"deaccessions"`
 	EADID                       string              `json:"ead_id"`
 	EADLocation                 string              `json:"ead_location"`
 	Extents                     []Extent            `json:"extents"`

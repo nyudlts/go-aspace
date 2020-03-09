@@ -111,8 +111,8 @@ func (a *ASClient) do(request *http.Request, authenticated bool) (*http.Response
 
 	response, err := a.nclient.Do(request)
 	if response.StatusCode != 200 {
-		//body, _ := ioutil.ReadAll(response.Body)
-		return response, fmt.Errorf("ArchivesSpace responded with a non-200:\nstatus-code: %d\n", response.StatusCode)
+		body, _ := ioutil.ReadAll(response.Body)
+		return response, fmt.Errorf("ArchivesSpace responded with a non-200:\nstatus-code: %d\n%s", response.StatusCode, string(body))
 	}
 	if err != nil {
 		return response, err
