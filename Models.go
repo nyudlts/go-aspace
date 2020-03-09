@@ -4,92 +4,66 @@ import (
 	"time"
 )
 
-type Date struct {
-	LockVersion    int       `json:"lock_version"`
-	Expression     string    `json:"expression,omitempty"`
-	CreatedBy      string    `json:"created_by"`
-	LastModifiedBy string    `json:"last_modified_by"`
-	Begin          string    `json:"begin,omitempty"`
-	End            string    `json:"end,omitempty"`
-	CreateTime     time.Time `json:"create_time"`
-	SystemMtime    time.Time `json:"system_mtime"`
-	UserMtime      time.Time `json:"user_mtime"`
-	DateType       string    `json:"date_type"`
-	Label          string    `json:"label"`
-	JSONModelType  string    `json:"jsonmodel_type"`
+type Classification struct {
+	HasClassificationTerms bool   `json:"has_classification_terms,omitempty"`
+	Slug                   string `json:"slug,omitempty"`
+	IsSlugAuto             bool   `json:"is_slug_auto,omitempty"`
+	JSONModelType          string `json:"jsonmodel_type"`
 }
 
-type Deaccessions struct {
-	LockVersion    int               `json:"lock_version"`
-	Description    string            `json:"description"`
-	Reason         string            `json:"reason"`
-	Disposition    string            `json:"disposition"`
-	Notification   bool              `json:"notification"`
-	CreatedBy      string            `json:"created_by"`
-	LastModifiedBy string            `json:"last_modified_by"`
-	CreateTime     time.Time         `json:"create_time"`
-	SystemMtime    time.Time         `json:"system_mtime"`
-	UserMtime      time.Time         `json:"user_mtime"`
-	JSONModelType  string            `json:"jsonmodel_type"`
-	Extents        []Extent          `json:"extents"`
-	Repository     map[string]string `json:"repository"`
-	Date           Date              `json:"date"`
-	Notes          []Note            `json:"notes"`
+type Date struct {
+	DateType      string `json:"date_type"`
+	Label         string `json:"label"`
+	Certainty     string `json:"certainty,omitempty"`
+	Expression    string `json:"expression,omitempty"`
+	Begin         string `json:"begin,omitempty"`
+	End           string `json:"end,omitempty"`
+	Era           string `json:"era,omitempty"`
+	Calendar      string `json:"calendar,omitempty"`
+	JSONModelType string `json:"jsonmodel_type"`
+}
+
+type Deaccession struct {
+	Description   string            `json:"description"`
+	Reason        string            `json:"reason"`
+	Disposition   string            `json:"disposition"`
+	Notification  bool              `json:"notification"`
+	JSONModelType string            `json:"jsonmodel_type"`
+	Extents       []Extent          `json:"extents"`
+	Repository    map[string]string `json:"repository"`
+	Date          Date              `json:"date"`
+	Notes         []Note            `json:"notes"`
 }
 
 type ExternalDocument struct {
-	LockVersion    int       `json:"lock_version"`
-	Title          string    `json:"title"`
-	Location       string    `json:"location"`
-	Publish        bool      `json:"publish"`
-	CreatedBy      string    `json:"created_by"`
-	LastModifiedBy string    `json:"last_modified_by"`
-	CreateTime     time.Time `json:"create_time"`
-	SystemMtime    time.Time `json:"system_mtime"`
-	UserMtime      time.Time `json:"user_mtime"`
-	JSONModelType  string    `json:"jsonmodel_type"`
+	Title         string `json:"title"`
+	Location      string `json:"location"`
+	Publish       bool   `json:"publish"`
+	JSONModelType string `json:"jsonmodel_type"`
 }
 
 type ExternalID struct {
-	ExternalID     string    `json:"external_id"`
-	Source         string    `json:"source"`
-	CreatedBy      string    `json:"created_by"`
-	LastModifiedBy string    `json:"last_modified_by"`
-	CreateTime     time.Time `json:"create_time"`
-	SystemMtime    time.Time `json:"system_mtime"`
-	UserMtime      time.Time `json:"user_mtime"`
-	JSONModelType  string    `json:"jsonmodel_type"`
+	ExternalID    string `json:"external_id"`
+	Source        string `json:"source"`
+	JSONModelType string `json:"jsonmodel_type"`
 }
 
 type Extent struct {
-	LockVersion      int       `json:"lock_version"`
-	Number           string    `json:"number"`
-	ContainerSummary string    `json:"container_summary"`
-	CreatedBy        string    `json:"created_by"`
-	LastModifiedBy   string    `json:"last_modified_by"`
-	CreateTime       time.Time `json:"create_time"`
-	SystemMtime      time.Time `json:"system_mtime"`
-	UserMtime        time.Time `json:"user_mtime"`
-	Portion          string    `json:"portion"`
-	ExtentType       string    `json:"extent_type"`
-	JSONModelType    string    `json:"jsonmodel_type"`
+	Number           string `json:"number"`
+	ContainerSummary string `json:"container_summary"`
+	Portion          string `json:"portion"`
+	ExtentType       string `json:"extent_type"`
+	JSONModelType    string `json:"jsonmodel_type"`
 }
 
 type Instance struct {
-	CreateTime       time.Time     `json:"create_time"`
-	CreatedBy        string        `json:"created_by"`
 	InstanceType     string        `json:"instance_type"`
 	IsRepresentative bool          `json:"is_representative"`
 	JSONModelType    string        `json:"jsonmodel_type"`
-	LastModifiedBy   string        `json:"last_modified_by"`
-	LockVersion      int           `json:"lock_version"`
 	SubContainer     Sub_Container `json:"sub_container"`
-	SystemMtime      time.Time     `json:"system_mtime"`
-	UserMtime        time.Time     `json:"user_mtime"`
 }
 
 type LangMaterial struct {
-	LockVersion       int                `json:"lock_version"`
 	CreateTime        time.Time          `json:"create_time"`
 	SystemMtime       time.Time          `json:"system_mtime"`
 	UserMtime         time.Time          `json:"user_mtime"`
@@ -99,19 +73,16 @@ type LangMaterial struct {
 }
 
 type LanguageAndScript struct {
-	LockVersion   int       `json:"lock_version,omitempty"`
-	CreateTime    time.Time `json:"create_time,omitempty"`
-	SystemMtime   time.Time `json:"system_mtime,omitempty"`
-	UserMtime     time.Time `json:"user_mtime,omitempty"`
-	Language      string    `json:"language,omitempty"`
-	JSONModelType string    `json:"jsonmodel_type,omitempty"`
+	Language      string `json:"language,omitempty"`
+	JSONModelType string `json:"jsonmodel_type,omitempty"`
 }
 
 type LinkedAgent struct {
-	Title string `json:"title"`
-	Role  string `json:"role"`
-	Terms []Term `json:"terms"`
-	Ref   string `json:"ref"`
+	Title         string `json:"title"`
+	Role          string `json:"role"`
+	Terms         []Term `json:"terms"`
+	Ref           string `json:"ref"`
+	JSONModelType string `json:"jsonmodel_type"`
 }
 
 type Note struct {
@@ -156,10 +127,8 @@ type NoteText struct {
 
 type Resource struct {
 	Classifications             []map[string]string `json:"classifications,omitempty"`
-	CreateTime                  time.Time           `json:"create_time"`
-	Created_By                  string              `json:"created_by"`
 	Dates                       []*Date             `json:"dates"`
-	Deaccessions                []Deaccessions      `json:"deaccessions"`
+	Deaccessions                []Deaccession       `json:"deaccessions"`
 	EADID                       string              `json:"ead_id"`
 	EADLocation                 string              `json:"ead_location"`
 	Extents                     []Extent            `json:"extents"`
@@ -180,7 +149,6 @@ type Resource struct {
 	IsSlugAuto                  bool                `json:"is_slug_auto"`
 	JSONModelType               string              `json:"jsonmodel_type"`
 	LangMaterials               []LangMaterial      `json:"lang_materials"`
-	LastModifiedBy              string              `json:"last_modified_by"`
 	Level                       string              `json:"level"`
 	LinkedAgents                []LinkedAgent       `json:"linked_agents"`
 	LinkedEvents                []map[string]string `json:"linked_events"`
@@ -195,34 +163,22 @@ type Resource struct {
 	RightsStatements            []Rights_Statement  `json:"rights_statements"`
 	Subjects                    []map[string]string `json:"subjects"`
 	Supressed                   bool                `json:"supressed"`
-	SystemMtime                 time.Time           `json:"system_mtime"`
 	Title                       string              `json:"title"`
 	Tree                        map[string]string   `json:"tree"`
 	URI                         string              `json:"uri"`
-	UserMtime                   time.Time           `json:"user_mtime"`
 }
 
 type RevisionStatement struct {
-	Date           string            `json:"date"`
-	Description    string            `json:"description"`
-	Created_By     string            `json:"created_by"`
-	LastModifiedBy string            `json:"last_modified_by"`
-	CreateTime     time.Time         `json:"create_time"`
-	SystemMtime    time.Time         `json:"system_mtime"`
-	Publish        bool              `json:"publish"`
-	JSONModeType   string            `json:"jsonmodel_type"`
-	URI            string            `json:"uri"`
-	Repository     map[string]string `json:"repository"`
+	Date         string            `json:"date"`
+	Description  string            `json:"description"`
+	Publish      bool              `json:"publish"`
+	JSONModeType string            `json:"jsonmodel_type"`
+	URI          string            `json:"uri"`
+	Repository   map[string]string `json:"repository"`
 }
 
 type Rights_Statement struct {
-	LockVersion       int                   `json:"lock_version"`
 	Identifier        string                `json:"identifier"`
-	CreatedBy         string                `json:"created_by"`
-	LastModifiedBy    string                `json:"last_modified_by"`
-	CreateTime        time.Time             `json:"create_time"`
-	SystemMtime       time.Time             `json:"system_mtime"`
-	UserMtime         time.Time             `json:"user_mtime"`
 	LicenseTerms      string                `json:"license_terms"`
 	RightsType        string                `json:"rights_type"`
 	JSONModelType     string                `json:"jsonmodel_type"`
@@ -233,45 +189,28 @@ type Rights_Statement struct {
 }
 
 type RightsStatementsAct struct {
-	StartDate      string                   `json:"start_date"`
-	EndDate        string                   `json:"etart_date"`
-	CreatedBy      string                   `json:"created_by"`
-	LastModifiedBy string                   `json:"last_modified_by"`
-	CreateTime     time.Time                `json:"create_time"`
-	SystemMtime    time.Time                `json:"system_mtime"`
-	UserMtime      time.Time                `json:"user_mtime"`
-	ActType        string                   `json:"act_type"`
-	Restriction    string                   `json:"restriction"`
-	JSONModelType  string                   `json:"json_model_type"`
-	Notes          []NoteRightsStatementAct `json:"notes"`
+	StartDate     string                   `json:"start_date"`
+	EndDate       string                   `json:"etart_date"`
+	ActType       string                   `json:"act_type"`
+	Restriction   string                   `json:"restriction"`
+	JSONModelType string                   `json:"json_model_type"`
+	Notes         []NoteRightsStatementAct `json:"notes"`
 }
 
 type Sub_Container struct {
-	CreateTime     time.Time         `json:"create_time"`
-	CreatedBy      string            `json:"created_by"`
-	JSONModel      string            `json:"jsonmodel_type"`
-	LastModifiedBy string            `json:"last_modified_by"`
-	LockVersion    int               `json:"lock_version"`
-	SystemMtime    time.Time         `json:"system_mtime"`
-	TopContainer   map[string]string `json:"top_container"`
-	UserMtime      time.Time         `json:"user_mtime"`
+	JSONModel    string            `json:"jsonmodel_type"`
+	TopContainer map[string]string `json:"top_container"`
 }
 
 type Term struct {
 	ID                int
-	LockVersion       int       `json:"lock_version"`
-	JSONSchemaVersion int       `json:"json_schema_version"`
-	VocabID           int       `json:"vocab_id"`
-	Term              string    `json:"term"`
-	TermTypeID        int       `json:"term_type_id"`
-	CreatedBy         string    `json:"created_by"`
-	LastModifiedBy    string    `json:"last_modified_by"`
-	CreateTime        time.Time `json:"create_time"`
-	SystemMtime       time.Time `json:"system_mtime"`
-	UserMtime         time.Time `json:"user_mtime"`
-	XForeignKeyX      int64     `json:"x_foreign_key_x"`
-	TermType          string    `json:"term_type"`
-	JSONModelType     string    `json:"json_model_type"`
-	URI               string    `json:"uri"`
-	Vocabulary        string    `json:"vocabulary"`
+	JSONSchemaVersion int    `json:"json_schema_version"`
+	VocabID           int    `json:"vocab_id"`
+	Term              string `json:"term"`
+	TermTypeID        int    `json:"term_type_id"`
+	XForeignKeyX      int64  `json:"x_foreign_key_x"`
+	TermType          string `json:"term_type"`
+	JSONModelType     string `json:"json_model_type"`
+	URI               string `json:"uri"`
+	Vocabulary        string `json:"vocabulary"`
 }
