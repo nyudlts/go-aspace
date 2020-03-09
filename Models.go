@@ -1,9 +1,5 @@
 package go_aspace
 
-import (
-	"time"
-)
-
 type Classification struct {
 	HasClassificationTerms bool   `json:"has_classification_terms,omitempty"`
 	Slug                   string `json:"slug,omitempty"`
@@ -66,12 +62,9 @@ type Instance struct {
 }
 
 type LangMaterial struct {
-	CreateTime        time.Time          `json:"create_time"`
-	SystemMtime       time.Time          `json:"system_mtime"`
-	UserMtime         time.Time          `json:"user_mtime"`
-	JSONModelType     string             `json:"jsonmodel_type"`
-	Notes             []NoteLangmaterial `json:"notes"`
-	LanguageAndScript *LanguageAndScript `json:"language_and_script,omitempty"`
+	LanguageAndScript *LanguageAndScript  `json:"language_and_script,omitempty"`
+	Notes             []*NoteLangmaterial `json:"notes,omitempty"`
+	JSONModelType     string              `json:"jsonmodel_type"`
 }
 
 type LanguageAndScript struct {
