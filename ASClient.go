@@ -19,8 +19,14 @@ func NewClient(timeout int) (*ASClient, error) {
 
 	var client *ASClient
 
+	tr := &http.Transport{
+		MaxIdleConns:       10,
+		IdleConnTimeout:    time.Duration(timeout) * time.Second,
+		DisableCompression: true,
+	}
+
 	nclient := &http.Client{
-		Timeout: time.Second * time.Duration(timeout),
+		Transport: tr,
 	}
 
 	token, err := getSessionKey()

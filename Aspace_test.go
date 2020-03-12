@@ -73,14 +73,14 @@ func TestASClient_PostResource(t *testing.T) {
 		t.Error(err)
 	}
 
-	resource, err := a.GetResourceByID(9, 3228)
+	resource, err := a.GetResourceByID(2, 68)
 	if err != nil {
 		t.Error(err)
 	}
 	//t.Logf("%v\n", resource)
 	resource.EADID = "zzz"
 	j, err := json.MarshalIndent(resource, "", " ")
-	p, err := a.PostResource(9, 3228, string(j))
+	p, err := a.PostResource(2, 68, string(j))
 	if err != nil {
 		t.Error(err)
 	}
