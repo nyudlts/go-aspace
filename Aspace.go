@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
+	"strconv"
 )
 
 var RepositoryIDs = [3]int{2, 3, 6}
@@ -90,6 +92,33 @@ func (a *ASClient) GetResourceByID(repositoryId int, resourceId int) (Resource, 
 	return r, nil
 }
 
+func (a *ASClient) GetRepositoryList() ([]int, error) {
+	repIds := []int{}
+	endpoint := "/repositories"
+	response, err := a.get(endpoint, false)
+	if err != nil {
+		return repIds, err
+	}
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return repIds, err
+	}
+
+	reps := make([]map[string]interface{}, 1, 1)
+	err = json.Unmarshal(body, &reps)
+
+	for i := range reps {
+		rep := fmt.Sprintf("%v", reps[i]["uri"])
+		repId, err := strconv.Atoi(rep[len(rep)-1:])
+		if err != nil {
+			return repIds, err
+		}
+		repIds = append(repIds, repId)
+	}
+
+	return repIds, nil
+}
+
 func (a *ASClient) PostResource(repositoryId int, resourceId int, body string) (*http.Response, error) {
 	endpoint := fmt.Sprintf("/repositories/%d/resources/%d", repositoryId, resourceId)
 	response, err := a.post(endpoint, true, body)
@@ -98,6 +127,24 @@ func (a *ASClient) PostResource(repositoryId int, resourceId int, body string) (
 	} else {
 		return response, nil
 	}
+}
+
+func (a *ASClient) SerializeEAD(repositoryId int, resoureId int, loc string) error {
+
+	endpoint := fmt.Sprintf("/repositories/%d/resource_descriptions/%d.xml", repositoryId, resoureId)
+	response, err := a.get(endpoint, true)
+	if err != nil {
+		return err
+	}
+
+	bodybytes, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return err
+	}
+
+	err = writeEADtoFile(string(bodybytes), fmt.Sprintf("%d_%d.xml", repositoryId, resoureId), loc)
+	return nil
+
 }
 
 //private functions
@@ -152,4 +199,14 @@ func (a *ASClient) post(endpoint string, authenticated bool, body string) (*http
 	}
 
 	return response, nil
+}
+
+func writeEADtoFile(ead string, title string, loc string) error {
+	f, err := os.Create(fmt.Sprintf("%s/%s", loc, title))
+	defer f.Close()
+	if err != nil {
+		return nil
+	}
+	f.WriteString(ead)
+	return nil
 }

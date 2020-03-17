@@ -173,23 +173,31 @@ type RevisionStatement struct {
 }
 
 type Rights_Statement struct {
-	Identifier        string                `json:"identifier"`
-	LicenseTerms      string                `json:"license_terms"`
-	RightsType        string                `json:"rights_type"`
-	JSONModelType     string                `json:"jsonmodel_type"`
-	ExternalDocuments []ExternalDocument    `json:"external_documents"`
-	Acts              []RightsStatementsAct `json:"acts"`
-	LinkedAgents      []LinkedAgent         `json:"linked_agents"`
-	Notes             []NoteRightsStatement `json:"notes"`
+	RightsType        string `json:"rights_type"`
+	Identifier        string `json:"identifier"`
+	Status            string `json:"status,omitempty"`
+	DeterminationDate Date   `json:"determination_date,omitempty"`
+	StartDate         string `json:"start_date,omitempty"`
+	EndDate           string `json:"end_date,omitempty"`
+	LicenseTerms      string `json:"license_terms,omitempty"`
+	StatuteCitation   string `json:"statute_citation,omitempty"`
+	Jurisdiction      string `json:"jurisdiction,omitempty"`
+	OtherRightsBasis  string `json:"other_rights_basis,omitempty"`
+
+	JSONModelType     string                 `json:"jsonmodel_type"`
+	ExternalDocuments []*ExternalDocument    `json:"external_documents"`
+	Acts              []*RightsStatementsAct `json:"acts"`
+	LinkedAgents      []*LinkedAgent         `json:"linked_agents"`
+	Notes             []*NoteRightsStatement `json:"notes"`
 }
 
 type RightsStatementsAct struct {
-	StartDate     string                   `json:"start_date"`
-	EndDate       string                   `json:"etart_date"`
-	ActType       string                   `json:"act_type"`
-	Restriction   string                   `json:"restriction"`
-	JSONModelType string                   `json:"json_model_type"`
-	Notes         []NoteRightsStatementAct `json:"notes"`
+	StartDate     string                    `json:"start_date"`
+	EndDate       string                    `json:"etart_date"`
+	ActType       string                    `json:"act_type"`
+	Restriction   string                    `json:"restriction"`
+	JSONModelType string                    `json:"json_model_type"`
+	Notes         []*NoteRightsStatementAct `json:"notes"`
 }
 
 type Sub_Container struct {
