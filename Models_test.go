@@ -10,13 +10,7 @@ import (
 func TestResourceModel(t *testing.T) {
 	var repositoryId, resourceId = 2, 2
 
-	a, err := NewClient(10)
-
-	if err != nil {
-		t.Error(err)
-	}
-
-	response, err := a.get(fmt.Sprintf("/repositories/%d/resources/%d", repositoryId, resourceId), true)
+	response, err := GoAspace.get(fmt.Sprintf("/repositories/%d/resources/%d", repositoryId, resourceId), true)
 
 	if err != nil {
 		t.Error(err)
@@ -36,17 +30,10 @@ func TestResourceModel(t *testing.T) {
 func TestResourceModelFail(t *testing.T) {
 	var repositoryId, resourceId = 2, 1
 
-	a, err := NewClient(10)
-	if err != nil {
-		t.Error(err)
-	}
-
-	resource, err := a.get(fmt.Sprintf("/repositories/%d/resources/%d", repositoryId, resourceId), true)
+	r, err := GoAspace.get(fmt.Sprintf("/repositories/%d/resources/%d", repositoryId, resourceId), true)
 	if err == nil {
 		t.Error(err)
 	}
+	r = r
 
-	r := Resource{}
-	body, _ := ioutil.ReadAll(resource.Body)
-	err = json.Unmarshal(body, &r)
 }

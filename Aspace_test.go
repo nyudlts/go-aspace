@@ -8,12 +8,7 @@ import (
 
 func TestGetAspaceInfo(t *testing.T) {
 
-	a, err := NewClient(100)
-	if err != nil {
-		t.Error(err)
-	}
-
-	info, err := a.GetAspaceInfo()
+	info, err := GoAspace.GetAspaceInfo()
 	if err != nil {
 		t.Error(err)
 	}
@@ -24,12 +19,7 @@ func TestGetAspaceInfo(t *testing.T) {
 func TestGetResourceIDsByRepository(t *testing.T) {
 	repositoryId := 2
 
-	a, err := NewClient(100)
-	if err != nil {
-		t.Error(err)
-	}
-
-	resourceIds, err := a.GetResourceIDsByRepository(repositoryId)
+	resourceIds, err := GoAspace.GetResourceIDsByRepository(repositoryId)
 	if err != nil {
 		t.Error(err)
 	}
@@ -40,21 +30,16 @@ func TestGetResourceIDsByRepository(t *testing.T) {
 
 func TestGetResourceByID(t *testing.T) {
 
-	a, err := NewClient(100)
-	if err != nil {
-		t.Error(err)
-	}
-
 	Seed()
 	repositoryId := RepositoryIDs[RandInt(0, 2)]
-	resources, err := a.GetResourceIDsByRepository(repositoryId)
+	resources, err := GoAspace.GetResourceIDsByRepository(repositoryId)
 	if err != nil {
 		t.Error(err)
 	}
 
 	resourceId := resources[RandInt(0, len(resources))]
 
-	resource, err := a.GetResourceByID(repositoryId, resourceId)
+	resource, err := GoAspace.GetResourceByID(repositoryId, resourceId)
 	if err != nil {
 		t.Error(err)
 	}
@@ -68,19 +53,14 @@ func TestGetResourceByID(t *testing.T) {
 }
 
 func TestASClient_PostResource(t *testing.T) {
-	a, err := NewClient(100)
-	if err != nil {
-		t.Error(err)
-	}
-
-	resource, err := a.GetResourceByID(2, 68)
+	resource, err := GoAspace.GetResourceByID(2, 68)
 	if err != nil {
 		t.Error(err)
 	}
 	//t.Logf("%v\n", resource)
 	resource.EADID = "zzz"
 	j, err := json.MarshalIndent(resource, "", " ")
-	p, err := a.PostResource(2, 68, string(j))
+	p, err := GoAspace.PostResource(2, 68, string(j))
 	if err != nil {
 		t.Error(err)
 	}

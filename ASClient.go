@@ -9,13 +9,25 @@ import (
 	"time"
 )
 
+var GoAspace ASClient
+
 type ASClient struct {
 	sessionKey string
 	rootURL    string
 	nclient    *http.Client
 }
 
-func NewClient(timeout int) (*ASClient, error) {
+func init() {
+	if err := initConfig(); err != nil {
+		panic(err)
+	}
+
+	if err := newClient(100); err != nil { // set the timeout in the configuration
+		panic(err)
+	}
+}
+
+func newClient(timeout int) error {
 
 	var client *ASClient
 
@@ -31,12 +43,12 @@ func NewClient(timeout int) (*ASClient, error) {
 
 	token, err := getSessionKey()
 	if err != nil {
-		return client, err
+		return err
 	}
 
 	aspaceRootURL, err := GetRootURL()
 	if err != nil {
-		return client, err
+		return err
 	}
 
 	client = &ASClient{
@@ -45,7 +57,9 @@ func NewClient(timeout int) (*ASClient, error) {
 		nclient:    nclient,
 	}
 
-	return client, nil
+	GoAspace = *client
+
+	return nil
 }
 
 type Configuration struct {
@@ -57,8 +71,10 @@ type Configuration struct {
 var conf Configuration
 
 func initConfig() error {
-	viper.SetConfigFile("conf.json")
-	viper.AddConfigPath("github.com/nyudlts/go-aspace")
+
+	viper.SetConfigName("go-aspace")
+	viper.AddConfigPath("/etc/sysconfig")
+	viper.SetConfigType("json")
 
 	if err := viper.ReadInConfig(); err != nil {
 		return err
