@@ -1,4 +1,4 @@
-package go_aspace
+package lib
 
 import (
 	"encoding/json"
@@ -10,7 +10,7 @@ import (
 func TestResourceModel(t *testing.T) {
 	var repositoryId, resourceId = 2, 2
 
-	response, err := GoAspace.get(fmt.Sprintf("/repositories/%d/resources/%d", repositoryId, resourceId), true)
+	response, err := Client.get(fmt.Sprintf("/repositories/%d/resources/%d", repositoryId, resourceId), true)
 
 	if err != nil {
 		t.Error(err)
@@ -30,7 +30,7 @@ func TestResourceModel(t *testing.T) {
 func TestResourceModelFail(t *testing.T) {
 	var repositoryId, resourceId = 2, 1
 
-	r, err := GoAspace.get(fmt.Sprintf("/repositories/%d/resources/%d", repositoryId, resourceId), true)
+	r, err := Client.get(fmt.Sprintf("/repositories/%d/resources/%d", repositoryId, resourceId), true)
 	if err == nil {
 		t.Error(err)
 	}

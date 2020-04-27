@@ -1,4 +1,4 @@
-package go_aspace
+package lib
 
 import (
 	"encoding/json"
@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-var GoAspace ASClient
+var Client ASClient
 
 type ASClient struct {
 	sessionKey string
@@ -57,7 +57,7 @@ func newClient(timeout int) error {
 		nclient:    nclient,
 	}
 
-	GoAspace = *client
+	Client = *client
 
 	return nil
 }

@@ -1,4 +1,4 @@
-package go_aspace
+package lib
 
 import (
 	"regexp"
@@ -59,7 +59,7 @@ func TestGetSessionKey(t *testing.T) {
 func TestNewClientHasSession(t *testing.T) {
 
 	want := 64
-	got := len(GoAspace.sessionKey)
+	got := len(Client.sessionKey)
 	if want != got {
 		t.Errorf("wanted key length of %d, got %d", want, got)
 	}

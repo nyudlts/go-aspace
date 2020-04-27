@@ -1,4 +1,4 @@
-package go_aspace
+package lib
 
 import (
 	"encoding/json"
@@ -30,14 +30,14 @@ func TestGetResourceIDsByRepository(t *testing.T) {
 
 func TestGetResourceByID(t *testing.T) {
 
-	Seed()
-	repositoryId := RepositoryIDs[RandInt(0, 2)]
+	main.Seed()
+	repositoryId := RepositoryIDs[main.RandInt(0, 2)]
 	resources, err := GoAspace.GetResourceIDsByRepository(repositoryId)
 	if err != nil {
 		t.Error(err)
 	}
 
-	resourceId := resources[RandInt(0, len(resources))]
+	resourceId := resources[main.RandInt(0, len(resources))]
 
 	resource, err := GoAspace.GetResourceByID(repositoryId, resourceId)
 	if err != nil {

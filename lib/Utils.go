@@ -1,4 +1,4 @@
-package go_aspace
+package lib
 
 import (
 	crypto_rand "crypto/rand"

@@ -1,4 +1,4 @@
-package go_aspace
+package lib
 
 type Classification struct {
 	HasClassificationTerms bool   `json:"has_classification_terms,omitempty"`
