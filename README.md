@@ -2,13 +2,13 @@
 a Go library and utility for ArchivesSpace integrations
 
 ## Prerequisite
-GoLang
+[GoLang](https://golang.org/dl/)
 
 ## Installation
 1. Get the go-aspace library: $go get github.com/nyudlts/go-aspace.
 2. Install the binary: $go install github.com/nyudlts/go-aspace.
 3. Edit the config file `$GOROOT/github.com/nyudlts/go-aspace/go-aspace_template`, enter aspace credentials, and rename the file `go-aspace`
-4. Move config file to `$HOME/`, `$GOROOT/github.com/nyudlts/go-aspace/`, `/etc/`, or `/etc/sysconfig/`
+4. Move config file to `$HOME/`, `/etc/`, or `/etc/sysconfig/`, or leave it in `$GOROOT/github.com/nyudlts/go-aspace/`.
 
 ## Usage
   go-aspace [flags]<br>
