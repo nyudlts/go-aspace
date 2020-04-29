@@ -142,7 +142,7 @@ func (a *ASClient) SerializeEAD(repositoryId int, resoureId int, loc string) err
 		return err
 	}
 
-	err = writeEADtoFile(string(bodybytes), fmt.Sprintf("%d_%d.xml", repositoryId, resoureId), loc)
+	err = writeEADtoFile(bodybytes, fmt.Sprintf("%d_%d.xml", repositoryId, resoureId), loc)
 	return nil
 
 }
@@ -201,12 +201,12 @@ func (a *ASClient) post(endpoint string, authenticated bool, body string) (*http
 	return response, nil
 }
 
-func writeEADtoFile(ead string, title string, loc string) error {
+func writeEADtoFile(ead []byte, title string, loc string) error {
 	f, err := os.Create(fmt.Sprintf("%s/%s", loc, title))
 	defer f.Close()
 	if err != nil {
 		return nil
 	}
-	f.WriteString(ead)
+	f.Write(ead)
 	return nil
 }
