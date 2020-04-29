@@ -7,7 +7,8 @@ GoLang
 ## Installation
 1. Get the go-aspace library: $go get github.com/nyudlts/go-aspace.
 2. Install the binary: $go install github.com/nyudlts/go-aspace.
-3. Edit `go-aspace_template` and move to `$HOME/go-aspace`, `/etc/go-aspace`, or `/etc/sysconfig/go-aspace`
+3. Edit the config file `$GOROOT/github.com/nyudlts/go-aspace/go-aspace_template`, enter aspace credentials, and rename the file `go-aspace`
+4. Move config file to `$HOME/`, `$GOROOT/github.com/nyudlts/go-aspace/`, `/etc/`, or `/etc/sysconfig/`
 
 ## Usage
   go-aspace [flags]<br>
