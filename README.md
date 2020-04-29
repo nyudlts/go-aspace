@@ -16,12 +16,12 @@ a Go library and utility for ArchivesSpace integrations
 
 ### Available Commands
   #### export      
-  export a resource as EAD from archivesspace<br>
+  export a resource as EAD from an Archivesspace<br>
   **Usage:**<br>
     go-aspace export [flags]<br>
   <br>
   Flags:<br>
     **-h, --help**               help for export<br>
-        **--location** string    Location to write EAD File (default "/tmp")<br>
-        **--repositoryId** int   Id of the repository<br>
-        **--resourceId int**     Id of the resource<br>
+    **--location** string    Location to write EAD File (default "/tmp")<br>
+    **--repositoryId** int   Id of the repository<br>
+    **--resourceId int**     Id of the resource<br>

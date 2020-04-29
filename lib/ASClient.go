@@ -74,6 +74,9 @@ func initConfig() error {
 
 	viper.SetConfigName("go-aspace")
 	viper.AddConfigPath("/etc/sysconfig")
+	viper.AddConfigPath("/etc/")
+	viper.AddConfigPath("$HOME")
+	viper.AddConfigPath("$GOROOT/src/github.com/nyudlts/go-aspace")
 	viper.SetConfigType("json")
 
 	if err := viper.ReadInConfig(); err != nil {
