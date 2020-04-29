@@ -5,7 +5,6 @@ import (
 	"github.com/nyudlts/go-aspace/lib"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"log"
 	"os"
 )
 
@@ -15,7 +14,6 @@ var location string
 var client lib.ASClient
 
 func init() {
-	log.Println("init")
 	client = lib.Client
 	rootCmd.AddCommand(exportCmd)
 	exportCmd.PersistentFlags().IntVar(&repositoryId, "repositoryId", 0, "Id of the repository")
