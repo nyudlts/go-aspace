@@ -34,4 +34,5 @@ go-aspace export [flags]<br>
 -r, --repositoryId, int   Id of the repository<br>
 -c, --resourceId, int     Id of the resource (collection)<br>
 -u, --unpub, bool              include unpublished (default false)<br>
+-v, --validate, bool            validate exported xml against ead 2002 schema
 
