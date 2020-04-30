@@ -15,11 +15,15 @@ a Go library and utility for ArchivesSpace integrations
   go-aspace [command]<br>
 
 ### Available Commands
+* export
+* version
+
 #### export      
 export a resource as EAD from an Archivesspace<br>
+
 **Usage:**<br>
 go-aspace export [flags]<br>
-<br>
+
 **Flags:**<br>
 -d, --daos, bool              include daos (default true)<br>
 -e, --ead3, bool               ead3 format (default false)<br>
