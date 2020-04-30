@@ -11,14 +11,28 @@ import (
 var resourceId int
 var repositoryId int
 var location string
+var daos bool
+var unpub bool
+var num_cs bool
+var ead3 bool
+var pdf bool
 var client lib.ASClient
+var fn string
 
 func init() {
 	client = lib.Client
 	rootCmd.AddCommand(exportCmd)
-	exportCmd.PersistentFlags().IntVar(&repositoryId, "repositoryId", 0, "Id of the repository")
-	exportCmd.PersistentFlags().IntVar(&resourceId, "resourceId", 0, "Id of the resource")
-	exportCmd.PersistentFlags().StringVar(&location, "location", "/tmp", "Location to write EAD File")
+	exportCmd.PersistentFlags().IntVarP(&repositoryId, "repositoryId", "r", 0, "Id of the repository")
+	exportCmd.MarkFlagRequired("repositoryId")
+	exportCmd.PersistentFlags().IntVarP(&resourceId, "resourceId", "c", 0, "Id of the resource (collection)")
+	exportCmd.MarkFlagRequired("resourceId")
+	exportCmd.PersistentFlags().StringVarP(&location, "location", "l","/tmp", "Location to write EAD File")
+	exportCmd.MarkFlagRequired("location")
+	exportCmd.PersistentFlags().BoolVarP(&daos, "daos", "d",true, "include daos")
+	exportCmd.PersistentFlags().BoolVarP(&unpub, "unpub", "u",false, "include unpublished (default false)")
+	exportCmd.PersistentFlags().BoolVarP(&num_cs, "num_cs", "n",false, "include numbered components (default false)")
+	exportCmd.PersistentFlags().BoolVarP(&ead3, "ead3", "e",false, "ead3 format (default false)")
+	exportCmd.PersistentFlags().BoolVarP(&pdf, "pdf", "p",false, "pdf format (default false)")
 }
 
 var exportCmd = &cobra.Command{
@@ -26,7 +40,15 @@ var exportCmd = &cobra.Command{
 	Short: "export a resource from archivesspace",
 	Long:  `export a resource from archivesspace`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("* exporting %s/%d_%d.xml\n", location, repositoryId, resourceId)
+
+		if pdf {
+			fn = fmt.Sprintf( "%d_%d.pdf", repositoryId, resourceId)
+		} else {
+			fn = fmt.Sprintf( "%d_%d.xml", repositoryId, resourceId)
+		}
+
+		fmt.Printf("* exporting %s/%s\n", location, fn)
+
 		err := exportEAD(); if err != nil {
 			panic(err)
 		}
@@ -56,7 +78,7 @@ func exportEAD() error {
 	}
 
 	//serialize the EAD
-	err = client.SerializeEAD(repositoryId, resourceId, location); if err != nil {
+	err = client.SerializeEAD(repositoryId, resourceId, location, daos, unpub, num_cs, ead3, pdf); if err != nil {
 		return err
 	}
 
@@ -73,7 +95,6 @@ func contains(s []int, e int) bool {
 }
 
 func checkExists() bool {
-	fn := fmt.Sprintf("%d_%d.xml", repositoryId, resourceId)
 	f := filepath.Join(location, fn)
 	if _, err := os.Stat(f); os.IsNotExist(err) {
 		return false

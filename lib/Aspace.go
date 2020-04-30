@@ -129,9 +129,9 @@ func (a *ASClient) PostResource(repositoryId int, resourceId int, body string) (
 	}
 }
 
-func (a *ASClient) SerializeEAD(repositoryId int, resoureId int, loc string) error {
-
-	endpoint := fmt.Sprintf("/repositories/%d/resource_descriptions/%d.xml", repositoryId, resoureId)
+func (a *ASClient) SerializeEAD(repositoryId int, resoureId int, loc string, daos bool, unpub bool, num_cs bool, ead3 bool, pdf bool) error {
+	var ext string
+	endpoint := fmt.Sprintf("/repositories/%d/resource_descriptions/%d.xml?include_unpublished=%t&include_daos=%t&numbered_cs=%t&ead3=%t&print_pdf=%t", repositoryId, resoureId, unpub, daos, num_cs, ead3, pdf)
 	response, err := a.get(endpoint, true)
 	if err != nil {
 		return err
@@ -142,7 +142,13 @@ func (a *ASClient) SerializeEAD(repositoryId int, resoureId int, loc string) err
 		return err
 	}
 
-	err = writeEADtoFile(bodybytes, fmt.Sprintf("%d_%d.xml", repositoryId, resoureId), loc)
+	if pdf {
+		ext = "pdf"
+	} else {
+		ext = "xml"
+	}
+
+	err = writeEADtoFile(bodybytes, fmt.Sprintf("%d_%d.%s", repositoryId, resoureId, ext), loc)
 	return nil
 
 }
