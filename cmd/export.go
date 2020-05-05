@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/nyudlts/go-aspace/lib"
 	"github.com/spf13/cobra"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 )
@@ -18,6 +19,8 @@ var ead3 bool
 var pdf bool
 var client lib.ASClient
 var fn string
+var validate bool
+var path string
 
 func init() {
 	client = lib.Client
@@ -33,6 +36,7 @@ func init() {
 	exportCmd.PersistentFlags().BoolVarP(&num_cs, "num_cs", "n",false, "include numbered components (default false)")
 	exportCmd.PersistentFlags().BoolVarP(&ead3, "ead3", "e",false, "ead3 format (default false)")
 	exportCmd.PersistentFlags().BoolVarP(&pdf, "pdf", "p",false, "pdf format (default false)")
+	exportCmd.PersistentFlags().BoolVarP(&validate, "validate", "v",true, "validate xml (default false)")
 }
 
 var exportCmd = &cobra.Command{
@@ -47,17 +51,34 @@ var exportCmd = &cobra.Command{
 			fn = fmt.Sprintf( "%d_%d.xml", repositoryId, resourceId)
 		}
 
+		path = filepath.Join(location, fn)
+
 		fmt.Printf("* exporting %s/%s\n", location, fn)
 
 		err := exportEAD(); if err != nil {
 			panic(err)
 		}
+
 		//check file exists
 		if !checkExists() {
-			panic("Export failed")
+			fmt.Printf("** Export failed -- exported file does not exist")
+			os.Exit(1)
 		}
 
+		//validate xml
+		if validate && !pdf && !ead3 {
+			fmt.Println("* validating ead")
+			ead, _:= ioutil.ReadFile(path)
+			err := lib.ValidateEAD(ead); if err != nil {
+				fmt.Printf("* validation Failed, check output file in an XML editor: %v\n", err)
+			} else {
+				fmt.Printf("* %s is valid ead\n", path)
+			}
+		}
+
+		//exit the program
 		fmt.Println("* export complete")
+		os.Exit(0)
 	},
 }
 
@@ -70,7 +91,7 @@ func exportEAD() error {
 	//ensure the repository exists
 	repos, err := client.GetRepositoryList()
 	if err != nil {
-	  return err
+		return err
 	}
 
 	if !contains(repos, repositoryId) {
@@ -95,8 +116,7 @@ func contains(s []int, e int) bool {
 }
 
 func checkExists() bool {
-	f := filepath.Join(location, fn)
-	if _, err := os.Stat(f); os.IsNotExist(err) {
+	if _, err := os.Stat(path); os.IsNotExist(err) {
 		return false
 	}
 	return true

@@ -3,8 +3,13 @@ package lib
 import (
 	crypto_rand "crypto/rand"
 	"encoding/binary"
+	"github.com/lestrrat/go-libxml2/parser"
+	"github.com/lestrrat/go-libxml2/xsd"
 	math_rand "math/rand"
 )
+
+var eadxsd *xsd.Schema
+var p = parser.New()
 
 func Seed() {
 	var b [8]byte
@@ -18,3 +23,19 @@ func Seed() {
 func RandInt(min int, max int) int {
 	return min + math_rand.Intn(max-min)
 }
+
+func ValidateEAD(fa []byte) error {
+	eadxsd, err := xsd.Parse( box.Get( "/ead.xsd"))
+	if err != nil {
+		return err
+	}
+	doc, err := p.Parse(fa)
+	if err != nil {
+		return err
+	}
+	if err := eadxsd.Validate(doc); err != nil{
+		return err
+	}
+	return nil
+}
+
