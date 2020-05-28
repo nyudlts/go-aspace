@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	ead2 "github.com/nyudlts/go-aspace/ead"
 	"github.com/nyudlts/go-aspace/lib"
 	"github.com/spf13/cobra"
 	"io/ioutil"
@@ -25,18 +26,17 @@ var path string
 func init() {
 	client = lib.Client
 	rootCmd.AddCommand(exportCmd)
-	exportCmd.PersistentFlags().IntVarP(&repositoryId, "repositoryId", "r", 0, "Id of the repository")
+	exportCmd.Flags().IntVarP(&repositoryId, "repositoryId", "r", 0, "Id of the repository")
 	exportCmd.MarkFlagRequired("repositoryId")
-	exportCmd.PersistentFlags().IntVarP(&resourceId, "resourceId", "c", 0, "Id of the resource (collection)")
+	exportCmd.Flags().IntVarP(&resourceId, "resourceId", "c", 0, "Id of the resource (collection)")
 	exportCmd.MarkFlagRequired("resourceId")
-	exportCmd.PersistentFlags().StringVarP(&location, "location", "l","/tmp", "Location to write EAD File")
-	exportCmd.MarkFlagRequired("location")
-	exportCmd.PersistentFlags().BoolVarP(&daos, "daos", "d",true, "include daos")
-	exportCmd.PersistentFlags().BoolVarP(&unpub, "unpub", "u",false, "include unpublished (default false)")
-	exportCmd.PersistentFlags().BoolVarP(&num_cs, "num_cs", "n",false, "include numbered components (default false)")
-	exportCmd.PersistentFlags().BoolVarP(&ead3, "ead3", "e",false, "ead3 format (default false)")
-	exportCmd.PersistentFlags().BoolVarP(&pdf, "pdf", "p",false, "pdf format (default false)")
-	exportCmd.PersistentFlags().BoolVarP(&validate, "validate", "v",false, "validate xml (default false)")
+	exportCmd.Flags().StringVarP(&location, "location", "l","/tmp", "Location to write EAD File")
+	exportCmd.Flags().BoolVarP(&daos, "daos", "d",true, "include daos")
+	exportCmd.Flags().BoolVarP(&unpub, "unpub", "u",false, "include unpublished (default false)")
+	exportCmd.Flags().BoolVarP(&num_cs, "num_cs", "n",false, "include numbered components (default false)")
+	exportCmd.Flags().BoolVarP(&ead3, "ead3", "e",false, "ead3 format (default false)")
+	exportCmd.Flags().BoolVarP(&pdf, "pdf", "p",false, "pdf format (default false)")
+	exportCmd.Flags().BoolVarP(&validate, "validate", "v",false, "validate xml (default false)")
 }
 
 var exportCmd = &cobra.Command{
@@ -69,7 +69,7 @@ var exportCmd = &cobra.Command{
 		if validate && !pdf && !ead3 {
 			fmt.Println("* validating ead")
 			ead, _:= ioutil.ReadFile(path)
-			err := lib.ValidateEAD(ead); if err != nil {
+			err := ead2.ValidateEAD(ead); if err != nil {
 				fmt.Printf("* validation Failed, check output file in an XML editor: %v\n", err)
 			} else {
 				fmt.Printf("* %s is valid ead\n", path)

@@ -1,9 +1,9 @@
-package lib
+package ead
 
 import (
 	"github.com/lestrrat/go-libxml2/parser"
 	"github.com/lestrrat/go-libxml2/xsd"
-	"github.com/nyudlts/go-aspace/box"
+	//"github.com/nyudlts/go-aspace/box"
 )
 
 var eadxsd *xsd.Schema
@@ -11,7 +11,7 @@ var p = parser.New()
 
 func init() {
 	var err error
-	eadxsd, err = xsd.Parse(box.Get("ead.xsd"))
+	eadxsd, err = xsd.ParseFromFile("static/ead.xsd")
 	if err != nil {
 		panic(err)
 	}

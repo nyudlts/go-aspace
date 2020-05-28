@@ -20,22 +20,19 @@ func init() {
 	client = lib.Client
 	rootCmd.AddCommand(sampleCmd)
 
-
-	exportCmd.PersistentFlags().IntVarP(&size, "size", "s", 0, "Size of the sample")
-	exportCmd.MarkFlagRequired("size")
-	exportCmd.PersistentFlags().StringVarP(&repositories, "repositories", "r", "2", "List of repository ids to be included in sample set")
-	exportCmd.MarkFlagRequired("repositories")
-	exportCmd.PersistentFlags().StringVarP(&xportlocation, "location", "l", "/tmp", "Location to write EAD Files")
-	exportCmd.MarkFlagRequired("location")
+	exportCmd.Flags().IntVarP(&size, "size", "s", 0, "Size of the sample")
+	exportCmd.Flags().StringVarP(&repositories, "repositories", "z", "2", "List of repository ids to be included in sample set")
+	exportCmd.Flags().StringVarP(&xportlocation, "xportlocation", "x", "/tmp", "Location to write EAD Files")
 
 }
 
 var sampleCmd = &cobra.Command{
-	Use:   "export",
-	Short: "export a resource from archivesspace",
-	Long:  `export a resource from archivesspace`,
+	Use:   "sample",
+	Short: "sample resources from archivesspace",
+	Long:  `sample resources from archivesspace`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("* generating sample set")
+
 		sample()
 	},
 }
