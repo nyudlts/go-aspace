@@ -9,19 +9,6 @@ import (
 	"path/filepath"
 )
 
-var resourceId int
-var repositoryId int
-var location string
-var daos bool
-var unpub bool
-var num_cs bool
-var ead3 bool
-var pdf bool
-var client lib.ASClient
-var fn string
-var validate bool
-var path string
-
 func init() {
 	client = lib.Client
 	rootCmd.AddCommand(exportCmd)
@@ -51,7 +38,7 @@ var exportCmd = &cobra.Command{
 			fn = fmt.Sprintf( "%d_%d.xml", repositoryId, resourceId)
 		}
 
-		path = filepath.Join(location, fn)
+		path := filepath.Join(location, fn)
 
 		fmt.Printf("* exporting %s/%s\n", location, fn)
 
@@ -60,7 +47,7 @@ var exportCmd = &cobra.Command{
 		}
 
 		//check file exists
-		if !checkExists() {
+		if !checkExists(path) {
 			fmt.Printf("** Export failed -- exported file does not exist")
 			os.Exit(1)
 		}
@@ -115,7 +102,7 @@ func contains(s []int, e int) bool {
 	return false
 }
 
-func checkExists() bool {
+func checkExists(path string) bool {
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		return false
 	}

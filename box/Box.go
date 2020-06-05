@@ -1,6 +1,6 @@
-package lib
+package box
 
-var box = newEmbedBox()
+var Box = newEmbedBox()
 
 type embedBox struct {
 	storage map[string][]byte
