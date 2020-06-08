@@ -13,6 +13,10 @@ var versionCmd = &cobra.Command{
 	Use:   "version",
 	Short: "get version of go-aspace",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("go-aspace v0.1")
+		version()
 	},
+}
+
+func version(){
+	fmt.Println("go-aspace v0.2.0")
 }

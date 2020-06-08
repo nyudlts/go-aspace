@@ -64,7 +64,7 @@ var exportCmd = &cobra.Command{
 		}
 
 		//exit the program
-		fmt.Println("* export complete")
+		fmt.Println("* export complete ✓")
 		os.Exit(0)
 	},
 }

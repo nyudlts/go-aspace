@@ -14,4 +14,6 @@ var (
 	client lib.ASClient
 	fn string
 	validate bool
+	size int
+	repositories string
 )
