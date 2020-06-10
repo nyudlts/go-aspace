@@ -40,7 +40,7 @@ var exportCmd = &cobra.Command{
 
 		path := filepath.Join(location, fn)
 
-		fmt.Printf("* exporting %s/%s\n", location, fn)
+		fmt.Printf( "  * exporting %s\n", path)
 
 		err := exportEAD(); if err != nil {
 			panic(err)
@@ -48,23 +48,26 @@ var exportCmd = &cobra.Command{
 
 		//check file exists
 		if !checkExists(path) {
-			fmt.Printf("** Export failed -- exported file does not exist")
+			fmt.Printf("  ✗ Export failed -- exported file does not exist ✗")
 			os.Exit(1)
 		}
 
+		fmt.Printf("  ✓  %s exported  ✓\n", path)
+
 		//validate xml
 		if validate && !pdf && !ead3 {
-			fmt.Println("* validating ead")
+			fmt.Println("  * validating ead")
 			ead, _:= ioutil.ReadFile(path)
 			err := lib.ValidateEAD(ead); if err != nil {
-				fmt.Printf("* validation Failed, check output file in an XML editor: %v\n", err)
+				fmt.Printf("  ✗  validation Failed, check output file in an XML editor ✗\n%v\n", err)
+				os.Exit(0)
 			} else {
-				fmt.Printf("* %s is valid ead\n", path)
+				fmt.Printf("  ✓ %s is valid ead ✓\n", path)
 			}
 		}
 
 		//exit the program
-		fmt.Println("* export complete ✓")
+		fmt.Println("  ✓ export complete ✓")
 		os.Exit(0)
 	},
 }
@@ -72,7 +75,7 @@ var exportCmd = &cobra.Command{
 func exportEAD() error {
 	//ensure the location exists
 	if _, err := os.Stat(location); os.IsNotExist(err) {
-		return fmt.Errorf("%v does not exist, exiting", err.Error())
+		return fmt.Errorf("  ✗ %v does not exist, exiting ✗", err.Error())
 	}
 
 	//ensure the repository exists
@@ -82,7 +85,7 @@ func exportEAD() error {
 	}
 
 	if !contains(repos, repositoryId) {
-		return fmt.Errorf("Repository ID %d does not exist in the current ArchivesSpace instance", repositoryId)
+		return fmt.Errorf("✗ Repository ID %d does not exist in the current ArchivesSpace instance ✗", repositoryId)
 	}
 
 	//serialize the EAD
