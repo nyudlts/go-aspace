@@ -17,16 +17,16 @@ import (
 func init() {
 	client = lib.Client
 	rootCmd.AddCommand(sampleCmd)
-	sampleCmd.PersistentFlags().IntVarP(&size, "size", "s", 1, "Size of the sample")
-	sampleCmd.PersistentFlags().StringVarP(&repositories, "repositories", "r", "2 3 6", "List of repository ids to be included in sample set")
+	sampleCmd.PersistentFlags().IntVarP(&size, "size", "s", 1, "Size of the sample set")
+	sampleCmd.PersistentFlags().StringVarP(&repositories, "repositories", "r", "2", "List of repository ids to be included in sample set")
 	sampleCmd.PersistentFlags().StringVarP(&location, "location", "l", "/tmp", "Location to write EAD Files")
 
 }
 
 var sampleCmd = &cobra.Command{
 	Use:   "sample",
-	Short: "sample resources from archivesspace",
-	Long:  `sample resources from archivesspace`,
+	Short: "Generate an EAD sample set",
+	Long:  `Generate a sample set of resources as EAD from ArchivesSpace`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("  * generating sample set")
 		sample()

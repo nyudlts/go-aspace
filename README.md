@@ -16,10 +16,11 @@ a Go library and utility for ArchivesSpace integrations
 
 ### Available Commands
 * export
+* sample
 * version
 
 #### export      
-export a resource as EAD from an Archivesspace<br>
+Export a resource as EAD from an Archivesspace<br>
 
 **Usage:**<br>
 go-aspace export [flags]<br>
@@ -34,4 +35,16 @@ go-aspace export [flags]<br>
 -r, --repositoryId, int   Id of the repository<br>
 -c, --resourceId, int     Id of the resource (collection)<br>
 -u, --unpub, bool              include unpublished (default false)<br>
+
+#### sample     
+Generate a sample set of resources as EAD from ArchivesSpace<br>
+
+**Usage:**<br>
+go-aspace sample [flags]<br>
+
+**Flags:**<br>
+  -h, --help                  help for sample<br>
+  -l, --location string       Location to write EAD Files (default "/tmp")<br>
+  -r, --repositories string   List of repository ids to be included in sample set (default "2")<br>
+  -s, --size int              Size of the sample (default 1)<br>
 
