@@ -23,6 +23,7 @@ a Go library and utility for ArchivesSpace integrations
 * export
 * sample
 * version
+* validate
 
 #### export      
 Export a resource as EAD from an Archivesspace<br>
@@ -52,4 +53,19 @@ go-aspace sample [flags]<br>
   -l, --location string       Location to write EAD Files (default "/tmp")<br>
   -r, --repositories string   List of repository ids to be included in sample set (default "2")<br>
   -s, --size int              Size of the sample (default 1)<br>
+  
+#### validate
+Validate all resources in a repository
+
+**Usage:**<br>
+go-aspace validate [flags]<br>
+
+
+**Flags**:<br>
+  -f, --filename string       Name of output file (default "go-aspace-validator.tsv")<br>
+  -h, --help                  help for validate<br>
+  -l, --location string       Location to write EAD Files (default "/tmp")<br>
+  -p, --published             Validate only published resources (default true)<br>
+  -r, --repositories string   List of repository ids to be included in sample set (default "2")<br>
+
 
