@@ -21,3 +21,22 @@ func splitRepos(s string) []int {
 	}
 	return repos
 }
+
+func NormalizeUnitIds(id0 string, id1 string, id2 string, id3 string) string {
+
+	id := id0
+	if id1 != "" {
+		id = fmt.Sprintf("%s.%s", id, id1)
+	}
+
+	if id2 != "" {
+		id = fmt.Sprintf("%s.%s", id, id2)
+	}
+
+	if id3 != "" {
+		id = fmt.Sprintf("%s.%s", id, id3)
+	}
+
+	return id
+
+}
