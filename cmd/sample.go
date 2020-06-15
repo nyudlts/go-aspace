@@ -8,8 +8,6 @@ import (
 	"io/ioutil"
 	"math/rand"
 	"os"
-	"strconv"
-	"strings"
 	"time"
 )
 
@@ -69,7 +67,7 @@ func sample() {
 		fmt.Printf("  * serializing %s\n", eadPath)
 		err := client.SerializeEAD(r.Rep, r.Res, location, true, false, false, false, false)
 		if err != nil {
-			fmt.Println("** ERROR: Could not serialize %s ✗\n", eadPath)
+			fmt.Println("  ✗ ERROR: Could not serialize %s ✗\n", eadPath)
 			fmt.Printf(err.Error())
 			break
 		}
@@ -92,17 +90,4 @@ func dirExists(filename string) bool {
 		return false
 	}
 	return info.IsDir()
-}
-
-func splitRepos(s string) []int {
-	repos := []int{}
-	a := strings.Split(s, " ")
-	for _, i := range a {
-		j, err := strconv.Atoi(i)
-		if err != nil {
-			panic(fmt.Errorf("%s is not a valid repository id", s))
-		}
-		repos = append(repos, j)
-	}
-	return repos
 }

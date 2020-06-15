@@ -16,4 +16,6 @@ var (
 	validate bool
 	size int
 	repositories string
+	filename string
+	published bool
 )
