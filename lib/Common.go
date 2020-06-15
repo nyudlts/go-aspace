@@ -11,6 +11,8 @@ import (
 
 var p = parser.New()
 
+var libraryVersion = "0.2.2"
+
 func Seed() {
 	var b [8]byte
 	_, err := crypto_rand.Read(b[:])
@@ -25,7 +27,7 @@ func RandInt(min int, max int) int {
 }
 
 func ValidateEAD(fa []byte) error {
-	eadxsd, err := xsd.Parse( box.Box.Get( "/ead.xsd"))
+	eadxsd, err := xsd.Parse(box.Box.Get("/ead.xsd"))
 	if err != nil {
 		return err
 	}
@@ -33,9 +35,8 @@ func ValidateEAD(fa []byte) error {
 	if err != nil {
 		return err
 	}
-	if err := eadxsd.Validate(doc); err != nil{
+	if err := eadxsd.Validate(doc); err != nil {
 		return err
 	}
 	return nil
 }
-
