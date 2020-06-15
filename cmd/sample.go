@@ -1,18 +1,14 @@
 package cmd
 
 import (
-
 	"fmt"
 	"github.com/nyudlts/go-aspace/lib"
 	"github.com/spf13/cobra"
 	"io/ioutil"
 	"math/rand"
 	"os"
-	"strconv"
-	"strings"
 	"time"
 )
-
 
 func init() {
 	client = lib.Client
@@ -69,15 +65,16 @@ func sample() {
 		fmt.Printf("  * serializing %s\n", eadPath)
 		err := client.SerializeEAD(r.Rep, r.Res, location, true, false, false, false, false)
 		if err != nil {
-			fmt.Println("** ERROR: Could not serialize %s ✗\n", eadPath)
+			fmt.Println("  ✗ ERROR: Could not serialize %s ✗\n", eadPath)
 			fmt.Printf(err.Error())
 			break
 		}
-		ead, err:= ioutil.ReadFile(eadPath)
+		ead, err := ioutil.ReadFile(eadPath)
 		if err != nil {
 			fmt.Printf("  ✗ Validator could not open ead file: %v✗\n", err)
 		}
-		err = lib.ValidateEAD(ead); if err != nil {
+		err = lib.ValidateEAD(ead)
+		if err != nil {
 			fmt.Printf("  ✗ validation Failed, check output file in an XML editor ✗\n%v\n", err)
 		} else {
 			fmt.Printf("  ✓ %s is valid ead, export complete ✓\n", eadPath)
@@ -92,17 +89,4 @@ func dirExists(filename string) bool {
 		return false
 	}
 	return info.IsDir()
-}
-
-func splitRepos(s string) []int {
-	repos := []int{}
-	a := strings.Split(s, " ")
-	for _, i := range a {
-		j, err := strconv.Atoi(i)
-		if err != nil {
-			panic(fmt.Errorf("%s is not a valid repository id", s))
-		}
-		repos = append(repos, j)
-	}
-	return repos
 }
