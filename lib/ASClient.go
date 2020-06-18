@@ -1,6 +1,7 @@
 package lib
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"github.com/spf13/viper"
@@ -135,4 +136,56 @@ func getSessionKey() (string, error) {
 	} else {
 		return sessionKey, fmt.Errorf("Session field was empty")
 	}
+}
+
+func (a *ASClient) do(request *http.Request, authenticated bool) (*http.Response, error) {
+	var response *http.Response
+
+	if authenticated {
+		request.Header.Add("X-ArchivesSpace-Session", a.sessionKey)
+	}
+
+	response, err := a.nclient.Do(request)
+	if response.StatusCode != 200 {
+		body, _ := ioutil.ReadAll(response.Body)
+		return response, fmt.Errorf("ArchivesSpace responded with a non-200:\nstatus-code: %d\n%s", response.StatusCode, string(body))
+	}
+	if err != nil {
+		return response, err
+	}
+
+	return response, nil
+}
+func (a *ASClient) get(endpoint string, authenticated bool) (*http.Response, error) {
+	var response *http.Response
+	url := a.rootURL + endpoint
+
+	request, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return response, err
+	}
+
+	response, err = a.do(request, authenticated)
+
+	if err != nil {
+		return response, err
+	}
+
+	return response, nil
+}
+
+func (a *ASClient) post(endpoint string, authenticated bool, body string) (*http.Response, error) {
+	var response *http.Response
+	url := a.rootURL + endpoint
+	request, err := http.NewRequest("Post", url, bytes.NewBufferString(body))
+	if err != nil {
+		return response, err
+	}
+
+	response, err = a.do(request, authenticated)
+	if err != nil {
+		return response, err
+	}
+
+	return response, nil
 }

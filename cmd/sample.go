@@ -6,17 +6,14 @@ import (
 	"github.com/spf13/cobra"
 	"io/ioutil"
 	"math/rand"
-	"os"
 	"time"
 )
 
 func init() {
-	client = lib.Client
 	rootCmd.AddCommand(sampleCmd)
 	sampleCmd.PersistentFlags().IntVarP(&size, "size", "s", 1, "Size of the sample set")
 	sampleCmd.PersistentFlags().StringVarP(&repositories, "repositories", "r", "2", "List of repository ids to be included in sample set")
 	sampleCmd.PersistentFlags().StringVarP(&location, "location", "l", "/tmp", "Location to write EAD Files")
-
 }
 
 var sampleCmd = &cobra.Command{
@@ -45,7 +42,7 @@ func sample() {
 	repres := []RepRes{}
 
 	for _, r := range repositoryIds {
-		ids, err := client.GetResourceIDsByRepository(r)
+		ids, err := aspace.GetResourceIDsByRepository(r)
 		if err != nil {
 			fmt.Println("ERROR: Could not retreive list of resources for repository id %d, skipping\n", r)
 		}
@@ -61,9 +58,10 @@ func sample() {
 
 	for i := 1; i <= size; i++ {
 		r := repres[rand.Intn(represSize)]
-		eadPath := fmt.Sprintf("%s/%d_%d.xml", location, r.Rep, r.Res)
+		filename := fmt.Sprintf("%d_%d.xml", r.Rep, r.Res)
+		eadPath := fmt.Sprintf("%s/%s", location, filename)
 		fmt.Printf("  * serializing %s\n", eadPath)
-		err := client.SerializeEAD(r.Rep, r.Res, location, true, false, false, false, false)
+		err := aspace.SerializeEAD(r.Rep, r.Res, location, true, false, false, false, false, filename)
 		if err != nil {
 			fmt.Println("  ✗ ERROR: Could not serialize %s ✗\n", eadPath)
 			fmt.Printf(err.Error())
@@ -81,12 +79,4 @@ func sample() {
 		}
 	}
 
-}
-
-func dirExists(filename string) bool {
-	info, err := os.Stat(filename)
-	if os.IsNotExist(err) {
-		return false
-	}
-	return info.IsDir()
 }

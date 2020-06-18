@@ -1,7 +1,6 @@
 package lib
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -141,7 +140,7 @@ func (a *ASClient) GetEADAsByteArray(repositoryId int, resourceId int) ([]byte, 
 	return eadBytes, err
 }
 
-func (a *ASClient) SerializeEAD(repositoryId int, resoureId int, loc string, daos bool, unpub bool, num_cs bool, ead3 bool, pdf bool) error {
+func (a *ASClient) SerializeEAD(repositoryId int, resoureId int, loc string, daos bool, unpub bool, num_cs bool, ead3 bool, pdf bool, filename string) error {
 	var ext string
 	endpoint := fmt.Sprintf("/repositories/%d/resource_descriptions/%d.xml?include_unpublished=%t&include_daos=%t&numbered_cs=%t&ead3=%t&print_pdf=%t", repositoryId, resoureId, unpub, daos, num_cs, ead3, pdf)
 	response, err := a.get(endpoint, true)
@@ -160,65 +159,12 @@ func (a *ASClient) SerializeEAD(repositoryId int, resoureId int, loc string, dao
 		ext = "xml"
 	}
 
-	err = writeEADtoFile(bodybytes, fmt.Sprintf("%d_%d.%s", repositoryId, resoureId, ext), loc)
+	err = writeEADtoFile(bodybytes, fmt.Sprintf("%s.%s", filename, ext), loc)
 	return nil
 
 }
 
 //private functions
-
-func (a *ASClient) do(request *http.Request, authenticated bool) (*http.Response, error) {
-	var response *http.Response
-
-	if authenticated {
-		request.Header.Add("X-ArchivesSpace-Session", a.sessionKey)
-	}
-
-	response, err := a.nclient.Do(request)
-	if response.StatusCode != 200 {
-		body, _ := ioutil.ReadAll(response.Body)
-		return response, fmt.Errorf("ArchivesSpace responded with a non-200:\nstatus-code: %d\n%s", response.StatusCode, string(body))
-	}
-	if err != nil {
-		return response, err
-	}
-
-	return response, nil
-}
-func (a *ASClient) get(endpoint string, authenticated bool) (*http.Response, error) {
-	var response *http.Response
-	url := a.rootURL + endpoint
-
-	request, err := http.NewRequest("GET", url, nil)
-	if err != nil {
-		return response, err
-	}
-
-	response, err = a.do(request, authenticated)
-
-	if err != nil {
-		return response, err
-	}
-
-	return response, nil
-}
-
-func (a *ASClient) post(endpoint string, authenticated bool, body string) (*http.Response, error) {
-	var response *http.Response
-	url := a.rootURL + endpoint
-	request, err := http.NewRequest("Post", url, bytes.NewBufferString(body))
-	if err != nil {
-		return response, err
-	}
-
-	response, err = a.do(request, authenticated)
-	if err != nil {
-		return response, err
-	}
-
-	return response, nil
-}
-
 func writeEADtoFile(ead []byte, title string, loc string) error {
 	f, err := os.Create(fmt.Sprintf("%s/%s", loc, title))
 	defer f.Close()

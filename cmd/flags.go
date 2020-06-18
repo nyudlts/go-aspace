@@ -12,10 +12,10 @@ var (
 	ead3         bool
 	pdf          bool
 	client       lib.ASClient
-	fn           string
 	validate     bool
 	size         int
 	repositories string
 	filename     string
 	published    bool
+	input        string
 )
