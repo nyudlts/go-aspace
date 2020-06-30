@@ -30,7 +30,7 @@ func report() {
 	}
 	defer outputTSV.Close()
 	writer := bufio.NewWriter(outputTSV)
-	writer.WriteString("repository\tresource\ttitle\turi\tpublished\tcreators\n")
+	writer.WriteString("repository\tresource\tunitId\ttitle\turi\tpublished\tcreators\n")
 	fmt.Println(" ** Getting Resources")
 	repositoryIds := splitRepos(repositories)
 	for _, repositoryId := range repositoryIds {
@@ -45,11 +45,13 @@ func report() {
 			if err != nil {
 				panic(err)
 			}
-			creators, err := getCreators(resource.LinkedAgents)
+			unitIds := lib.GetUnitId(resource.ID0, resource.ID1, resource.ID2, resource.ID3)
+
+			creators := getCreators(resource.LinkedAgents)
 			if err != nil {
 				panic(err)
 			}
-			entry := fmt.Sprintf("%d\t%d\t%s\t%s\t%v\t%v\n", repositoryId, resourceId, resource.Title, resource.URI, resource.Publish, creators)
+			entry := fmt.Sprintf("%d\t%d\t%s\t%s\t%s\t%v\t%v\n", repositoryId, resourceId, unitIds, resource.Title, resource.URI, resource.Publish, creators)
 			writer.WriteString(entry)
 
 		}
@@ -59,7 +61,7 @@ func report() {
 
 }
 
-func getCreators(agents []*lib.LinkedAgent) ([]string, error) {
+func getCreators(agents []*lib.LinkedAgent) ([]string) {
 	creators := []string{}
 	for _, agent := range agents {
 		if agent.Role == "creator" {
@@ -67,5 +69,5 @@ func getCreators(agents []*lib.LinkedAgent) ([]string, error) {
 		}
 
 	}
-	return creators, nil
+	return creators
 }

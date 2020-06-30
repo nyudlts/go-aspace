@@ -40,3 +40,14 @@ func ValidateEAD(fa []byte) error {
 	}
 	return nil
 }
+
+func GetUnitId(u1 string, u2 string, u3 string, u4 string) string {
+	var unitids = u1
+	for _, u := range[]string{u2, u3, u4} {
+		if len(u) > 0 {
+			unitids = unitids + "." + u
+		}
+	}
+	return unitids
+}
+
