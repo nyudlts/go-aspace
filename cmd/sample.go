@@ -58,8 +58,8 @@ func sample() {
 
 	for i := 1; i <= size; i++ {
 		r := repres[rand.Intn(represSize)]
-		filename := fmt.Sprintf("%d_%d.xml", r.Rep, r.Res)
-		eadPath := fmt.Sprintf("%s/%s", location, filename)
+		filename := fmt.Sprintf("%d_%d", r.Rep, r.Res)
+		eadPath := fmt.Sprintf("%s/%s.xml", location, filename)
 		fmt.Printf("  * serializing %s\n", eadPath)
 		err := aspace.SerializeEAD(r.Rep, r.Res, location, true, false, false, false, false, filename)
 		if err != nil {
