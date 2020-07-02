@@ -68,9 +68,9 @@ func validateResources() {
 
 				if err != nil {
 					logFile.WriteString(fmt.Sprintf("%d\t%d\t%s\t%s\n", repositoryId, resourceId, unitIds, resource.Title))
-					fmt.Printf("  ✗ Validation failed for %s %s  ✗\n", unitIds, resource.Title)
+					fmt.Printf("  ✗ Validation failed for %s %s  ✗\n", unitIds.Period, resource.Title)
 				} else {
-					fmt.Printf("  ✓ Validation was succesful for %s %s  ✓\n", unitIds, resource.Title)
+					fmt.Printf("  ✓ Validation was succesful for %s %s  ✓\n", unitIds.Period, resource.Title)
 				}
 
 			} else if published == true && resource.Publish == false {
