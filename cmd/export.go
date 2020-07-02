@@ -25,6 +25,7 @@ func init() {
 }
 
 var fn string
+var fnWithExt string
 
 var exportCmd = &cobra.Command{
 	Use:   "export",
@@ -34,12 +35,14 @@ var exportCmd = &cobra.Command{
 
 		//serialize the EAD
 		if pdf {
-			fn = fmt.Sprintf("%d_%d.pdf", repositoryId, resourceId)
+			fn = fmt.Sprintf("%d_%d", repositoryId, resourceId)
+			fnWithExt = fmt.Sprintf("%d_%d.pdf", repositoryId, resourceId)
 		} else {
-			fn = fmt.Sprintf("%d_%d.xml", repositoryId, resourceId)
+			fn = fmt.Sprintf("%d_%d", repositoryId, resourceId)
+			fnWithExt = fmt.Sprintf("%d_%d.xml", repositoryId, resourceId)
 		}
 
-		path := filepath.Join(location, fn)
+		path := filepath.Join(location, fnWithExt)
 
 		fmt.Printf("  * exporting %s\n", path)
 

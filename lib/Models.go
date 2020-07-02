@@ -136,6 +136,7 @@ type Resource struct {
 	FindingAidScript            string               `json:"finding_aid_script"`
 	FindingAidStatus            string               `json:"finding_aid_status"`
 	FindingAidTitle             string               `json:"finding_aid_title"`
+	FindingAidEditionStatement  string               `json:"finding_aid_edition_statement"`
 	ID0                         string               `json:"id_0"`
 	ID1                         string               `json:"id_1"`
 	ID2                         string               `json:"id_2"`
