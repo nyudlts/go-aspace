@@ -18,5 +18,5 @@ var versionCmd = &cobra.Command{
 }
 
 func version() {
-	fmt.Println("go-aspace v0.2.2")
+	fmt.Println("go-aspace v0.2.3")
 }
