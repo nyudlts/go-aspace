@@ -21,7 +21,7 @@ func init() {
 	exportCmd.PersistentFlags().BoolVarP(&num_cs, "num_cs", "n", false, "include numbered components (default false)")
 	exportCmd.PersistentFlags().BoolVarP(&ead3, "ead3", "e", false, "ead3 format (default false)")
 	exportCmd.PersistentFlags().BoolVarP(&pdf, "pdf", "p", false, "pdf format (default false)")
-	exportCmd.PersistentFlags().BoolVarP(&validate, "validate", "v", true, "validate xml (default false)")
+	exportCmd.PersistentFlags().BoolVarP(&validate, "validate", "v", false, "validate xml (default false)")
 }
 
 var fn string
