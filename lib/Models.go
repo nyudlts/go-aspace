@@ -1,5 +1,41 @@
 package lib
 
+type Ancestor struct {
+	Ref string `json:"ref"`
+	Level	string `json:"level"`
+}
+
+type ArchivalObject struct {
+	LockVersion	int	`json:"lock_version"`
+	Position	int `json:"position"`
+	Publish		bool	`json:"publish"`
+	RefID		string	`json:"ref_id"`
+	ComponentId	string	`json:"component_id"`
+	Title		string	`json:"title"`
+	DisplayString	string	`json:"display_string"`
+	RestrictionsApply	bool `json:"restrictions_apply"`
+	Supressed	bool `json:"supressed"`
+	IsSlugAuto	bool `json:"is_slug_auto"`
+	Level string `json:"level"`
+	JSONModelType string `json:"jsonmodel_type"`
+	ExternalIDs []ExternalID `json:"external_ids"`
+	Subjects []map[string]string `json:"subjects"`
+	LinkedEvents []map[string]string `json:"linked_events"`
+	Extents	[]Extent `json:"extents"`
+	LangMaterials []*LangMaterial `json:"lang_materials"`
+	Dates	[]Date `json:"dates"`
+	ExternalDocuments []*ExternalDocument `json:"external_documents"`
+	RightsStatememts []*Rights_Statement `json:"rights_statememts"`
+	LinkedAgents []*LinkedAgent `json:"linked_agents"`
+	Ancestors []Ancestor `json:"ancestors"`
+	Instances	[]*Instance `json:"instances"`
+	Notes	[]*Note `json:"notes"`
+	URI	string `json:"uri"`
+	Repository map[string]string `json:"repository"`
+	Parent	map[string]string `json:"parent"`
+	HasUnpublishedAncestors	bool `json:"has_unpublished_ancestors"`
+}
+
 type Classification struct {
 	HasClassificationTerms bool   `json:"has_classification_terms,omitempty"`
 	Slug                   string `json:"slug,omitempty"`
