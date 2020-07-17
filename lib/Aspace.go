@@ -61,6 +61,28 @@ func (a *ASClient) GetResourceIDsByRepository(repositoryId int) ([]int, error) {
 	return repositoryIds, nil
 }
 
+func (a *ASClient) GetArchivalObjectById(repositoryId int, aoId int) (ArchivalObject, error) {
+
+	ao := ArchivalObject{}
+	endpoint := fmt.Sprintf("/repositories/%d/archival_objects/%d", repositoryId, aoId)
+
+	reponse, err := a.get(endpoint, true)
+	if err != nil {
+		return ao, err
+	}
+
+	body, err := ioutil.ReadAll(reponse.Body)
+	if err != nil {
+		return ao, err
+	}
+
+	err = json.Unmarshal(body, &ao); if err != nil {
+		return ao, err
+	}
+
+	return ao, nil
+}
+
 func (a *ASClient) GetResourceByID(repositoryId int, resourceId int) (Resource, error) {
 	var resource map[string]interface{}
 	r := Resource{}
@@ -72,7 +94,7 @@ func (a *ASClient) GetResourceByID(repositoryId int, resourceId int) (Resource, 
 		return r, err
 	}
 
-	body, _ := ioutil.ReadAll(response.Body)
+	body, err := ioutil.ReadAll(response.Body)
 
 	//check for error response
 	err = json.Unmarshal(body, &resource)
@@ -162,6 +184,20 @@ func (a *ASClient) SerializeEAD(repositoryId int, resoureId int, loc string, dao
 	err = writeEADtoFile(bodybytes, fmt.Sprintf("%s.%s", filename, ext), loc)
 	return nil
 
+}
+
+func (a *ASClient) GetEndpoint(e string) ([]byte, error) {
+	fmt.Println(e)
+	response, err := a.get(e, true)
+	if err != nil {
+		return []byte{}, err
+	}
+	body, err := ioutil.ReadAll(response.Body)
+
+	if err != nil {
+		return []byte{}, err
+	}
+	return body, nil
 }
 
 //private functions

@@ -11,7 +11,7 @@ import (
 
 var p = parser.New()
 
-var libraryVersion = "0.2.2"
+var LibraryVersion = "v0.2.4"
 
 func Seed() {
 	var b [8]byte
@@ -27,6 +27,7 @@ func RandInt(min int, max int) int {
 }
 
 func ValidateEAD(fa []byte) error {
+
 	eadxsd, err := xsd.Parse(box.Box.Get("/ead.xsd"))
 	if err != nil {
 		return err

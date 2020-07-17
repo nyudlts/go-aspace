@@ -1,8 +1,6 @@
 package lib
 
 import (
-	"encoding/json"
-	"io/ioutil"
 	"testing"
 )
 
@@ -52,25 +50,13 @@ func TestGetResourceByID(t *testing.T) {
 
 }
 
-func TestASClient_PostResource(t *testing.T) {
-	resource, err := Client.GetResourceByID(2, 68)
+func TestASClient_GetArchivalObjectById(t *testing.T) {
+	ao, err := Client.GetArchivalObjectById(6, 708355)
 	if err != nil {
 		t.Error(err)
+	} else {
+		t.Logf("%v\n", ao)
 	}
 
-
-	j, err := json.MarshalIndent(resource, "", " ")
-	p, err := Client.PostResource(2, 68, string(j))
-	if err != nil {
-		t.Error(err)
-	}
-	pbody, err := ioutil.ReadAll(p.Body)
-	if err != nil {
-		t.Error(err)
-	}
-	r := make(map[string]interface{})
-	json.Unmarshal(pbody, &r)
-	if r["status"] != "Updated" {
-		t.Error(string(pbody))
-	}
 }
+

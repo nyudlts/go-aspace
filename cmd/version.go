@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/nyudlts/go-aspace/lib"
 	"github.com/spf13/cobra"
 )
 
@@ -18,5 +19,5 @@ var versionCmd = &cobra.Command{
 }
 
 func version() {
-	fmt.Println("go-aspace v0.2.3")
+	fmt.Println("go-aspace", lib.LibraryVersion)
 }
