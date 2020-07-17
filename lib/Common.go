@@ -11,7 +11,7 @@ import (
 
 var p = parser.New()
 
-var libraryVersion = "0.2.3"
+var LibraryVersion = "v0.2.4"
 
 func Seed() {
 	var b [8]byte
