@@ -162,6 +162,21 @@ func (a *ASClient) GetEADAsByteArray(repositoryId int, resourceId int) ([]byte, 
 	return eadBytes, err
 }
 
+func (a *ASClient) Search(repositoryId int, searchType string, search string) {
+
+	endpoint := fmt.Sprintf(`/repositories/%d/search?type[]=%s&page=1`, repositoryId, searchType)
+	response, err := a.get(endpoint, true)
+	if err != nil {
+		panic(err)
+	}
+	body := response.Body
+	bodyBytes, err := ioutil.ReadAll(body)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(string(bodyBytes))
+}
+
 func (a *ASClient) SerializeEAD(repositoryId int, resoureId int, loc string, daos bool, unpub bool, num_cs bool, ead3 bool, pdf bool, filename string) error {
 	var ext string
 	endpoint := fmt.Sprintf("/repositories/%d/resource_descriptions/%d.xml?include_unpublished=%t&include_daos=%t&numbered_cs=%t&ead3=%t&print_pdf=%t", repositoryId, resoureId, unpub, daos, num_cs, ead3, pdf)

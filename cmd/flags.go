@@ -19,4 +19,5 @@ var (
 	published		bool
 	input			string
 	uri				string
+	aoId			int
 )
