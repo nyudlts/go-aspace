@@ -76,7 +76,8 @@ func (a *ASClient) GetArchivalObjectById(repositoryId int, aoId int) (ArchivalOb
 		return ao, err
 	}
 
-	err = json.Unmarshal(body, &ao); if err != nil {
+	err = json.Unmarshal(body, &ao)
+	if err != nil {
 		return ao, err
 	}
 
@@ -84,7 +85,7 @@ func (a *ASClient) GetArchivalObjectById(repositoryId int, aoId int) (ArchivalOb
 }
 
 func (a *ASClient) GetResourceByID(repositoryId int, resourceId int) (Resource, error) {
-	var resource map[string]interface{}
+
 	r := Resource{}
 
 	endpoint := fmt.Sprintf("/repositories/%d/resources/%d", repositoryId, resourceId)
@@ -95,15 +96,8 @@ func (a *ASClient) GetResourceByID(repositoryId int, resourceId int) (Resource, 
 	}
 
 	body, err := ioutil.ReadAll(response.Body)
-
-	//check for error response
-	err = json.Unmarshal(body, &resource)
 	if err != nil {
 		return r, err
-	}
-
-	if resource["error"] != nil {
-		return r, fmt.Errorf("%s", resource["error"])
 	}
 
 	err = json.Unmarshal(body, &r)
@@ -160,6 +154,24 @@ func (a *ASClient) GetEADAsByteArray(repositoryId int, resourceId int) ([]byte, 
 
 	eadBytes, err = ioutil.ReadAll(response.Body)
 	return eadBytes, err
+}
+
+func (a *ASClient) GetResourceTree(repositoryId int, resourceId int) (ResourceTree, error) {
+	tree := ResourceTree{}
+	endpoint := fmt.Sprintf("/repositories/%d/resources/%d/tree", repositoryId, resourceId)
+	response, err := a.get(endpoint, true)
+
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return tree, err
+	}
+
+	err = json.Unmarshal(body, &tree)
+	if err != nil {
+		return tree, err
+	}
+	return tree, nil
+
 }
 
 func (a *ASClient) Search(repositoryId int, searchType string, search string) {
