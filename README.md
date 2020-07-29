@@ -21,9 +21,12 @@ a Go library and utility for ArchivesSpace integrations
 
 ### Available Commands
 * export
+* get
 * sample
-* version
+* search
 * validate
+* version
+<hr>
 
 #### export      
 Export a resource as EAD from an Archivesspace<br>
@@ -42,6 +45,22 @@ go-aspace export [flags]<br>
 -c, --resourceId, int     Id of the resource (collection)<br>
 -u, --unpub, bool              include unpublished (default false)<br>
 
+<hr>
+
+#### get
+Serialize JSON from ASpace api to file
+
+**Usage:**<br>
+  go-aspace get [flags]
+
+**Flags:**<br>
+  -f, --filename string   name of file to write (default "output.json")<br>
+  -h, --help              help for get<br>
+  -l, --location string   location to write json (default "/tmp")<br>
+  -u, --uri string        endpoint uri (default "/")<br>
+
+<hr>
+
 #### sample     
 Generate a sample set of resources as EAD from ArchivesSpace<br>
 
@@ -53,7 +72,22 @@ go-aspace sample [flags]<br>
   -l, --location string       Location to write EAD Files (default "/tmp")<br>
   -r, --repositories string   List of repository ids to be included in sample set (default "2")<br>
   -s, --size int              Size of the sample (default 1)<br>
-  
+
+<hr>
+
+#### search
+perform a basic search of the ArchiveSpace index
+
+**Usage:**<br>
+go-aspace search [flags]<br/>
+
+**Flags**<br>
+  -q, --query string       Query String (default ".")<br>
+  -r, --repositoryId int   Id of the repository<br>
+  -t, --type string        Type of search [resource, accession] (default "resource")<br>
+
+
+<hr>
 #### validate
 Validate all resources in a repository
 
@@ -67,5 +101,12 @@ go-aspace validate [flags]<br>
   -l, --location string       Location to write EAD Files (default "/tmp")<br>
   -p, --published             Validate only published resources (default true)<br>
   -r, --repositories string   List of repository ids to be included in sample set (default "2")<br>
+  
+<br>
 
+#### version
+Get version of go-aspace
 
+**Usage:**<br>
+
+go-aspace version  

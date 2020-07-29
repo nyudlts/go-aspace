@@ -8,7 +8,7 @@ import (
 
 func init() {
 	rootCmd.AddCommand(searchCmd)
-	searchCmd.PersistentFlags().IntVarP(&repositoryId, "repositoryId", "r", 0, "Id of the repository")
+	searchCmd.PersistentFlags().IntVarP(&repositoryId, "repositoryId", "r", 2, "Id of the repository")
 	searchCmd.PersistentFlags().StringVarP(&query, "query", "q", ".", "Query String")
 	searchCmd.PersistentFlags().StringVarP(&searchType, "type", "t", "resource", "Type of search [resource, accession]")
 }
