@@ -89,7 +89,8 @@ go-aspace search [flags]<br/>
 
 
 <hr>
-#### validate<br>
+
+#### validate
 Validate all resources in a repository
 
 **Usage:**<br>
@@ -104,6 +105,7 @@ go-aspace validate [flags]<br>
   -r, --repositories string   List of repository ids to be included in sample set (default "2")<br>
   
 <hr>
+
 #### version
 Get version of go-aspace
 
