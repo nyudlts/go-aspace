@@ -2,12 +2,13 @@
 a Go library and utility for ArchivesSpace integrations
 
 ## Binary Installation
-1. wget https://github.com/nyudlts/go-aspace/releases/download/v0.2.0/go-aspace-linux or https://github.com/nyudlts/go-aspace/releases/download/v0.2.0/go-aspace-mac
+1. wget https://github.com/nyudlts/go-aspace/releases/download/v0.2.5/go-aspace-0.2.5-linux.tar.gz or https://github.com/nyudlts/go-aspace/releases/download/v0.2.5/go-aspace-0.2.5-mac.tar.gz
+2. tar xvzf go-aspace-0.2.5-linux.tar.gz or tar xvzf go-aspace-0.2.5-mac.tar.gz
 2. sudo mv go-aspace-* /usr/local/bin
 3. sudo chmod +x /usr/local/bin/go-aspace
-4. wget https://github.com/nyudlts/go-aspace/releases/download/v0.2.0/go-aspace_template
+4. wget https://github.com/nyudlts/go-aspace/releases/download/v0.2.5/go-aspace_template
 5. mv go-aspace_template $HOME/go-aspace 
-6. edit $HOME/go-aspace enter your archivesspace credentials
+6. edit $HOME/go-aspace, enter your archivesspace credentials
  
 ## Source Installation
 1. Get the go-aspace library: $go get github.com/nyudlts/go-aspace.
