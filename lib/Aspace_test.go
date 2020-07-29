@@ -60,3 +60,14 @@ func TestASClient_GetArchivalObjectById(t *testing.T) {
 
 }
 
+func TestASClient_Search(t *testing.T) {
+	sr, err := Client.Search(2, "resource", "Donald", 1)
+	if err != nil {
+		t.Error(err)
+	}
+
+	if len(sr.Results) < 1 {
+		t.Error(err)
+	}
+}
+

@@ -174,24 +174,52 @@ func (a *ASClient) GetResourceTree(repositoryId int, resourceId int) (ResourceTr
 
 }
 
-func (a *ASClient) Search(repositoryId int, searchType string, search string) {
+func (a *ASClient) AdvancedSearch(repositoryId int, searchType, advancedSearch string, page int) (SearchResult, error)  {
 
-	endpoint := fmt.Sprintf(`/repositories/%d/search?type[]=%s&page=1`, repositoryId, searchType)
+	endpoint := fmt.Sprintf(`/repositories/%d/search?type[]=%s&aq=%s&page=%d`, repositoryId, searchType, advancedSearch, page)
 	response, err := a.get(endpoint, true)
 	if err != nil {
-		panic(err)
+		return SearchResult{}, err
 	}
 	body := response.Body
 	bodyBytes, err := ioutil.ReadAll(body)
 	if err != nil {
-		panic(err)
+		return SearchResult{}, err
 	}
-	fmt.Println(string(bodyBytes))
+
+	results := SearchResult{}
+	err = json.Unmarshal(bodyBytes, &results); if err != nil {
+		return SearchResult{}, err
+	}
+
+	return results, nil
 }
 
-func (a *ASClient) SerializeEAD(repositoryId int, resoureId int, loc string, daos bool, unpub bool, num_cs bool, ead3 bool, pdf bool, filename string) error {
+func (a *ASClient) Search(repositoryId int, searchType string, query string, page int) (SearchResult, error)  {
+
+	endpoint := fmt.Sprintf(`/repositories/%d/search?type[]=%s&q=%s&page=%d`, repositoryId, searchType, query, page)
+	//endpoint := "/repositories/3/search?q=Jeremy%20Blake&page=1&type[]=resource"
+	response, err := a.get(endpoint, true)
+	if err != nil {
+		return SearchResult{}, err
+	}
+	body := response.Body
+	bodyBytes, err := ioutil.ReadAll(body)
+	if err != nil {
+		return SearchResult{}, err
+	}
+
+	results := SearchResult{}
+	err = json.Unmarshal(bodyBytes, &results); if err != nil {
+		return SearchResult{}, err
+	}
+
+	return results, nil
+}
+
+func (a *ASClient) SerializeEAD(repositoryId int, resourceId int, loc string, daos bool, unpub bool, num_cs bool, ead3 bool, pdf bool, filename string) error {
 	var ext string
-	endpoint := fmt.Sprintf("/repositories/%d/resource_descriptions/%d.xml?include_unpublished=%t&include_daos=%t&numbered_cs=%t&ead3=%t&print_pdf=%t", repositoryId, resoureId, unpub, daos, num_cs, ead3, pdf)
+	endpoint := fmt.Sprintf("/repositories/%d/resource_descriptions/%d.xml?include_unpublished=%t&include_daos=%t&numbered_cs=%t&ead3=%t&print_pdf=%t", repositoryId, resourceId, unpub, daos, num_cs, ead3, pdf)
 	response, err := a.get(endpoint, true)
 	if err != nil {
 		return err

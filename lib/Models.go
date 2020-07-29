@@ -1,5 +1,13 @@
 package lib
 
+type AdvancedSearch struct {
+	Field 	string `json:"field"`
+	Value	string `json:"value"`
+	JSONModelType	string `json:"jsonmodel_type"`
+	Negated	bool 	`json:"negated"`
+	Literal bool `json:"literal"`
+}
+
 type Ancestor struct {
 	Ref   string `json:"ref"`
 	Level string `json:"level"`
@@ -252,9 +260,21 @@ type RightsStatementsAct struct {
 	Notes         []*NoteRightsStatementAct `json:"notes"`
 }
 
+type SearchResult struct {
+	//{"page_size":10,"first_page":1,"last_page":2,"this_page":1,"offset_first":1,"offset_last":10,"total_hits":20,"results":
+	PageSize	int `json:"page_size"`
+	FirstPage	int `json:"first_page"`
+	LastPage	int `json:"last_page"`
+	ThisPage 	int `json:"this_page"`
+	OffsetFirst	int `json:"offset_first"`
+	OffsetLast	int `json:"offset_last"`
+	TotalHits	int `json:"total_hits"`
+	Results 	[]map[string]interface{} `json:"results"`
+}
+
 type Sub_Container struct {
 	JSONModel    string            `json:"jsonmodel_type"`
-	TopContainer map[string]string `json:"top_container"`
+	TopContainer map[string]interface{} `json:"top_container"`
 }
 
 type Term struct {

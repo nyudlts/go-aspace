@@ -20,4 +20,6 @@ var (
 	input			string
 	uri				string
 	aoId			int
+	query			string
+	searchType		string
 )
