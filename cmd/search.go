@@ -20,14 +20,27 @@ func init() {
 var hits = []string{}
 
 var totalHits int = 0
+var lastPage = 0
 
 var searchCmd = &cobra.Command{
 	Use: "search",
 
 	Run: func(cmd *cobra.Command, args []string) {
 		BasicSearch(1)
+		fmt.Println("Total Hits:", totalHits)
+		fmt.Println("Page Count:", lastPage)
+		fields := "i\t"
+		if fieldList == "" {
+			fields = fields +  "uri"
+		} else {
+			for _,field := range strings.Split(fieldList, ",") {
+				fields = fmt.Sprintf("%s%s\t", fields, field)
+			}
+		}
+
+		fmt.Println(fields)
 		for i,hit := range hits {
-			fmt.Println(i, ".", hit)
+			fmt.Printf("%d.\t%s\n", i, hit)
 		}
 	},
 
@@ -53,7 +66,10 @@ func BasicSearch(page int) {
 		panic(err)
 	}
 
-	if page == 1 { totalHits = results.TotalHits }
+	if page == 1 {
+		totalHits = results.TotalHits
+		lastPage = results.LastPage
+	}
 
 	for _, hit := range results.Results {
 
