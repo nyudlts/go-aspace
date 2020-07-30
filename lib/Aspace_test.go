@@ -55,13 +55,17 @@ func TestASClient_GetArchivalObjectById(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	} else {
-		t.Logf("%v\n", ao)
+		t.Logf("%s\n", ao.Title)
 	}
 
 }
 
 func TestASClient_Search(t *testing.T) {
-	sr, err := Client.Search(2, "resource", "Donald", 1)
+	q := QueryString{}
+	q.AddParameter("q", "Donald")
+	q.AddParameter("type[]", "resource")
+	q.AddParameter("page", "1")
+	sr, err := Client.Search(2, q.Query)
 	if err != nil {
 		t.Error(err)
 	}

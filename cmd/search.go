@@ -2,21 +2,24 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/nyudlts/go-aspace/lib"
 	"github.com/spf13/cobra"
-
+	"strconv"
+	"strings"
 )
 
 func init() {
 	rootCmd.AddCommand(searchCmd)
 	searchCmd.PersistentFlags().IntVarP(&repositoryId, "repositoryId", "r", 2, "Id of the repository")
 	searchCmd.PersistentFlags().StringVarP(&query, "query", "q", ".", "Query String")
-	searchCmd.PersistentFlags().StringVarP(&searchType, "type", "t", "resource", "Type of search [resource, accession]")
+	searchCmd.PersistentFlags().StringVarP(&searchType, "type", "t", "", "Type of search [resource, accession]")
+	searchCmd.PersistentFlags().StringVarP(&fieldList, "fieldList", "f", "", "Field List")
+	searchCmd.PersistentFlags().IntVarP(&pageLimit, "pageLimit", "p", 1, "page limit of search")
 }
 
 var hits = []string{}
+
 var totalHits int = 0
-
-
 
 var searchCmd = &cobra.Command{
 	Use: "search",
@@ -32,7 +35,19 @@ var searchCmd = &cobra.Command{
 
 func BasicSearch(page int) {
 
-	results, err := aspace.Search(repositoryId, searchType, query, page)
+	q := lib.QueryString{Query: ""}
+	q.AddParameter( "q", query)
+	q.AddParameter("page", strconv.Itoa(page))
+	if searchType != "" { q.AddParameter("type[]", searchType) }
+	if fieldList != "" { q.AddParameter("fl",fieldList ) }
+	var fields []string
+	if fieldList == "" {
+		fields = []string{"uri"}
+	} else {
+		fields = strings.Split(fieldList, ",")
+	}
+
+	results, err := aspace.Search(repositoryId, q.Query)
 
 	if err != nil {
 		panic(err)
@@ -42,12 +57,23 @@ func BasicSearch(page int) {
 
 	for _, hit := range results.Results {
 
-		hits = append(hits, fmt.Sprintf("\t%v\t%v\t%v", hit["identifier"], hit["title"], hit["uri"]))
+		h := ""
+		for _, field := range fields {
+			if h == "" {
+				h = fmt.Sprintf("%s", hit[field])
+			} else {
+				h = fmt.Sprintf("%s\t%s", h, hit[field])
+			}
+		}
+		hits = append(hits, h)
 	}
 
-	if results.ThisPage < results.LastPage {
-		BasicSearch(page + 1)
+	if(results.ThisPage < pageLimit) {
+		if(results.ThisPage < results.LastPage) {
+			BasicSearch(page + 1)
+		}
 	}
+
 
 }
 

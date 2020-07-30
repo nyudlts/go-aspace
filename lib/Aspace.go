@@ -195,10 +195,9 @@ func (a *ASClient) AdvancedSearch(repositoryId int, searchType, advancedSearch s
 	return results, nil
 }
 
-func (a *ASClient) Search(repositoryId int, searchType string, query string, page int) (SearchResult, error)  {
+func (a *ASClient) Search(repositoryId int, search string) (SearchResult, error)  {
 
-	endpoint := fmt.Sprintf(`/repositories/%d/search?type[]=%s&q=%s&page=%d`, repositoryId, searchType, query, page)
-	//endpoint := "/repositories/3/search?q=Jeremy%20Blake&page=1&type[]=resource"
+	endpoint := fmt.Sprintf(`/repositories/%d/search?%s`, repositoryId, search)
 	response, err := a.get(endpoint, true)
 	if err != nil {
 		return SearchResult{}, err
