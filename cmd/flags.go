@@ -22,4 +22,5 @@ var (
 	aoId			int
 	query			string
 	searchType		string
+	pageLimit		int
 )
