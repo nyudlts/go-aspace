@@ -71,3 +71,12 @@ func TestASClient_Search(t *testing.T) {
 	}
 }
 
+func TestASClient_GetDigitalObjectsByRepositoryIdS(t *testing.T) {
+	daoIds, err := Client.GetDigitalObjectsByRepositoryId(2)
+	if err != nil {
+		t.Error(err)
+	}
+	if len(daoIds) < 1 {
+		t.Error("ArchivesSpace returned an empty set")
+	}
+}

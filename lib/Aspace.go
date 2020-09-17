@@ -156,6 +156,22 @@ func (a *ASClient) GetEADAsByteArray(repositoryId int, resourceId int) ([]byte, 
 	return eadBytes, err
 }
 
+func (a *ASClient) GetDigitalObjectsByRepositoryId(repositoryId int) ([]int, error) {
+	daoIds := []int{}
+	endpoint := fmt.Sprintf("/repositories/%d/digital_objects?all_ids=true", repositoryId)
+	response, err := a.get(endpoint, true)
+	if err != nil {
+		return daoIds, err
+	}
+	body, _ := ioutil.ReadAll(response.Body)
+	err = json.Unmarshal(body, &daoIds)
+	if err != nil {
+		return daoIds, err
+	}
+
+	return daoIds, nil
+}
+
 func (a *ASClient) GetResourceTree(repositoryId int, resourceId int) (ResourceTree, error) {
 	tree := ResourceTree{}
 	endpoint := fmt.Sprintf("/repositories/%d/resources/%d/tree", repositoryId, resourceId)
@@ -188,7 +204,8 @@ func (a *ASClient) AdvancedSearch(page int, repositoryId int, queryType string, 
 	}
 
 	results := SearchResult{}
-	err = json.Unmarshal(bodyBytes, &results); if err != nil {
+	err = json.Unmarshal(bodyBytes, &results)
+	if err != nil {
 		return SearchResult{}, err
 	}
 
@@ -196,7 +213,7 @@ func (a *ASClient) AdvancedSearch(page int, repositoryId int, queryType string, 
 
 }
 
-func (a *ASClient) Search(repositoryId int, searchType string, query string, page int) (SearchResult, error)  {
+func (a *ASClient) Search(repositoryId int, searchType string, query string, page int) (SearchResult, error) {
 
 	endpoint := fmt.Sprintf(`/repositories/%d/search?type[]=%s&q=%s&page=%d`, repositoryId, searchType, query, page)
 	response, err := a.get(endpoint, true)
@@ -210,7 +227,8 @@ func (a *ASClient) Search(repositoryId int, searchType string, query string, pag
 	}
 
 	results := SearchResult{}
-	err = json.Unmarshal(bodyBytes, &results); if err != nil {
+	err = json.Unmarshal(bodyBytes, &results)
+	if err != nil {
 		return SearchResult{}, err
 	}
 
