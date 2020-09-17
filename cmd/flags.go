@@ -23,4 +23,7 @@ var (
 	query			string
 	searchType		string
 	pageLimit		int
+	queryField		string
+	queryType		string
+	value			string
 )

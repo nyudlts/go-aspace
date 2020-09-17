@@ -20,6 +20,6 @@ var aoCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
-		fmt.Println(ao.RefID)
+		fmt.Println(ao)
 	},
 }
