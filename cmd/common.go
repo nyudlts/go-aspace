@@ -2,13 +2,13 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/nyudlts/go-aspace/lib"
+	"github.com/nyudlts/go-aspace"
 	"os"
 	"strconv"
 	"strings"
 )
 
-var aspace = lib.Client
+var aspace = main.Client
 
 func splitRepos(s string) []int {
 	repos := []int{}

@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/nyudlts/go-aspace/lib"
+	"github.com/nyudlts/go-aspace"
 	"github.com/spf13/cobra"
 	"io/ioutil"
 	"math/rand"
@@ -71,7 +71,7 @@ func sample() {
 		if err != nil {
 			fmt.Printf("  ✗ Validator could not open ead file: %v✗\n", err)
 		}
-		err = lib.ValidateEAD(ead)
+		err = main.ValidateEAD(ead)
 		if err != nil {
 			fmt.Printf("  ✗ validation Failed, check output file in an XML editor ✗\n%v\n", err)
 		} else {

@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/nyudlts/go-aspace/lib"
+	"github.com/nyudlts/go-aspace"
 	"github.com/spf13/cobra"
 	"io/ioutil"
 	"os"
@@ -63,7 +63,7 @@ var exportCmd = &cobra.Command{
 		if validate && !pdf && !ead3 {
 			fmt.Println("  * validating ead")
 			ead, _ := ioutil.ReadFile(path)
-			err := lib.ValidateEAD(ead)
+			err := main.ValidateEAD(ead)
 			if err != nil {
 				fmt.Printf("  ✗  validation Failed, check output file in an XML editor ✗\n%v\n", err)
 				os.Exit(0)

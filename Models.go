@@ -1,4 +1,4 @@
-package lib
+package main
 
 type AdvancedSearch struct {
 	Field 	string `json:"field"`
@@ -74,6 +74,32 @@ type Deaccession struct {
 	JSONModelType string   `json:"jsonmodel_type"`
 }
 
+type DigitalObject struct {
+	LockVersion int `json:"lock_version"`
+	DigitalObjectID	string 	`json:"digital_object_id"`
+	Title 			string 	`json:"title"`
+	Publish 		bool 	`json:"publish"`
+	Restrictions	bool 	`json:"restrictions"`
+	Supressed		bool 	`json:"supressed"`
+	IsSlugAuto 		bool 	`json:"is_slug_auto"`
+	JSONModelType 	string 	`json:"jsonmodel_type"`
+	ExternalIds		[]ExternalID 		`json:"external_ids"`
+	Subjects        []map[string]string `json:"subjects"`
+	LinkedEvents    []map[string]string `json:"linked_events"`
+	Extents         []Extent          	`json:"extents"`
+	LangMaterials   []*LangMaterial		`json:"lang_materials"`
+	Dates        	[]*Date           	`json:"dates"`
+	ExternalDocuments	[]*ExternalDocument `json:"external_documents"`
+	RightsStatememts        []*Rights_Statement `json:"rights_statememts"`
+	LinkedAgents            []*LinkedAgent      `json:"linked_agents"`
+	FileVersions	[]*FileVersion `json:"file_versions"`
+	Notes                      []*Note              `json:"notes"`
+	LinkedInstances []interface{} `json:"linked_instances"`
+	URI string `json:"uri"`
+	Repository map[string]string `json:"repository"`
+	Tree map[string]string `json:"tree"`
+}
+
 type ExternalDocument struct {
 	Title         string `json:"title"`
 	Location      string `json:"location"`
@@ -95,6 +121,25 @@ type Extent struct {
 	PhysicalDetails  string `json:"physical_details"`
 	Dimensions       string `json:"dimensions"`
 	JSONModelType    string `json:"jsonmodel_type"`
+}
+
+type FileVersion struct {
+	Identifier string `json:"identifier"`
+	Lock_Version int `json:"lock_version"`
+	FileURI string `json:"file_uri"`
+	Publish *bool `json:"publish,omitempty"`
+	FileFormatVersion *string `json:"file_format_version"`
+	FileSizeBytes *uint64 `json:"file_size_bytes"`
+	Checksum *string `json:"checksum"`
+	ChecksumMethod *string `json:"checksum_method"`
+	Caption *string `json:"caption"`
+	UseStatement string `json:"use_statement"`
+	XLink_Actuate_Attribute string `json:"xlink_actuate_attribute"`
+	XLink_Show_Attribute string `json:"xlink_show_attribute"`
+	File_Format_Name *string `json:"file_format_name"`
+	JSONModelType    string `json:"jsonmodel_type"`
+	IsRepresentative bool              `json:"is_representative,omitempty"`
+	
 }
 
 type Instance struct {

@@ -1,4 +1,4 @@
-package lib
+package main
 
 import (
 	"testing"
@@ -80,3 +80,11 @@ func TestASClient_GetDigitalObjectsByRepositoryIdS(t *testing.T) {
 		t.Error("ArchivesSpace returned an empty set")
 	}
 }
+
+func TestASClient_GetDigitalObject(t *testing.T) {
+	_, err := Client.GetDigitalObject(2, 9049)
+	if err != nil {
+		t.Error(err)
+	}
+}
+

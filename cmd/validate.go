@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/nyudlts/go-aspace/lib"
+	"github.com/nyudlts/go-aspace"
 	"github.com/spf13/cobra"
 	"log"
 	"os"
@@ -11,7 +11,7 @@ import (
 )
 
 func init() {
-	client = lib.Client
+	client = main.Client
 	rootCmd.AddCommand(validateCmd)
 	validateCmd.PersistentFlags().StringVarP(&repositories, "repositories", "r", "2", "List of repository ids to be included in sample set")
 	validateCmd.PersistentFlags().StringVarP(&location, "location", "l", "/tmp", "Location to write EAD Files")
@@ -83,12 +83,12 @@ func validateResources() {
 }
 
 func validateEAD(repId int, resId int) error {
-	ead, err := lib.Client.GetEADAsByteArray(repId, resId)
+	ead, err := main.Client.GetEADAsByteArray(repId, resId)
 	if err != nil {
 		panic(err)
 	}
 
-	return lib.ValidateEAD(ead)
+	return main.ValidateEAD(ead)
 }
 
 func createLogFile() (*os.File, error) {
