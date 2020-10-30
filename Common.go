@@ -3,15 +3,15 @@ package main
 import (
 	crypto_rand "crypto/rand"
 	"encoding/binary"
-	"github.com/lestrrat/go-libxml2/parser"
-	"github.com/lestrrat/go-libxml2/xsd"
-	"github.com/nyudlts/go-aspace/box"
 	math_rand "math/rand"
+	"github.com/lestrrat-go/libxml2/parser"
+	"github.com/lestrrat-go/libxml2/xsd"
+	"github.com/nyudlts/go-aspace/box"
 )
 
 var p = parser.New()
 
-var LibraryVersion = "v0.2.5"
+var LibraryVersion = "v0.3.0"
 
 func Seed() {
 	var b [8]byte
