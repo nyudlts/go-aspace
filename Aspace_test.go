@@ -3,7 +3,7 @@ package aspace
 import (
 	"testing"
 )
-
+var RepositoryIDs = []int{2,3,6}
 func TestGetAspaceInfo(t *testing.T) {
 
 	info, err := Client.GetAspaceInfo()

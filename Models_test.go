@@ -28,7 +28,7 @@ func TestResourceModel(t *testing.T) {
 }
 
 func TestResourceModelFail(t *testing.T) {
-	var repositoryId, resourceId = 2, 1
+	var repositoryId, resourceId = 2, 10000000
 
 	r, err := Client.get(fmt.Sprintf("/repositories/%d/resources/%d", repositoryId, resourceId), true)
 	if err == nil {

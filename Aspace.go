@@ -9,8 +9,6 @@ import (
 	"strconv"
 )
 
-var RepositoryIDs = [3]int{2, 3, 6}
-
 type AspaceInfo struct {
 	DatabaseProductName    string `json:"databaseProductName"`
 	DatabaseProductVersion string `json:"databaseProductVersion"`

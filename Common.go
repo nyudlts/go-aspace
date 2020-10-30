@@ -3,6 +3,7 @@ package aspace
 import (
 	crypto_rand "crypto/rand"
 	"encoding/binary"
+	"fmt"
 	math_rand "math/rand"
 	"github.com/lestrrat-go/libxml2/parser"
 	"github.com/lestrrat-go/libxml2/xsd"
@@ -12,6 +13,10 @@ import (
 var p = parser.New()
 
 var LibraryVersion = "v0.3.0"
+
+func PrintClientVersion() {
+	fmt.Println("Go Aspace", LibraryVersion)
+}
 
 func Seed() {
 	var b [8]byte
