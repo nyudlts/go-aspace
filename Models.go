@@ -1,4 +1,4 @@
-package main
+package aspace
 
 type AdvancedSearch struct {
 	Field 	string `json:"field"`

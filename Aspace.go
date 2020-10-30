@@ -1,4 +1,4 @@
-package main
+package aspace
 
 import (
 	"encoding/json"
