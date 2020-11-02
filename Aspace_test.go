@@ -1,17 +1,33 @@
 package aspace
 
 import (
+	"flag"
 	"testing"
 )
-var RepositoryIDs = []int{2,3,6}
-func TestGetAspaceInfo(t *testing.T) {
 
-	info, err := Client.GetAspaceInfo()
+var RepositoryIDs = []int{2,3,6}
+
+func TestLibrary(t *testing.T) {
+	flag.Parse()
+	client, err := NewClient(*envPtr, 10)
 	if err != nil {
 		t.Error(err)
 	}
 
-	t.Log(info)
+	t.Run("Test Get the ASpace server info", func(t *testing.T) {
+		info, err := client.GetAspaceInfo()
+		if err != nil {
+			t.Error(err)
+		}
+
+		t.Log(info)
+	})
+
+}
+/*
+func TestGetAspaceInfo(t *testing.T) {
+
+
 }
 
 func TestGetResourceIDsByRepository(t *testing.T) {
@@ -87,4 +103,6 @@ func TestASClient_GetDigitalObject(t *testing.T) {
 		t.Error(err)
 	}
 }
+*/
+
 

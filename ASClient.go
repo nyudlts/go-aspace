@@ -4,13 +4,12 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/spf13/viper"
+	"gopkg.in/yaml.v2"
+
 	"io/ioutil"
 	"net/http"
 	"time"
 )
-
-var Client ASClient
 
 type ASClient struct {
 	sessionKey string
@@ -18,17 +17,13 @@ type ASClient struct {
 	nclient    *http.Client
 }
 
-func init() {
-	if err := initConfig(); err != nil {
-		panic(err)
-	}
-
-	if err := newClient(100); err != nil { // set the timeout in the configuration
-		panic(err)
-	}
+type Creds struct {
+	URL string `yaml:"url"`
+	Username string `yaml:"username"`
+	Password string `yaml:"password"`
 }
 
-func newClient(timeout int) error {
+func NewClient(environment string,timeout int) (*ASClient, error) {
 
 	var client *ASClient
 
@@ -42,94 +37,71 @@ func newClient(timeout int) error {
 		Transport: tr,
 	}
 
-	token, err := getSessionKey()
+	creds, err := getCreds(environment)
 	if err != nil {
-		return err
+		return client, err
 	}
 
-	aspaceRootURL, err := GetRootURL()
+	token, err := getSessionKey(creds)
 	if err != nil {
-		return err
+		return client, err
 	}
+
 
 	client = &ASClient{
 		sessionKey: token,
-		rootURL:    aspaceRootURL,
+		rootURL:    creds.URL,
 		nclient:    nclient,
 	}
 
-	Client = *client
-
-	return nil
+	return client, err
 }
 
-type Configuration struct {
-	url      string
-	username string
-	password string
-}
-
-var conf Configuration
-
-func initConfig() error {
-
-	viper.SetConfigName("go-aspace")
-	viper.AddConfigPath("/etc/sysconfig")
-	viper.AddConfigPath("/etc/")
-	viper.AddConfigPath("$HOME")
-	viper.AddConfigPath("$GOROOT/src/github.com/nyudlts/go-aspace")
-	viper.SetConfigType("json")
-
-	if err := viper.ReadInConfig(); err != nil {
-		return err
-	}
-
-	if err := viper.Unmarshal(&conf); err != nil {
-		return err
-	}
-
-	conf.username = viper.GetString("username")
-	conf.password = viper.GetString("password")
-	conf.url = viper.GetString("url")
-
-	return nil
-}
-
-func GetRootURL() (string, error) {
-	return conf.url, nil
-}
-
-func getSessionKey() (string, error) {
-
-	sessionKey := ""
-
-	err := initConfig()
+func getCreds(environment string) (Creds, error) {
+	credsMap := map[string]Creds{}
+	source, err := ioutil.ReadFile("/etc/go-aspace.yml")
 	if err != nil {
-		return sessionKey, err
+		return Creds{}, err
 	}
 
-	url := fmt.Sprintf("%s/users/%s/login?password=%s", conf.url, conf.username, conf.password)
+	err = yaml.Unmarshal(source, &credsMap)
+	if err != nil {
+		return Creds{}, err
+	}
+
+	for k,v := range credsMap {
+		if environment == k {
+			return v, nil
+		}
+	}
+
+	return Creds{}, fmt.Errorf("Credentials file did not contain %s\n", environment)
+}
+
+func getSessionKey(creds Creds) (string, error) {
+
+	url := fmt.Sprintf("%s/users/%s/login?password=%s", creds.URL, creds.Username, creds.Password)
 
 	request, err := http.Post(url, "text/json", nil)
 	if err != nil {
-		return sessionKey, err
+		return "", err
 	}
 
 	if request.StatusCode != 200 {
-		return sessionKey, fmt.Errorf("Did not return a 200 while authenticating, recieved a %d", request.StatusCode)
+		return "", fmt.Errorf("Did not return a 200 while authenticating, recieved a %d", request.StatusCode)
 	}
 
 	body, err := ioutil.ReadAll(request.Body)
 	if err != nil {
-		return sessionKey, err
+		return "", err
 	}
 
 	var result map[string]interface{}
 	err = json.Unmarshal(body, &result)
 	if err != nil {
-		return sessionKey, err
+		return "", err
 	}
-	sessionKey = fmt.Sprintf("%v", result["session"])
+	sessionKey := fmt.Sprintf("%v", result["session"])
 
 	if sessionKey != "" {
 		return sessionKey, nil

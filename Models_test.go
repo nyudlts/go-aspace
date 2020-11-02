@@ -7,33 +7,42 @@ import (
 	"testing"
 )
 
-func TestResourceModel(t *testing.T) {
-	var repositoryId, resourceId = 2, 2
+func TestModels(t *testing.T) {
 
-	response, err := Client.get(fmt.Sprintf("/repositories/%d/resources/%d", repositoryId, resourceId), true)
-
+	client, err := NewClient(*envPtr, 10)
 	if err != nil {
-		t.Error(err)
+		t.Errorf("Not Able to configure client for %s\n", *envPtr)
 	}
 
-	body, _ := ioutil.ReadAll(response.Body)
+	t.Run("Test Resource Model", func (t *testing.T) {
+		var repositoryId, resourceId = 2, 2
 
-	r := Resource{}
-	err = json.Unmarshal(body, &r)
-	r.EADID = "XXX"
-	if err != nil {
-		t.Error(err)
-	}
+		response, err := client.get(fmt.Sprintf("/repositories/%d/resources/%d", repositoryId, resourceId), true)
 
-}
+		if err != nil {
+			t.Error(err)
+		}
 
-func TestResourceModelFail(t *testing.T) {
-	var repositoryId, resourceId = 2, 10000000
+		body, _ := ioutil.ReadAll(response.Body)
 
-	r, err := Client.get(fmt.Sprintf("/repositories/%d/resources/%d", repositoryId, resourceId), true)
-	if err == nil {
-		t.Error(err)
-	}
-	r = r
+		r := Resource{}
+		err = json.Unmarshal(body, &r)
+		r.EADID = "XXX"
+		if err != nil {
+			t.Error(err)
+		}
+	})
+
+
+    t.Run("Test Resource Model Failure", func(t *testing.T) {
+		var repositoryId, resourceId = 2, 10000000
+		r, err := client.get(fmt.Sprintf("/repositories/%d/resources/%d", repositoryId, resourceId), true)
+
+		if err == nil {
+			t.Error(err)
+		}
+
+		r = r
+	})
 
 }
