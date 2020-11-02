@@ -12,7 +12,7 @@ import (
 
 var p = parser.New()
 
-var LibraryVersion = "v0.3.0"
+var LibraryVersion = "v0.3.1"
 
 func PrintClientVersion() {
 	fmt.Println("Go Aspace", LibraryVersion)
