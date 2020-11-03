@@ -2,6 +2,7 @@ package aspace
 
 import (
 	"flag"
+	"fmt"
 	"testing"
 )
 
@@ -23,12 +24,80 @@ func TestLibrary(t *testing.T) {
 		t.Log(info)
 	})
 
+	t.Run("Test Serialize EAD File", func(t *testing.T) {
+		repositoryID := 2
+		resourceID := 11
+		err := client.SerializeEAD(repositoryID, resourceID, ".", true, false, false, false, false, "test")
+		if err != nil {
+			t.Error(err)
+		}
+	})
+
+	t.Run("Test GET digital object from a repository", func (t *testing.T) {
+		daoIds, err := client.GetDigitalObjectsByRepositoryId(2)
+		if err != nil {
+			t.Error(err)
+		}
+		if len(daoIds) < 1 {
+			t.Error("ArchivesSpace returned an empty set")
+		}
+
+		do, err := client.GetDigitalObject(2, daoIds[0])
+		if err != nil {
+			t.Error(err)
+		}
+
+		fmt.Printf("%v\n", do)
+	})
+
 }
 /*
-func TestGetAspaceInfo(t *testing.T) {
+	t.Run("Test POST digital object", func (t *testing.T){
+		do := DigitalObject{
+			LockVersion:       0,
+			DigitalObjectID:   uuid.Must(uuid.NewRandom()).String(),
+			Title:             "Title",
+			Publish:           false,
+			Restrictions:      false,
+			Supressed:         false,
+			IsSlugAuto:        false,
+			JSONModelType:     "",
+			ExternalIds:       nil,
+			Subjects:          nil,
+			LinkedEvents:      nil,
+			Extents:           nil,
+			LangMaterials:     nil,
+			Dates:             nil,
+			ExternalDocuments: nil,
+			RightsStatememts:  nil,
+			LinkedAgents:      nil,
+			FileVersions:      nil,
+			Notes:             nil,
+			LinkedInstances:   nil,
+			URI:               "",
+			Repository:        nil,
+			Tree:              nil,
+		}
 
+		response, err := client.CreateDigitalObject(2, do)
+		if err != nil {
+			t.Error(err)
+		}
 
-}
+		t.Log(response)
+	})
+
+	t.Run("Test Deletion of Digital Object", func(t *testing.T) {
+		repositoryId := 2
+		doId := 41284
+
+		response, err := client.DeleteDigitalObject(repositoryId, doId)
+		if err != nil {
+			t.Error(err)
+		}
+
+		t.Log(response)
+	})
 
 func TestGetResourceIDsByRepository(t *testing.T) {
 	repositoryId := 2

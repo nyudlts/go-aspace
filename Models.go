@@ -145,7 +145,7 @@ type FileVersion struct {
 type Instance struct {
 	InstanceType     string            `json:"instance_type"`
 	SubContainer     Sub_Container     `json:"sub_container,omitempty"`
-	DigitalObject    map[string]string `json:"digital_object,omitempty"`
+	DigitalObjects   map[string]string `json:"digital_object,omitempty"`
 	IsRepresentative bool              `json:"is_representative,omitempty"`
 	JSONModelType    string            `json:"jsonmodel_type"`
 }

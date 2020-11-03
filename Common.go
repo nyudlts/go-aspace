@@ -8,6 +8,8 @@ import (
 	"github.com/lestrrat-go/libxml2/parser"
 	"github.com/lestrrat-go/libxml2/xsd"
 	"github.com/nyudlts/go-aspace/box"
+	"strconv"
+	"strings"
 )
 
 var p = parser.New()
@@ -45,4 +47,17 @@ func ValidateEAD(fa []byte) error {
 		return err
 	}
 	return nil
+}
+
+func URISplit(uri string) (int, int, error) {
+	splitURI := strings.Split(uri, "/")
+	resourceId, err := strconv.Atoi(splitURI[2])
+	if err != nil {
+		return 0, 0, err
+	}
+	objectId, err := strconv.Atoi(splitURI[4])
+	if err != nil {
+		return 0, 0, err
+	}
+	return resourceId, objectId, nil
 }

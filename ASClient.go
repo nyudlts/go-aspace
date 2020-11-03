@@ -149,12 +149,27 @@ func (a *ASClient) get(endpoint string, authenticated bool) (*http.Response, err
 func (a *ASClient) post(endpoint string, authenticated bool, body string) (*http.Response, error) {
 	var response *http.Response
 	url := a.rootURL + endpoint
-	request, err := http.NewRequest("Post", url, bytes.NewBufferString(body))
+	request, err := http.NewRequest("POST", url, bytes.NewBufferString(body))
 	if err != nil {
 		return response, err
 	}
 
 	response, err = a.do(request, authenticated)
+	if err != nil {
+		return response, err
+	}
+
+	return response, nil
+}
+
+func (a *ASClient) delete(endpoint string) (*http.Response, error) {
+	var response *http.Response
+	url := a.rootURL + endpoint
+	request, err := http.NewRequest("DELETE", url, nil)
+	if err != nil {
+		return response, err
+	}
+	response, err = a.do(request, true)
 	if err != nil {
 		return response, err
 	}

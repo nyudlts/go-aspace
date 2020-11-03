@@ -82,6 +82,19 @@ func (a *ASClient) GetArchivalObjectById(repositoryId int, aoId int) (ArchivalOb
 	return ao, nil
 }
 
+func (a *ASClient) PrintResponse(endpoint string) error {
+	response, err := a.get(endpoint, true)
+	if err != nil {
+		return err
+	}
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return err
+	}
+	fmt.Println(string(body))
+	return nil
+}
+
 func (a *ASClient) GetResourceByID(repositoryId int, resourceId int) (Resource, error) {
 
 	r := Resource{}
@@ -189,7 +202,7 @@ func (a *ASClient) GetDigitalObject(repositoryId int, daoId int) (DigitalObject,
 	return do, nil;
 }
 
-func(a *ASClient) PostDigitalObject(repositoryId int, daoId int, dao DigitalObject) (string, error) {
+func(a *ASClient) UpdateDigitalObject(repositoryId int, daoId int, dao DigitalObject) (string, error) {
 	endpoint := fmt.Sprintf("/repositories/%d/digital_objects/%d", repositoryId, daoId)
 	body, err := json.Marshal(dao)
 	if err != nil {
@@ -205,6 +218,38 @@ func(a *ASClient) PostDigitalObject(repositoryId int, daoId int, dao DigitalObje
 		return "", err
 	}
 
+	return string(body), nil
+}
+
+func(a *ASClient) CreateDigitalObject(repositoryId int, dao DigitalObject) (string, error) {
+	endpoint := fmt.Sprintf("/repositories/%d/digital_objects", repositoryId)
+	body, err := json.Marshal(dao)
+	if err != nil {
+		return "", err
+	}
+	response, err := a.post(endpoint, true, string(body))
+	if err != nil {
+		return "", err
+	}
+
+	body, err = ioutil.ReadAll(response.Body)
+	if err != nil {
+		return "", err
+	}
+
+	return string(body), nil
+}
+
+func(a *ASClient) DeleteDigitalObject(repositoryId int, doId int) (string, error) {
+	endpoint := fmt.Sprintf("/repositories/%d/digital_objects/%d", repositoryId, doId)
+	response, err := a.delete(endpoint)
+	if err != nil {
+		return "", err
+	}
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return string(body), err
+	}
 	return string(body), nil
 }
 
