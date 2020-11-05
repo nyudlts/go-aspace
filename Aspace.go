@@ -347,9 +347,9 @@ func (a *ASClient) GetEndpoint(e string) ([]byte, error) {
 	return body, nil
 }
 
-func (a *ASClient) GetPeopleAgentIds() ([]int, error) {
+func (a *ASClient) GetAgentIds(agentType string) ([]int, error) {
 	var agentIDs = []int{}
-	endpoint := "/agents/people?all_ids=true"
+	endpoint := fmt.Sprintf("/agents/%s?all_ids=true", agentType)
 	response, err := a.get(endpoint, true)
 	if err != nil {
 		return agentIDs, err
@@ -367,17 +367,18 @@ func (a *ASClient) GetPeopleAgentIds() ([]int, error) {
 	return agentIDs, nil
 }
 
-func (a *ASClient) GetPeopleAgent(agentID int) ([]byte, error) {
-	agent := []byte{}
+func (a *ASClient) GetPeopleAgent(agentID int) (Agent, error) {
+	agent := Agent{}
 	endpoint := fmt.Sprintf("/agents/people/%d", agentID)
 	response, err := a.get(endpoint, true)
 	if err != nil {
 		return agent, err
 	}
-	agent, err = ioutil.ReadAll(response.Body)
+	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		return agent, err
 	}
 
+	err = json.Unmarshal(body, &agent)
 	return agent, nil
 }

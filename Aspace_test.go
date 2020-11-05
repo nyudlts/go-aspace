@@ -54,7 +54,7 @@ func TestLibrary(t *testing.T) {
 	})
 
 	t.Run("Test AgentIds People GET", func(t *testing.T) {
-		agentIDs, err := client.GetPeopleAgentIds()
+		agentIDs, err := client.GetAgentIds("people")
 		if err != nil {
 			t.Error(err)
 		}
@@ -64,7 +64,7 @@ func TestLibrary(t *testing.T) {
 	})
 
 	t.Run("Test Agent People GET", func(t *testing.T) {
-		agentIDs, err := client.GetPeopleAgentIds()
+		agentIDs, err := client.GetAgentIds("people")
 		if err != nil {
 			t.Error(err)
 		}
@@ -73,7 +73,7 @@ func TestLibrary(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
-		t.Log(string(agent))
+		t.Log(agent)
 	})
 
 }
