@@ -99,3 +99,30 @@ func (a *ASClient) GetAspaceInfo() (AspaceInfo, error) {
 	return aspaceInfo, nil
 }
 
+func (a *ASClient) PrintResponse(endpoint string) error {
+	response, err := a.get(endpoint, true)
+	if err != nil {
+		return err
+	}
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return err
+	}
+	fmt.Println(string(body))
+	return nil
+}
+
+func (a *ASClient) GetEndpoint(e string) ([]byte, error) {
+	fmt.Println(e)
+	response, err := a.get(e, true)
+	if err != nil {
+		return []byte{}, err
+	}
+	body, err := ioutil.ReadAll(response.Body)
+
+	if err != nil {
+		return []byte{}, err
+	}
+	return body, nil
+}
+
