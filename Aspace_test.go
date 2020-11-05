@@ -2,11 +2,10 @@ package aspace
 
 import (
 	"flag"
-	"fmt"
 	"testing"
 )
 
-var RepositoryIDs = []int{2,3,6}
+var RepositoryIDs = []int{2, 3, 6}
 
 func TestLibrary(t *testing.T) {
 	flag.Parse()
@@ -27,13 +26,18 @@ func TestLibrary(t *testing.T) {
 	t.Run("Test Serialize EAD File", func(t *testing.T) {
 		repositoryID := 2
 		resourceID := 11
-		err := client.SerializeEAD(repositoryID, resourceID, ".", true, false, false, false, false, "test")
+		ead, err := client.SerializeEAD(repositoryID, resourceID, true, false, false, false, false)
 		if err != nil {
 			t.Error(err)
 		}
+
+		if len(ead) < 0 {
+			t.Error("return an nil byte array")
+		}
+
 	})
 
-	t.Run("Test GET digital object from a repository", func (t *testing.T) {
+	t.Run("Test GET digital object from a repository", func(t *testing.T) {
 		daoIds, err := client.GetDigitalObjectsByRepositoryId(2)
 		if err != nil {
 			t.Error(err)
@@ -42,15 +46,38 @@ func TestLibrary(t *testing.T) {
 			t.Error("ArchivesSpace returned an empty set")
 		}
 
-		do, err := client.GetDigitalObject(2, daoIds[0])
+		_, err = client.GetDigitalObject(2, daoIds[0])
 		if err != nil {
 			t.Error(err)
 		}
 
-		fmt.Printf("%v\n", do)
+	})
+
+	t.Run("Test AgentIds People GET", func(t *testing.T) {
+		agentIDs, err := client.GetPeopleAgentIds()
+		if err != nil {
+			t.Error(err)
+		}
+		if len(agentIDs) < 1 {
+			t.Error("No Agents returned from API")
+		}
+	})
+
+	t.Run("Test Agent People GET", func(t *testing.T) {
+		agentIDs, err := client.GetPeopleAgentIds()
+		if err != nil {
+			t.Error(err)
+		}
+
+		agent, err := client.GetPeopleAgent(agentIDs[0])
+		if err != nil {
+			t.Error(err)
+		}
+		t.Log(string(agent))
 	})
 
 }
+
 /*
 	t.Run("Test POST digital object", func (t *testing.T){
 		do := DigitalObject{
@@ -173,5 +200,3 @@ func TestASClient_GetDigitalObject(t *testing.T) {
 	}
 }
 */
-
-

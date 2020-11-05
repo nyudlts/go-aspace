@@ -1,11 +1,33 @@
 package aspace
 
 type AdvancedSearch struct {
-	Field 	string `json:"field"`
-	Value	string `json:"value"`
-	JSONModelType	string `json:"jsonmodel_type"`
-	Negated	bool 	`json:"negated"`
-	Literal bool `json:"literal"`
+	Field         string `json:"field"`
+	Value         string `json:"value"`
+	JSONModelType string `json:"jsonmodel_type"`
+	Negated       bool   `json:"negated"`
+	Literal       bool   `json:"literal"`
+}
+
+type Agent struct {
+	LockVersion                     int                 `json:"lock_version"`
+	Publish                         bool                `json:"publish"`
+	IsSlugAuto                      bool                `json:"is_slug_auto"`
+	JSONModelType                   string              `json:"jsonmodel_type"`
+	AgentContacts                   []interface{}       `json:"agent_contacts"`
+	LinkedAgentRoles                []interface{}       `json:"linked_agent_roles"`
+	ExternalDocuments               []*ExternalDocument `json:"external_documents"`
+	Notes                           []*Note             `json:"notes"`
+	UsedWithinRepositories          []string            `json:"used_within_repositories"`
+	UsedWithinPublishedRepositories []string            `json:"used_within_published_repositories"`
+	DatesOfExistence                []interface{}       `json:"dates_of_existence"`
+	Names                           []interface{}       `json:"names"`
+	RelatedAgents                   []interface{}       `json:"related_agents"`
+	URI                             string              `json:"uri"`
+	AgentType                       string              `json:"agent_type"`
+	IsLinkedToPublishedRecord       bool                `json:"is_linked_to_published_record"`
+	DisplayName                     interface{}         `json:"display_name"`
+	Title                           string              `json:"title"`
+	IsUser                          string              `json:"is_user"`
 }
 
 type Ancestor struct {
@@ -75,29 +97,29 @@ type Deaccession struct {
 }
 
 type DigitalObject struct {
-	LockVersion int `json:"lock_version"`
-	DigitalObjectID	string 	`json:"digital_object_id"`
-	Title 			string 	`json:"title"`
-	Publish 		bool 	`json:"publish"`
-	Restrictions	bool 	`json:"restrictions"`
-	Supressed		bool 	`json:"supressed"`
-	IsSlugAuto 		bool 	`json:"is_slug_auto"`
-	JSONModelType 	string 	`json:"jsonmodel_type"`
-	ExternalIds		[]ExternalID 		`json:"external_ids"`
-	Subjects        []map[string]string `json:"subjects"`
-	LinkedEvents    []map[string]string `json:"linked_events"`
-	Extents         []Extent          	`json:"extents"`
-	LangMaterials   []*LangMaterial		`json:"lang_materials"`
-	Dates        	[]*Date           	`json:"dates"`
-	ExternalDocuments	[]*ExternalDocument `json:"external_documents"`
-	RightsStatememts        []*Rights_Statement `json:"rights_statememts"`
-	LinkedAgents            []*LinkedAgent      `json:"linked_agents"`
-	FileVersions	[]*FileVersion `json:"file_versions"`
-	Notes                      []*Note              `json:"notes"`
-	LinkedInstances []interface{} `json:"linked_instances"`
-	URI string `json:"uri"`
-	Repository map[string]string `json:"repository"`
-	Tree map[string]string `json:"tree"`
+	LockVersion       int                 `json:"lock_version"`
+	DigitalObjectID   string              `json:"digital_object_id"`
+	Title             string              `json:"title"`
+	Publish           bool                `json:"publish"`
+	Restrictions      bool                `json:"restrictions"`
+	Supressed         bool                `json:"supressed"`
+	IsSlugAuto        bool                `json:"is_slug_auto"`
+	JSONModelType     string              `json:"jsonmodel_type"`
+	ExternalIds       []ExternalID        `json:"external_ids"`
+	Subjects          []map[string]string `json:"subjects"`
+	LinkedEvents      []map[string]string `json:"linked_events"`
+	Extents           []Extent            `json:"extents"`
+	LangMaterials     []*LangMaterial     `json:"lang_materials"`
+	Dates             []*Date             `json:"dates"`
+	ExternalDocuments []*ExternalDocument `json:"external_documents"`
+	RightsStatememts  []*Rights_Statement `json:"rights_statememts"`
+	LinkedAgents      []*LinkedAgent      `json:"linked_agents"`
+	FileVersions      []*FileVersion      `json:"file_versions"`
+	Notes             []*Note             `json:"notes"`
+	LinkedInstances   []interface{}       `json:"linked_instances"`
+	URI               string              `json:"uri"`
+	Repository        map[string]string   `json:"repository"`
+	Tree              map[string]string   `json:"tree"`
 }
 
 type ExternalDocument struct {
@@ -124,22 +146,21 @@ type Extent struct {
 }
 
 type FileVersion struct {
-	Identifier string `json:"identifier"`
-	Lock_Version int `json:"lock_version"`
-	FileURI string `json:"file_uri"`
-	Publish *bool `json:"publish,omitempty"`
-	FileFormatVersion *string `json:"file_format_version"`
-	FileSizeBytes *uint64 `json:"file_size_bytes"`
-	Checksum *string `json:"checksum"`
-	ChecksumMethod *string `json:"checksum_method"`
-	Caption *string `json:"caption"`
-	UseStatement string `json:"use_statement"`
-	XLink_Actuate_Attribute string `json:"xlink_actuate_attribute"`
-	XLink_Show_Attribute string `json:"xlink_show_attribute"`
-	File_Format_Name *string `json:"file_format_name"`
-	JSONModelType    string `json:"jsonmodel_type"`
-	IsRepresentative bool              `json:"is_representative,omitempty"`
-	
+	Identifier              string  `json:"identifier"`
+	Lock_Version            int     `json:"lock_version"`
+	FileURI                 string  `json:"file_uri"`
+	Publish                 *bool   `json:"publish,omitempty"`
+	FileFormatVersion       *string `json:"file_format_version"`
+	FileSizeBytes           *uint64 `json:"file_size_bytes"`
+	Checksum                *string `json:"checksum"`
+	ChecksumMethod          *string `json:"checksum_method"`
+	Caption                 *string `json:"caption"`
+	UseStatement            string  `json:"use_statement"`
+	XLink_Actuate_Attribute string  `json:"xlink_actuate_attribute"`
+	XLink_Show_Attribute    string  `json:"xlink_show_attribute"`
+	File_Format_Name        *string `json:"file_format_name"`
+	JSONModelType           string  `json:"jsonmodel_type"`
+	IsRepresentative        bool    `json:"is_representative,omitempty"`
 }
 
 type Instance struct {
@@ -307,18 +328,18 @@ type RightsStatementsAct struct {
 
 type SearchResult struct {
 	//{"page_size":10,"first_page":1,"last_page":2,"this_page":1,"offset_first":1,"offset_last":10,"total_hits":20,"results":
-	PageSize	int `json:"page_size"`
-	FirstPage	int `json:"first_page"`
-	LastPage	int `json:"last_page"`
-	ThisPage 	int `json:"this_page"`
-	OffsetFirst	int `json:"offset_first"`
-	OffsetLast	int `json:"offset_last"`
-	TotalHits	int `json:"total_hits"`
-	Results 	[]map[string]interface{} `json:"results"`
+	PageSize    int                      `json:"page_size"`
+	FirstPage   int                      `json:"first_page"`
+	LastPage    int                      `json:"last_page"`
+	ThisPage    int                      `json:"this_page"`
+	OffsetFirst int                      `json:"offset_first"`
+	OffsetLast  int                      `json:"offset_last"`
+	TotalHits   int                      `json:"total_hits"`
+	Results     []map[string]interface{} `json:"results"`
 }
 
 type Sub_Container struct {
-	JSONModel    string            `json:"jsonmodel_type"`
+	JSONModel    string                 `json:"jsonmodel_type"`
 	TopContainer map[string]interface{} `json:"top_container"`
 }
 

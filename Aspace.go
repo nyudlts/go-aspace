@@ -193,15 +193,15 @@ func (a *ASClient) GetDigitalObject(repositoryId int, daoId int) (DigitalObject,
 	if err != nil {
 		return do, err
 	}
-	err = json.Unmarshal(body, &do);
+	err = json.Unmarshal(body, &do)
 	if err != nil {
 		return do, err
 	}
 
-	return do, nil;
+	return do, nil
 }
 
-func(a *ASClient) UpdateDigitalObject(repositoryId int, daoId int, dao DigitalObject) (string, error) {
+func (a *ASClient) UpdateDigitalObject(repositoryId int, daoId int, dao DigitalObject) (string, error) {
 	endpoint := fmt.Sprintf("/repositories/%d/digital_objects/%d", repositoryId, daoId)
 	body, err := json.Marshal(dao)
 	if err != nil {
@@ -220,7 +220,7 @@ func(a *ASClient) UpdateDigitalObject(repositoryId int, daoId int, dao DigitalOb
 	return string(body), nil
 }
 
-func(a *ASClient) CreateDigitalObject(repositoryId int, dao DigitalObject) (string, error) {
+func (a *ASClient) CreateDigitalObject(repositoryId int, dao DigitalObject) (string, error) {
 	endpoint := fmt.Sprintf("/repositories/%d/digital_objects", repositoryId)
 	body, err := json.Marshal(dao)
 	if err != nil {
@@ -239,7 +239,7 @@ func(a *ASClient) CreateDigitalObject(repositoryId int, dao DigitalObject) (stri
 	return string(body), nil
 }
 
-func(a *ASClient) DeleteDigitalObject(repositoryId int, doId int) (string, error) {
+func (a *ASClient) DeleteDigitalObject(repositoryId int, doId int) (string, error) {
 	endpoint := fmt.Sprintf("/repositories/%d/digital_objects/%d", repositoryId, doId)
 	response, err := a.delete(endpoint)
 	if err != nil {
@@ -347,3 +347,37 @@ func (a *ASClient) GetEndpoint(e string) ([]byte, error) {
 	return body, nil
 }
 
+func (a *ASClient) GetPeopleAgentIds() ([]int, error) {
+	var agentIDs = []int{}
+	endpoint := "/agents/people?all_ids=true"
+	response, err := a.get(endpoint, true)
+	if err != nil {
+		return agentIDs, err
+	}
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return agentIDs, err
+	}
+
+	err = json.Unmarshal(body, &agentIDs)
+	if err != nil {
+		return agentIDs, err
+	}
+
+	return agentIDs, nil
+}
+
+func (a *ASClient) GetPeopleAgent(agentID int) ([]byte, error) {
+	agent := []byte{}
+	endpoint := fmt.Sprintf("/agents/people/%d", agentID)
+	response, err := a.get(endpoint, true)
+	if err != nil {
+		return agent, err
+	}
+	agent, err = ioutil.ReadAll(response.Body)
+	if err != nil {
+		return agent, err
+	}
+
+	return agent, nil
+}
