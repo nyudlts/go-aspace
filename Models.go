@@ -274,6 +274,7 @@ type RelatedAgent struct {
 	JSONModelType string `json:"jsonmodel_type"`
 	Description   string `json:"description"`
 	Dates         *Date
+	Ref           string `json:"ref"`
 }
 
 type Resource struct {
