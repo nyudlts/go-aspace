@@ -382,3 +382,59 @@ func (a *ASClient) GetAgent(agentType string, agentID int) (Agent, error) {
 	err = json.Unmarshal(body, &agent)
 	return agent, nil
 }
+
+func (a *ASClient) CreateAgent(agentType string, agent Agent) (string, error) {
+
+	endpoint := fmt.Sprintf("/agents/%s/", agentType)
+	body, err := json.Marshal(agent)
+	if err != nil {
+		return "", err
+	}
+	response, err := a.post(endpoint, true, string(body))
+	if err != nil {
+		return "", err
+	}
+
+	r, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return "", err
+	}
+
+	return string(r), err
+}
+
+func (a *ASClient) UpdateAgent(agentType string, agentId int, agent Agent) (string, error) {
+
+	endpoint := fmt.Sprintf("/agents/%s/%d", agentType, agentId)
+	body, err := json.Marshal(agent)
+	if err != nil {
+		return "", err
+	}
+	response, err := a.post(endpoint, true, string(body))
+	if err != nil {
+		return "", err
+	}
+
+	r, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return "", err
+	}
+
+	return string(r), err
+}
+
+func (a *ASClient) DeleteAgent(agentType string, agentId int) (string, error) {
+
+	endpoint := fmt.Sprintf("/agents/%s/%d", agentType, agentId)
+	response, err := a.delete(endpoint)
+	if err != nil {
+		return "", err
+	}
+
+	r, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return "", err
+	}
+
+	return string(r), err
+}
