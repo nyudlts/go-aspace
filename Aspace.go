@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"os"
 	"strconv"
 )
 
@@ -316,27 +315,21 @@ func (a *ASClient) Search(repositoryId int, searchType string, query string, pag
 	return results, nil
 }
 
-func (a *ASClient) SerializeEAD(repositoryId int, resourceId int, loc string, daos bool, unpub bool, num_cs bool, ead3 bool, pdf bool, filename string) error {
-	var ext string
+func (a *ASClient) SerializeEAD(repositoryId int, resourceId int, daos bool, unpub bool, num_cs bool, ead3 bool, pdf bool) ([]byte, error) {
+	var ead []byte = []byte{}
+
 	endpoint := fmt.Sprintf("/repositories/%d/resource_descriptions/%d.xml?include_unpublished=%t&include_daos=%t&numbered_cs=%t&ead3=%t&print_pdf=%t", repositoryId, resourceId, unpub, daos, num_cs, ead3, pdf)
 	response, err := a.get(endpoint, true)
 	if err != nil {
-		return err
+		return ead, err
 	}
 
-	bodybytes, err := ioutil.ReadAll(response.Body)
+	ead, err = ioutil.ReadAll(response.Body)
 	if err != nil {
-		return err
+		return ead, err
 	}
 
-	if pdf {
-		ext = "pdf"
-	} else {
-		ext = "xml"
-	}
-
-	err = writeEADtoFile(bodybytes, fmt.Sprintf("%s.%s", filename, ext), loc)
-	return nil
+	return ead, nil
 
 }
 
@@ -354,13 +347,3 @@ func (a *ASClient) GetEndpoint(e string) ([]byte, error) {
 	return body, nil
 }
 
-//private functions
-func writeEADtoFile(ead []byte, title string, loc string) error {
-	f, err := os.Create(fmt.Sprintf("%s/%s", loc, title))
-	defer f.Close()
-	if err != nil {
-		return nil
-	}
-	f.Write(ead)
-	return nil
-}
