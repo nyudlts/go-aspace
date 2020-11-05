@@ -14,18 +14,18 @@ type Agent struct {
 	IsSlugAuto                      bool                `json:"is_slug_auto"`
 	JSONModelType                   string              `json:"jsonmodel_type"`
 	AgentContacts                   []*AgentContact     `json:"agent_contacts"`
-	LinkedAgentRoles                []interface{}       `json:"linked_agent_roles"`
+	LinkedAgentRoles                []string            `json:"linked_agent_roles"`
 	ExternalDocuments               []*ExternalDocument `json:"external_documents"`
 	Notes                           []*Note             `json:"notes"`
 	UsedWithinRepositories          []string            `json:"used_within_repositories"`
 	UsedWithinPublishedRepositories []string            `json:"used_within_published_repositories"`
 	DatesOfExistence                []interface{}       `json:"dates_of_existence"`
 	Names                           []*Name             `json:"names"`
-	RelatedAgents                   []interface{}       `json:"related_agents"`
+	RelatedAgents                   []*RelatedAgent     `json:"related_agents"`
 	URI                             string              `json:"uri"`
 	AgentType                       string              `json:"agent_type"`
 	IsLinkedToPublishedRecord       bool                `json:"is_linked_to_published_record"`
-	DisplayName                     interface{}         `json:"display_name"`
+	DisplayName                     *Name               `json:"display_name"`
 	Title                           string              `json:"title"`
 	IsUser                          string              `json:"is_user"`
 }
@@ -267,6 +267,13 @@ type NoteText struct {
 	JSONModelType string `json:"jsonmodel_type"`
 	Content       string `json:"content"`
 	Publish       bool   `json:"publish"`
+}
+
+type RelatedAgent struct {
+	Relator       string `json:"relator"`
+	JSONModelType string `json:"jsonmodel_type"`
+	Description   string `json:"description"`
+	Dates         *Date
 }
 
 type Resource struct {
