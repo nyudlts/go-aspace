@@ -20,7 +20,7 @@ type Agent struct {
 	UsedWithinRepositories          []string            `json:"used_within_repositories"`
 	UsedWithinPublishedRepositories []string            `json:"used_within_published_repositories"`
 	DatesOfExistence                []interface{}       `json:"dates_of_existence"`
-	Names                           []interface{}       `json:"names"`
+	Names                           []*Name             `json:"names"`
 	RelatedAgents                   []interface{}       `json:"related_agents"`
 	URI                             string              `json:"uri"`
 	AgentType                       string              `json:"agent_type"`
@@ -205,6 +205,28 @@ type LinkedAgent struct {
 	Terms         []Term `json:"terms"`
 	Ref           string `json:"ref"`
 	JSONModelType string `json:"jsonmodel_type"`
+}
+
+type Name struct {
+	LockVersion   int           `json:"lock_version"`
+	PrimaryName   string        `json:"primary_name"`
+	Title         string        `json:"title"`
+	Prefix        string        `json:"prefix"`
+	RestOfName    string        `json:"rest_of_name"`
+	Suffix        string        `json:"suffix"`
+	FullerForm    string        `json:"fuller_form"`
+	Number        string        `json:"number"`
+	Dates         string        `json:"dates"`
+	Qualifier     string        `json:"qualifier"`
+	SortName      string        `json:"sort_name"`
+	Authorized    bool          `json:"authorized"`
+	IsDisplayName bool          `json:"is_display_name"`
+	Source        string        `json:"source"`
+	Rules         string        `json:"rules"`
+	NameOrder     string        `json:"name_order"`
+	JSONModelType string        `json:"jsonmodel_type"`
+	useDates      []interface{} `json:"use_dates"`
+	authorityId   string        `json:"authority_id"`
 }
 
 type Note struct {
