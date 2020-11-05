@@ -367,9 +367,9 @@ func (a *ASClient) GetAgentIds(agentType string) ([]int, error) {
 	return agentIDs, nil
 }
 
-func (a *ASClient) GetPeopleAgent(agentID int) (Agent, error) {
+func (a *ASClient) GetAgent(agentType string, agentID int) (Agent, error) {
 	agent := Agent{}
-	endpoint := fmt.Sprintf("/agents/people/%d", agentID)
+	endpoint := fmt.Sprintf("/agents/%s/%d", agentType, agentID)
 	response, err := a.get(endpoint, true)
 	if err != nil {
 		return agent, err

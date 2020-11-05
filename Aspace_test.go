@@ -69,7 +69,7 @@ func TestLibrary(t *testing.T) {
 			t.Error(err)
 		}
 
-		agent, err := client.GetPeopleAgent(agentIDs[0])
+		agent, err := client.GetAgent("people", agentIDs[0])
 		if err != nil {
 			t.Error(err)
 		}
