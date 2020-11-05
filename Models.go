@@ -13,7 +13,7 @@ type Agent struct {
 	Publish                         bool                `json:"publish"`
 	IsSlugAuto                      bool                `json:"is_slug_auto"`
 	JSONModelType                   string              `json:"jsonmodel_type"`
-	AgentContacts                   []interface{}       `json:"agent_contacts"`
+	AgentContacts                   []*AgentContact     `json:"agent_contacts"`
 	LinkedAgentRoles                []interface{}       `json:"linked_agent_roles"`
 	ExternalDocuments               []*ExternalDocument `json:"external_documents"`
 	Notes                           []*Note             `json:"notes"`
@@ -28,6 +28,23 @@ type Agent struct {
 	DisplayName                     interface{}         `json:"display_name"`
 	Title                           string              `json:"title"`
 	IsUser                          string              `json:"is_user"`
+}
+
+type AgentContact struct {
+	LockVersion   int           `json:"lock_version"`
+	Name          string        `json:"name"`
+	Address1      string        `json:"address_1"`
+	Address2      string        `json:"address_2"`
+	Address3      string        `json:"address_3"`
+	City          string        `json:"city"`
+	Region        string        `json:"region"`
+	Country       string        `json:"country"`
+	PostCode      string        `json:"post_code"`
+	Email         string        `json:"email"`
+	Note          string        `json:"note"`
+	Salutation    string        `json:"salutation"`
+	JSONModelType string        `json:"jsonmodel_type"`
+	Telephones    []interface{} `json:"telephones"`
 }
 
 type Ancestor struct {
