@@ -4,10 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"net/http"
 )
 
-func (a *ASClient) GetResourceIDsByRepository(repositoryId int) ([]int, error) {
+func (a *ASClient) GetResourceIDs(repositoryId int) ([]int, error) {
 	var repositoryIds []int
 	endpoint := fmt.Sprintf("/repositories/%d/resources?all_ids=true", repositoryId)
 	response, err := a.get(endpoint, true)
@@ -22,7 +21,7 @@ func (a *ASClient) GetResourceIDsByRepository(repositoryId int) ([]int, error) {
 	return repositoryIds, nil
 }
 
-func (a *ASClient) GetResourceByID(repositoryId int, resourceId int) (Resource, error) {
+func (a *ASClient) GetResource(repositoryId int, resourceId int) (Resource, error) {
 
 	r := Resource{}
 
@@ -45,14 +44,65 @@ func (a *ASClient) GetResourceByID(repositoryId int, resourceId int) (Resource, 
 	return r, nil
 }
 
-func (a *ASClient) PostResource(repositoryId int, resourceId int, body string) (*http.Response, error) {
+func (a *ASClient) UpdateResource(repositoryId int, resourceId int, resource Resource) (string, error) {
+	responseMessage := ""
 	endpoint := fmt.Sprintf("/repositories/%d/resources/%d", repositoryId, resourceId)
-	response, err := a.post(endpoint, true, body)
+	body, err := json.Marshal(resource)
 	if err != nil {
-		return response, err
-	} else {
-		return response, nil
+		return responseMessage, err
 	}
+	response, err := a.post(endpoint, true, string(body))
+	if err != nil {
+		return responseMessage, err
+	}
+
+	responseBody, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return responseMessage, err
+	}
+
+	responseMessage = string(responseBody)
+	return responseMessage, nil
+}
+
+func (a *ASClient) CreateResource(repositoryId int, resource Resource) (string, error) {
+	responseMessage := ""
+	endpoint := fmt.Sprintf("/repositories/%d", repositoryId)
+	body, err := json.Marshal(resource)
+	if err != nil {
+		return responseMessage, err
+	}
+	response, err := a.post(endpoint, true, string(body))
+	if err != nil {
+		return responseMessage, err
+	}
+
+	responseBody, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return responseMessage, err
+	}
+
+	responseMessage = string(responseBody)
+	return responseMessage, nil
+}
+
+func (a *ASClient) DeleteResource(repositoryId int, resourceId int) (string, error) {
+	responseMessage := ""
+	endpoint := fmt.Sprintf("/repositories/%d/resources/%d", repositoryId, resourceId)
+
+	response, err := a.delete(endpoint)
+	if err != nil {
+		return responseMessage, err
+	}
+
+	responseBody, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return responseMessage, err
+	}
+
+	responseMessage = string(responseBody)
+
+	return responseMessage, nil
 }
 
 func (a *ASClient) GetResourceTree(repositoryId int, resourceId int) (ResourceTree, error) {
@@ -72,4 +122,3 @@ func (a *ASClient) GetResourceTree(repositoryId int, resourceId int) (ResourceTr
 	return tree, nil
 
 }
-
