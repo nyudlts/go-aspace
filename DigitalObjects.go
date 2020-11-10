@@ -4,8 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"net/http"
-	"strings"
 )
 
 func (a *ASClient) GetDigitalObjectsByRepositoryId(repositoryId int) ([]int, error) {
@@ -92,12 +90,4 @@ func (a *ASClient) DeleteDigitalObject(repositoryId int, doId int) (string, erro
 		return string(body), err
 	}
 	return string(body), nil
-}
-
-func (a *ASClient) GetDigitalObjectsIDsForResource(repositoryId int, resourceId int) ([]int, error) {
-	resourceTree, err := a.GetResourceTree(repositoryId, resourceId)
-}
-
-func (a *ASClient) GetDigitalObjectsForResource(repositoryId int, resourceId int) ([]DigitalObject, error) {
-
 }
