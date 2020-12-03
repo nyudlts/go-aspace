@@ -53,7 +53,7 @@ type Ancestor struct {
 }
 
 type ArchivalObject struct {
-	LockVersion             int                 `json:"lock_version,omitempty"`
+	LockVersion             int                 `json:"lock_version"`
 	Position                int                 `json:"position,omitempty"`
 	Publish                 bool                `json:"publish,omitempty"`
 	RefID                   string              `json:"ref_id,omitempty"`
@@ -81,6 +81,7 @@ type ArchivalObject struct {
 	Repository              map[string]string   `json:"repository,omitempty"`
 	Parent                  map[string]string   `json:"parent,omitempty"`
 	HasUnpublishedAncestors bool                `json:"has_unpublished_ancestors,omitempty"`
+	Resource				map[string]string	`json:"resource"`
 }
 
 type Classification struct {
@@ -123,7 +124,7 @@ type DigitalObject struct {
 	IsSlugAuto        bool                `json:"is_slug_auto,omitempty"`
 	JSONModelType     string              `json:"jsonmodel_type,omitempty"`
 	ExternalIds       []ExternalID        `json:"external_ids,omitempty"`
-	Subjects          []map[string]string `json:"subjects,omitempty"`
+	Subjects          []Subject `json:"subjects,omitempty"`
 	LinkedEvents      []map[string]string `json:"linked_events,omitempty"`
 	Extents           []Extent            `json:"extents,omitempty"`
 	LangMaterials     []LangMaterial     `json:"lang_materials,omitempty"`
@@ -135,7 +136,7 @@ type DigitalObject struct {
 	Notes             []Note             `json:"notes,omitempty"`
 	LinkedInstances   []interface{}       `json:"linked_instances,omitempty"`
 	URI               string              `json:"uri,omitempty"`
-	Repository        map[string]string   `json:"repository,omitempty"`
+	Repository        interface{}  		`json:"repository,omitempty"`
 	Tree              map[string]string   `json:"tree,omitempty"`
 }
 
@@ -277,6 +278,23 @@ type RelatedAgent struct {
 	Ref           string `json:"ref,omitempty"`
 }
 
+type ResolvedSubject struct {
+	LockVersion int `json:"lock_version,omitempty"`
+	Title string `json:"title,omitempty"`
+	IsSlugAuto bool `json:"is_slug_auto,omitempty"`
+	Source string `json:"source,omitempty"`
+	JSONModelType string `json:"json_model_type,omitempty"`
+	ExternalIDs []ExternalID `json:"external_ids,omitempty"`
+	Publish bool `json:"publish,omitempty"`
+	UsedWithinRepositories []interface{} `json:"used_within_repositories,omitempty"`
+	UsedWithinPublishedRepositories []interface{} `json:"used_within_published_repositories,omitempty"`
+	Terms []Term `json:"terms"`
+	ExternalDocuments	[]ExternalDocument `json:"external_documents,omitempty"`
+	URI string `json:"uri,omitempty"`
+	Vocabulary string `json:"vocabulary"`
+	IsLinkedToPublishedRecord bool `json:"is_linked_to_published_record,omitempty"`
+}
+
 type Resource struct {
 	Classifications            []Classification    `json:"classifications,omitempty"`
 	Dates                      []Date              `json:"dates,omitempty"`
@@ -356,7 +374,6 @@ type RightsStatement struct {
 	StatuteCitation   string `json:"statute_citation,omitempty"`
 	Jurisdiction      string `json:"jurisdiction,omitempty"`
 	OtherRightsBasis  string `json:"other_rights_basis,omitempty"`
-
 	JSONModelType     string                 `json:"jsonmodel_type,omitempty"`
 	ExternalDocuments []ExternalDocument    `json:"external_documents,omitempty"`
 	Acts              []RightsStatementsAct `json:"acts,omitempty"`
@@ -374,7 +391,6 @@ type RightsStatementsAct struct {
 }
 
 type SearchResult struct {
-	//{"page_size":10,"first_page":1,"last_page":2,"this_page":1,"offset_first":1,"offset_last":10,"total_hits":20,"results":
 	PageSize    int                      `json:"page_size,omitempty"`
 	FirstPage   int                      `json:"first_page,omitempty"`
 	LastPage    int                      `json:"last_page,omitempty"`
@@ -389,6 +405,12 @@ type SubContainer struct {
 	JSONModel    string                 `json:"jsonmodel_type,omitempty"`
 	TopContainer map[string]interface{} `json:"top_container,omitempty"`
 }
+
+type Subject struct {
+	Ref 	string `json:"ref,omitempty"`
+	Resolved	ResolvedSubject `json:"_resolved,omitempty"`
+}
+
 
 type Term struct {
 	ID                int
