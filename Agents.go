@@ -97,3 +97,12 @@ func (a *ASClient) DeleteAgent(agentType string, agentId int) (string, error) {
 
 	return string(r), err
 }
+
+func (a *ASClient) GetRandomAgentID(agentType string) (int, error) {
+	agent := 0
+	agentIDs, err := a.GetAgentIds(agentType)
+	if err != nil {
+		return agent, err
+	}
+	return agentIDs[rGen.Intn(len(agentIDs))], nil
+}

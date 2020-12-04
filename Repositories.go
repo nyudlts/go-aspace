@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-func (a *ASClient) GetRepositoryList() ([]int, error) {
+func (a *ASClient) GetRepositories() ([]int, error) {
 	repIds := []int{}
 	endpoint := "/repositories"
 	response, err := a.get(endpoint, false)
@@ -32,4 +32,36 @@ func (a *ASClient) GetRepositoryList() ([]int, error) {
 	}
 
 	return repIds, nil
+}
+
+func (a *ASClient) GetRepository(repositoryID int) (Repository, error) {
+	repository := Repository{}
+	endpoint := fmt.Sprintf("/repositories/%d", repositoryID)
+	response, err := a.get(endpoint, true)
+	if err != nil {
+		return repository, err
+	}
+
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return repository, err
+	}
+
+	err = json.Unmarshal(body, &repository)
+	if err != nil {
+		return repository, err
+	}
+
+	return repository, nil
+}
+
+func (a *ASClient) GetRandomRepository() (int, error) {
+	repositoryID := 0
+	repositoryIDs, err := a.GetRepositories()
+	if err != nil {
+		return repositoryID, err
+	}
+
+	return repositoryIDs[rGen.Intn(len(repositoryIDs))], nil
+
 }

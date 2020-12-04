@@ -122,3 +122,23 @@ func (a *ASClient) GetResourceTree(repositoryId int, resourceId int) (ResourceTr
 	return tree, nil
 
 }
+
+func (a *ASClient) GetRandomResourceID() (int, int, error) {
+	var repositoryID = 0
+	var resourceID = 0
+	repositoryIDs, err := a.GetRepositories()
+	if err != nil {
+		return repositoryID, resourceID, err
+	}
+
+	repositoryID = repositoryIDs[rGen.Intn(len(repositoryIDs))]
+
+	resourceIDs, err := a.GetResourceIDs(repositoryID)
+	if err != nil {
+		return repositoryID, resourceID, err
+	}
+
+	resourceID = resourceIDs[rGen.Intn(len(resourceIDs))]
+
+	return repositoryID, resourceID, nil
+}

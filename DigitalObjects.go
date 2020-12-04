@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 )
 
-func (a *ASClient) GetDigitalObjectsByRepositoryId(repositoryId int) ([]int, error) {
+func (a *ASClient) GetDigitalObjectIDs(repositoryId int) ([]int, error) {
 	daoIds := []int{}
 	endpoint := fmt.Sprintf("/repositories/%d/digital_objects?all_ids=true", repositoryId)
 	response, err := a.get(endpoint, true)
@@ -90,4 +90,24 @@ func (a *ASClient) DeleteDigitalObject(repositoryId int, doId int) (string, erro
 		return string(body), err
 	}
 	return string(body), nil
+}
+
+func RandomDigitalObject(client *ASClient) (int, int, error) {
+	var repositoryID = 0
+	var digitalObjectID = 0
+	repositoryIDs, err := client.GetRepositories()
+	if err != nil {
+		return repositoryID, digitalObjectID, err
+	}
+
+	repositoryID = repositoryIDs[rGen.Intn(len(repositoryIDs))]
+
+	digitalObjectIDs, err := client.GetDigitalObjectIDs(repositoryID)
+	if err != nil {
+		return repositoryID, digitalObjectID, err
+	}
+
+	digitalObjectID = digitalObjectIDs[rGen.Intn(len(digitalObjectIDs))]
+
+	return repositoryID, digitalObjectID, nil
 }
