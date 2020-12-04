@@ -22,7 +22,7 @@ func main() {
         panic(err)
     }
     
-    repositories, err := aspaceClient.GetRepositoryList()
+    repositories, err := aspaceClient.GetRepositories()
     if err != nil {
         panic(err)
     }
