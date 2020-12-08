@@ -214,25 +214,29 @@ type LinkedAgent struct {
 }
 
 type Name struct {
-	LockVersion   int           `json:"lock_version,omitempty"`
-	PrimaryName   string        `json:"primary_name,omitempty"`
-	Title         string        `json:"title,omitempty"`
-	Prefix        string        `json:"prefix,omitempty"`
-	RestOfName    string        `json:"rest_of_name,omitempty"`
-	Suffix        string        `json:"suffix,omitempty"`
-	FullerForm    string        `json:"fuller_form,omitempty"`
-	Number        string        `json:"number,omitempty"`
-	Dates         string        `json:"dates,omitempty"`
-	Qualifier     string        `json:"qualifier,omitempty"`
-	SortName      string        `json:"sort_name,omitempty"`
-	Authorized    bool          `json:"authorized,omitempty"`
-	IsDisplayName bool          `json:"is_display_name,omitempty"`
-	Source        string        `json:"source,omitempty"`
-	Rules         string        `json:"rules,omitempty"`
-	NameOrder     string        `json:"name_order,omitempty"`
-	JSONModelType string        `json:"jsonmodel_type,omitempty"`
-	UseDates      []interface{} `json:"use_dates,omitempty"`
-	AuthorityID   string        `json:"authority_id,omitempty"`
+	LockVersion          int           `json:"lock_version,omitempty"`
+	PrimaryName          string        `json:"primary_name,omitempty"`
+	Title                string        `json:"title,omitempty"`
+	Prefix               string        `json:"prefix,omitempty"`
+	RestOfName           string        `json:"rest_of_name,omitempty"`
+	Suffix               string        `json:"suffix,omitempty"`
+	FullerForm           string        `json:"fuller_form,omitempty"`
+	Number               string        `json:"number,omitempty"`
+	Dates                string        `json:"dates,omitempty"`
+	Qualifier            string        `json:"qualifier,omitempty"`
+	SortName             string        `json:"sort_name,omitempty"`
+	Authorized           bool          `json:"authorized,omitempty"`
+	IsDisplayName        bool          `json:"is_display_name,omitempty"`
+	Source               string        `json:"source,omitempty"`
+	Rules                string        `json:"rules,omitempty"`
+	NameOrder            string        `json:"name_order,omitempty"`
+	JSONModelType        string        `json:"jsonmodel_type,omitempty"`
+	UseDates             []interface{} `json:"use_dates,omitempty"`
+	AuthorityID          string        `json:"authority_id,omitempty"`
+	Subordinate_Name_1   string        `json:"subordinate_name_1,omitempty"`
+	Subordinate_Name_2   string        `json:"subordinate_name_2,omitempty"`
+	SortNameAutoGenerate bool          `json:"sort_name_auto_generate"`
+	FamilyName           string        `json:"family_name"`
 }
 
 type Note struct {
