@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestPersonalAgent(t *testing.T) {
+func TestAgents(t *testing.T) {
 	flag.Parse()
 	client, err := NewClient(*envPtr, 10)
 	if err != nil {

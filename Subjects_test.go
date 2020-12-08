@@ -21,6 +21,6 @@ func TestSubjects(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	} else {
-		t.Logf("Succsefully requested and serialized %s: %s\n", subject.URI, subject.Title)
+		t.Logf("Successfully requested and serialized %s: %s\n", subject.URI, subject.Title)
 	}
 }
