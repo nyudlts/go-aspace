@@ -87,6 +87,8 @@ type ArchivalObject struct {
 	Parent                  map[string]string   `json:"parent,omitempty"`
 	HasUnpublishedAncestors bool                `json:"has_unpublished_ancestors,omitempty"`
 	Resource                map[string]string   `json:"resource"`
+	RepresentativeImage     FileVersion         `json:"representative_image,omitempty"`
+	ArkName                 interface{}         `json:"ark_name,omitempty"`
 }
 
 type Classification struct {
@@ -194,6 +196,12 @@ type Instance struct {
 	JSONModelType    string            `json:"jsonmodel_type,omitempty"`
 }
 
+type Inherited struct {
+	Ref    string `json:"ref,omitempty"`
+	Level  string `json:"level,omitempty"`
+	Direct string `json:"direct,omitempty"`
+}
+
 type LangMaterial struct {
 	LanguageAndScript LanguageAndScript  `json:"language_and_script,omitempty"`
 	Notes             []NoteLangmaterial `json:"notes,omitempty"`
@@ -202,15 +210,24 @@ type LangMaterial struct {
 
 type LanguageAndScript struct {
 	Language      string `json:"language,omitempty"`
+	Script        string `json:"script,omitempty"`
 	JSONModelType string `json:"jsonmodel_type,omitempty"`
 }
 
 type LinkedAgent struct {
-	Title         string `json:"title,omitempty"`
-	Role          string `json:"role,omitempty"`
-	Terms         []Term `json:"terms,omitempty"`
-	Ref           string `json:"ref,omitempty"`
-	JSONModelType string `json:"jsonmodel_type,omitempty"`
+	Title         string    `json:"title,omitempty"`
+	Role          string    `json:"role,omitempty"`
+	Terms         []Term    `json:"terms,omitempty"`
+	Ref           string    `json:"ref,omitempty"`
+	JSONModelType string    `json:"jsonmodel_type,omitempty"`
+	Relator       string    `json:"relator,omitempty"`
+	Resolved      Agent     `json:"_resolved,omitempty"`
+	Inherited     Inherited `json:"_inherited,omitempty"`
+}
+
+type LinkedEvent struct {
+	Ref      string      `json:"ref,omitempty"`
+	Resolved interface{} `json:"_resolved,omitEmpty"`
 }
 
 type Name struct {
@@ -240,12 +257,14 @@ type Name struct {
 }
 
 type Note struct {
-	JSONModelType string     `json:"jsonmodel_type,omitempty"`
-	PersistentID  string     `json:"persistent_id,omitempty"`
-	Label         string     `json:"label,omitempty"`
-	Type          string     `json:"typ,omitemptye"`
-	Subnotes      []NoteText `json:"subnotes,omitempty"`
-	Content       []string   `json:"content,omitempty"`
+	JSONModelType     string                 `json:"jsonmodel_type,omitempty"`
+	PersistentID      string                 `json:"persistent_id,omitempty"`
+	Label             string                 `json:"label,omitempty"`
+	Type              string                 `json:"type,omitemptye"`
+	Subnotes          []NoteText             `json:"subnotes,omitempty"`
+	Content           []string               `json:"content,omitempty"`
+	Publish           bool                   `json:"publish,omitempty"`
+	RightsRestriction map[string]interface{} `json:"rights_restriction,omitempty"`
 }
 
 type NoteLangmaterial struct {
@@ -312,21 +331,26 @@ type Repository struct {
 
 type Resource struct {
 	Classifications            []Classification    `json:"classifications,omitempty"`
+	CollectionManagement       []interface{}       `json:"collection_management,omitempty"`
 	Dates                      []Date              `json:"dates,omitempty"`
 	Deaccessions               []Deaccession       `json:"deaccessions,omitempty"`
 	EADID                      string              `json:"ead_id,omitempty"`
 	EADLocation                string              `json:"ead_location,omitempty"`
 	Extents                    []Extent            `json:"extents,omitempty"`
+	ExternalArkURL             string              `json:"external_ark_url"`
 	ExternalIDs                []ExternalID        `json:"external_ids,omitempty"`
 	FindingAidAuthor           string              `json:"finding_aid_author,omitempty"`
 	FindingAidDate             string              `json:"finding_aid_date,omitempty"`
 	FindingAidDescriptionRules string              `json:"finding_aid_description_rules,omitempty"`
 	FindingAidLanguage         string              `json:"finding_aid_language,omitempty"`
 	FindingAidLanguageNote     string              `json:"finding_aid_language_note,omitempty"`
+	FindingAidNote             string              `json:"finding_aid_note"`
 	FindingAidScript           string              `json:"finding_aid_script,omitempty"`
-	FindingAidStatus           string              `json:"finding_aid_status,omitempty"`
+	FindingAidSponsor          string              `json:"finding_aid_status,omitempty"`
+	FindingAidStatus           string              `json:"finding_aid_sponsor,omitempty"`
 	FindingAidTitle            string              `json:"finding_aid_title,omitempty"`
 	FindingAidEditionStatement string              `json:"finding_aid_edition_statement,omitempty"`
+	FindingAidSeriesStatement  string              `json:"finding_aid_series_statement,omitempty"`
 	ID0                        string              `json:"id_0,omitempty"`
 	ID1                        string              `json:"id_1,omitempty"`
 	ID2                        string              `json:"id_2,omitempty"`
@@ -340,18 +364,27 @@ type Resource struct {
 	LinkedEvents               []map[string]string `json:"linked_events,omitempty"`
 	LockVersion                int                 `json:"lock_version,omitempty"`
 	Notes                      []Note              `json:"notes,omitempty"`
+	OtherLevel                 string              `json:"other_level,omitempty"`
 	Publish                    bool                `json:"publish,omitempty"`
 	RelatedAccessions          []map[string]string `json:"related_accessions,omitempty"`
 	Repository                 map[string]string   `json:"repository,omitempty"`
 	RepositoryProcessingNote   string              `json:"repository_processing_note,omitempty"`
 	Restrictions               bool                `json:"restrictions,omitempty"`
+	ResourceType               string              `json:"resource_type,omitempty"`
 	RevisionStatements         []RevisionStatement `json:"revision_statements,omitempty"`
 	RightsStatements           []RightsStatement   `json:"rights_statements,omitempty"`
+	Slug                       string              `json:"slug,omitempty"`
 	Subjects                   []map[string]string `json:"subjects,omitempty"`
 	Supressed                  bool                `json:"supressed,omitempty"`
 	Title                      string              `json:"title,omitempty"`
 	Tree                       map[string]string   `json:"tree,omitempty"`
+	UserDefined                interface{}         `json:"user_defined,omitempty"`
 	URI                        string              `json:"uri,omitempty"`
+}
+
+type LinkedTree struct {
+	Ref      string       `json:"ref,omitempty"`
+	Resolved ResourceTree `json:"_resolved,omitempty"`
 }
 
 type ResourceTree struct {

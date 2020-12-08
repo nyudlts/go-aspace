@@ -84,7 +84,7 @@ func (a *ASClient) PrintResponse(endpoint string) error {
 }
 
 func (a *ASClient) GetEndpoint(e string) ([]byte, error) {
-	fmt.Println(e)
+
 	response, err := a.get(e, true)
 	if err != nil {
 		return []byte{}, err
