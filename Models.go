@@ -1,5 +1,51 @@
 package aspace
 
+type Accession struct {
+	URI                    string             `json:"uri,omitempty"`
+	ExternalIDs            []ExternalID       `json:"external_ids,omitempty"`
+	Title                  string             `json:"title,omitempty"`
+	DisplayString          string             `json:"display_string,omitempty"`
+	Slug                   string             `json:"slug,omitempty"`
+	IsSlugAuto             bool               `json:"is_slug_auto,omitempty"`
+	ID0                    string             `json:"id_0,omitempty"`
+	ID1                    string             `json:"id_1,omitempty"`
+	ID2                    string             `json:"id_2,omitempty"`
+	ID3                    string             `json:"id_3,omitempty"`
+	ContentDescription     string             `json:"content_description,omitempty"`
+	ConditionDescription   string             `json:"condition_description,omitempty"`
+	Disposition            string             `json:"disposition,omitempty"`
+	Inventory              string             `json:"inventory,omitempty"`
+	Provenance             string             `json:"provenance,omitempty"`
+	RelatedAccessions      []interface{}      `json:"related_accessions"`
+	AccessionDate          Date               `json:"accession_date"`
+	Publish                bool               `json:"publish"`
+	Classifications        []Classification   `json:"classifications,omitempty"`
+	Subjects               []Subject          `json:"subjects,omitempty"`
+	LinkedEvents           []LinkedEvent      `json:"linked_events,omitempty"`
+	Extents                []Extent           `json:"extents,omitempty"`
+	Dates                  []Date             `json:"dates,omitempty"`
+	ExternalDocuments      []ExternalDocument `json:"external_documents"`
+	RightsStatements       []RightsStatement  `json:"rights_statements"`
+	CollectionManagement   interface{}        `json:"collection_management,omitempty"`
+	UserDefined            interface{}        `json:"user_defined,omitempty"`
+	RelatedResources       interface{}        `json:"related_resources,omitempty"`
+	Suppressed             bool               `json:"suppressed"`
+	AcquisitionType        string             `json:"acquisition_type,omitempty"`
+	ResourceType           string             `json:"resource_type,omitempty"`
+	RestrictionsApply      bool               `json:"restrictions_apply,omitempty"`
+	RetentionRule          string             `json:"retention_rule,omitempty"`
+	GeneralNote            string             `json:"general_note,omitempty"`
+	AccessRestrictions     bool               `json:"access_restrictions,omitempty"`
+	AccessRestrictionsNote string             `json:"access_restrictions_note,omitempty"`
+	UseRestrictions        bool               `json:"use_restrictions,omitempty"`
+	UseRestrictionsNote    string             `json:"use_restrictions_note,omitempty"`
+	LinkedAgents           []LinkedAgent      `json:"linked_agents,omitempty"`
+	Instances              []Instance         `json:"instances,omitempty"`
+	LockVersion            int                `json:"lock_version"`
+	JSONModelType          string             `json:"json_model_type"`
+	Repository             LinkedRepository   `json:"repository"`
+}
+
 type AdvancedSearch struct {
 	Field         string `json:"field,omitempty"`
 	Value         string `json:"value,omitempty"`
@@ -122,7 +168,7 @@ type Deaccession struct {
 }
 
 type DigitalObject struct {
-	LockVersion       int                 `json:"lock_version,omitempty"`
+	LockVersion       *int                `json:"lock_version,omitempty"`
 	DigitalObjectID   string              `json:"digital_object_id,omitempty"`
 	Title             string              `json:"title,omitempty"`
 	Publish           bool                `json:"publish,omitempty"`
@@ -230,6 +276,11 @@ type LinkedEvent struct {
 	Resolved interface{} `json:"_resolved,omitEmpty"`
 }
 
+type LinkedRepository struct {
+	Ref      string     `json:"ref"`
+	Resolved Repository `json:"_resolved,omitEmpty"`
+}
+
 type Name struct {
 	LockVersion          int           `json:"lock_version,omitempty"`
 	PrimaryName          string        `json:"primary_name,omitempty"`
@@ -261,7 +312,7 @@ type Note struct {
 	PersistentID      string                 `json:"persistent_id,omitempty"`
 	Label             string                 `json:"label,omitempty"`
 	Type              string                 `json:"type,omitemptye"`
-	Subnotes          []NoteText             `json:"subnotes,omitempty"`
+	Subnotes          []interface{}          `json:"subnotes,omitempty"`
 	Content           []string               `json:"content,omitempty"`
 	Publish           bool                   `json:"publish,omitempty"`
 	RightsRestriction map[string]interface{} `json:"rights_restriction,omitempty"`
@@ -296,6 +347,7 @@ type NoteText struct {
 	JSONModelType string `json:"jsonmodel_type,omitempty"`
 	Content       string `json:"content,omitempty"`
 	Publish       bool   `json:"publish,omitempty"`
+	Title         string `json:"title,omitEmpty"`
 }
 
 type RelatedAgent struct {

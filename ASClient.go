@@ -18,12 +18,12 @@ type ASClient struct {
 }
 
 type Creds struct {
-	URL string `yaml:"url"`
+	URL      string `yaml:"url"`
 	Username string `yaml:"username"`
 	Password string `yaml:"password"`
 }
 
-func NewClient(environment string,timeout int) (*ASClient, error) {
+func NewClient(environment string, timeout int) (*ASClient, error) {
 
 	var client *ASClient
 
@@ -47,7 +47,6 @@ func NewClient(environment string,timeout int) (*ASClient, error) {
 		return client, err
 	}
 
-
 	client = &ASClient{
 		sessionKey: token,
 		rootURL:    creds.URL,
@@ -69,7 +68,7 @@ func getCreds(environment string) (Creds, error) {
 		return Creds{}, err
 	}
 
-	for k,v := range credsMap {
+	for k, v := range credsMap {
 		if environment == k {
 			return v, nil
 		}
@@ -169,6 +168,22 @@ func (a *ASClient) delete(endpoint string) (*http.Response, error) {
 	if err != nil {
 		return response, err
 	}
+	response, err = a.do(request, true)
+	if err != nil {
+		return response, err
+	}
+
+	return response, nil
+}
+
+func (a *ASClient) JsonRequest(endpoint string, method string, body string) (*http.Response, error) {
+	var response *http.Response
+	url := a.rootURL + endpoint
+	request, err := http.NewRequest(method, url, bytes.NewBufferString(body))
+	if err != nil {
+		return response, err
+	}
+
 	response, err = a.do(request, true)
 	if err != nil {
 		return response, err
