@@ -56,12 +56,11 @@ func (a *ASClient) GetRepository(repositoryID int) (Repository, error) {
 }
 
 func (a *ASClient) GetRandomRepository() (int, error) {
-	repositoryID := 0
+
 	repositoryIDs, err := a.GetRepositories()
 	if err != nil {
-		return repositoryID, err
+		return 0, err
 	}
 
 	return repositoryIDs[rGen.Intn(len(repositoryIDs))], nil
-
 }

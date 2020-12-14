@@ -8,7 +8,7 @@ import (
 
 func (a *ASClient) GetAccessionIDs(repositoryID int) ([]int, error) {
 	var accessions = []int{}
-	endpoint := fmt.Sprintf("/repositories/%d/accessions")
+	endpoint := fmt.Sprintf("/repositories/%d/accessions?all_ids=true", repositoryID)
 	response, err := a.get(endpoint, true)
 	if err != nil {
 		return accessions, err
@@ -27,7 +27,7 @@ func (a *ASClient) GetAccessionIDs(repositoryID int) ([]int, error) {
 
 func (a *ASClient) GetAccession(repositoryID int, accessionID int) (Accession, error) {
 	var accession = Accession{}
-	endpoint := fmt.Sprintf("/repositories/%d/accessions/%d")
+	endpoint := fmt.Sprintf("/repositories/%d/accessions/%d", repositoryID, accessionID)
 	response, err := a.get(endpoint, true)
 	if err != nil {
 		return accession, err

@@ -1,49 +1,57 @@
 package aspace
 
 type Accession struct {
-	URI                    string             `json:"uri,omitempty"`
-	ExternalIDs            []ExternalID       `json:"external_ids,omitempty"`
-	Title                  string             `json:"title,omitempty"`
-	DisplayString          string             `json:"display_string,omitempty"`
-	Slug                   string             `json:"slug,omitempty"`
-	IsSlugAuto             bool               `json:"is_slug_auto,omitempty"`
-	ID0                    string             `json:"id_0,omitempty"`
-	ID1                    string             `json:"id_1,omitempty"`
-	ID2                    string             `json:"id_2,omitempty"`
-	ID3                    string             `json:"id_3,omitempty"`
-	ContentDescription     string             `json:"content_description,omitempty"`
-	ConditionDescription   string             `json:"condition_description,omitempty"`
-	Disposition            string             `json:"disposition,omitempty"`
-	Inventory              string             `json:"inventory,omitempty"`
-	Provenance             string             `json:"provenance,omitempty"`
-	RelatedAccessions      []interface{}      `json:"related_accessions"`
-	AccessionDate          Date               `json:"accession_date"`
-	Publish                bool               `json:"publish"`
-	Classifications        []Classification   `json:"classifications,omitempty"`
-	Subjects               []Subject          `json:"subjects,omitempty"`
-	LinkedEvents           []LinkedEvent      `json:"linked_events,omitempty"`
-	Extents                []Extent           `json:"extents,omitempty"`
-	Dates                  []Date             `json:"dates,omitempty"`
-	ExternalDocuments      []ExternalDocument `json:"external_documents"`
-	RightsStatements       []RightsStatement  `json:"rights_statements"`
-	CollectionManagement   interface{}        `json:"collection_management,omitempty"`
-	UserDefined            interface{}        `json:"user_defined,omitempty"`
-	RelatedResources       interface{}        `json:"related_resources,omitempty"`
-	Suppressed             bool               `json:"suppressed"`
-	AcquisitionType        string             `json:"acquisition_type,omitempty"`
-	ResourceType           string             `json:"resource_type,omitempty"`
-	RestrictionsApply      bool               `json:"restrictions_apply,omitempty"`
-	RetentionRule          string             `json:"retention_rule,omitempty"`
-	GeneralNote            string             `json:"general_note,omitempty"`
-	AccessRestrictions     bool               `json:"access_restrictions,omitempty"`
-	AccessRestrictionsNote string             `json:"access_restrictions_note,omitempty"`
-	UseRestrictions        bool               `json:"use_restrictions,omitempty"`
-	UseRestrictionsNote    string             `json:"use_restrictions_note,omitempty"`
-	LinkedAgents           []LinkedAgent      `json:"linked_agents,omitempty"`
-	Instances              []Instance         `json:"instances,omitempty"`
-	LockVersion            int                `json:"lock_version"`
-	JSONModelType          string             `json:"json_model_type"`
-	Repository             LinkedRepository   `json:"repository"`
+	URI                    string                         `json:"uri,omitempty"`
+	ExternalIDs            []ExternalID                   `json:"external_ids,omitempty"`
+	Title                  string                         `json:"title,omitempty"`
+	DisplayString          string                         `json:"display_string,omitempty"`
+	Slug                   string                         `json:"slug,omitempty"`
+	IsSlugAuto             bool                           `json:"is_slug_auto,omitempty"`
+	ID0                    string                         `json:"id_0,omitempty"`
+	ID1                    string                         `json:"id_1,omitempty"`
+	ID2                    string                         `json:"id_2,omitempty"`
+	ID3                    string                         `json:"id_3,omitempty"`
+	ContentDescription     string                         `json:"content_description,omitempty"`
+	ConditionDescription   string                         `json:"condition_description,omitempty"`
+	Disposition            string                         `json:"disposition,omitempty"`
+	Inventory              string                         `json:"inventory,omitempty"`
+	Provenance             string                         `json:"provenance,omitempty"`
+	RelatedAccessions      []AccessionSiblingRelationship `json:"related_accessions"`
+	AccessionDate          string                         `json:"accession_date,omitempty"`
+	Publish                bool                           `json:"publish"`
+	Classifications        []map[string]string            `json:"classifications,omitempty"`
+	Subjects               []Subject                      `json:"subjects,omitempty"`
+	LinkedEvents           []LinkedEvent                  `json:"linked_events,omitempty"`
+	Extents                []Extent                       `json:"extents,omitempty"`
+	Dates                  []Date                         `json:"dates,omitempty"`
+	ExternalDocuments      []ExternalDocument             `json:"external_documents"`
+	RightsStatements       []RightsStatement              `json:"rights_statements"`
+	CollectionManagement   CollectionManagement           `json:"collection_management,omitempty"`
+	UserDefined            interface{}                    `json:"user_defined,omitempty"`
+	RelatedResources       interface{}                    `json:"related_resources,omitempty"`
+	Suppressed             bool                           `json:"suppressed"`
+	AcquisitionType        string                         `json:"acquisition_type,omitempty"`
+	ResourceType           string                         `json:"resource_type,omitempty"`
+	RestrictionsApply      bool                           `json:"restrictions_apply,omitempty"`
+	RetentionRule          string                         `json:"retention_rule,omitempty"`
+	GeneralNote            string                         `json:"general_note,omitempty"`
+	AccessRestrictions     bool                           `json:"access_restrictions,omitempty"`
+	AccessRestrictionsNote string                         `json:"access_restrictions_note,omitempty"`
+	UseRestrictions        bool                           `json:"use_restrictions,omitempty"`
+	UseRestrictionsNote    string                         `json:"use_restrictions_note,omitempty"`
+	LinkedAgents           []LinkedAgent                  `json:"linked_agents,omitempty"`
+	Instances              []Instance                     `json:"instances,omitempty"`
+	LockVersion            int                            `json:"lock_version"`
+	JSONModelType          string                         `json:"json_model_type"`
+	Repository             LinkedRepository               `json:"repository"`
+	Parent                 map[string]string              `json:"parent,omitempty"`
+}
+
+type AccessionSiblingRelationship struct {
+	JSONModelType string `json:"jsonmodel_type"`
+	Relator       string `json:"relator"`
+	RelatorType   string `json:"relator_type"`
+	Ref           string `json:"ref"`
 }
 
 type AdvancedSearch struct {
@@ -142,6 +150,25 @@ type Classification struct {
 	Slug                   string `json:"slug,omitempty"`
 	IsSlugAuto             bool   `json:"is_slug_auto,omitempty"`
 	JSONModelType          string `json:"jsonmodel_type,omitempty"`
+}
+
+type CollectionManagement struct {
+	LockVersion                    int               `json:"lock_version"`
+	JSONModelType                  string            `json:"jsonmodel_type"`
+	URI                            string            `json:"uri,omitempty"`
+	ProcessingHoursPerFootEstimate string            `json:"processing_hours_per_foot_estimate,omitempty"`
+	ProcessingTotalExtent          string            `json:"processing_total_extent,omitempty"`
+	ProcessingTotalExtentType      string            `json:"processing_total_extent_type,omitempty"`
+	ProcessingHoursTotal           string            `json:"processing_hours_total,omitempty"`
+	ProcessingPlan                 string            `json:"processing_plan,omitempty"`
+	ProcessingPriority             string            `json:"processing_priority,omitempty"`
+	ProcessingFundingSource        string            `json:"processing_funding_source,omitempty"`
+	Processors                     string            `json:"processors,omitempty"`
+	RightsDetermined               bool              `json:"rights_determined,omitempty"`
+	ProcessingStatus               string            `json:"processing_status,omitempty"`
+	Repository                     map[string]string `json:"repository,omitempty"`
+	Parent                         map[string]string `json:"parent,omitempty"`
+	ExternalIDs                    []ExternalID      `json:"external_ids,omitempty"`
 }
 
 type Date struct {
