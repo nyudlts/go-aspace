@@ -27,8 +27,8 @@ type Accession struct {
 	ExternalDocuments      []ExternalDocument             `json:"external_documents"`
 	RightsStatements       []RightsStatement              `json:"rights_statements"`
 	CollectionManagement   CollectionManagement           `json:"collection_management,omitempty"`
-	UserDefined            interface{}                    `json:"user_defined,omitempty"`
-	RelatedResources       interface{}                    `json:"related_resources,omitempty"`
+	UserDefined            UserDefined                    `json:"user_defined,omitempty"`
+	RelatedResources       map[string]string              `json:"related_resources,omitempty"`
 	Suppressed             bool                           `json:"suppressed"`
 	AcquisitionType        string                         `json:"acquisition_type,omitempty"`
 	ResourceType           string                         `json:"resource_type,omitempty"`
@@ -457,7 +457,7 @@ type Resource struct {
 	Supressed                  bool                `json:"supressed,omitempty"`
 	Title                      string              `json:"title,omitempty"`
 	Tree                       map[string]string   `json:"tree,omitempty"`
-	UserDefined                interface{}         `json:"user_defined,omitempty"`
+	UserDefined                UserDefined         `json:"user_defined,omitempty"`
 	URI                        string              `json:"uri,omitempty"`
 }
 
@@ -566,4 +566,35 @@ type Term struct {
 	JSONModelType     string `json:"json_model_type,omitempty"`
 	URI               string `json:"ur,omitempty"`
 	Vocabulary        string `json:"vocabulary,omitempty"`
+}
+
+type UserDefined struct {
+	Boolean1      bool              `json:"boolean_1,omitempty"`
+	Boolean2      bool              `json:"boolean_2,omitempty"`
+	Boolean3      bool              `json:"boolean_3,omitempty"`
+	Integer1      string            `json:"integer_1,omitempty"`
+	Integer2      string            `json:"integer_2,omitempty"`
+	Integer3      string            `json:"integer_3,omitempty"`
+	Real1         string            `json:"real_1,omitempty"`
+	Real2         string            `json:"real_2,omitempty"`
+	Real3         string            `json:"real_3,omitempty"`
+	String1       string            `json:"string_1,omitempty"`
+	String2       string            `json:"string_2,omitempty"`
+	String3       string            `json:"string_3,omitempty"`
+	String4       string            `json:"string_4,omitempty"`
+	Text1         string            `json:"text_1,omitempty"`
+	Text2         string            `json:"text_2,omitempty"`
+	Text3         string            `json:"text_3,omitempty"`
+	Text4         string            `json:"text_4,omitempty"`
+	Text5         string            `json:"text_5,omitempty"`
+	Date1         Date              `json:"date_1,omitempty"`
+	Date2         Date              `json:"date_2,omitempty"`
+	Date3         Date              `json:"date_3,omitempty"`
+	Enum1         string            `json:"enum_1,omitempty"`
+	Enum2         string            `json:"enum_2,omitempty"`
+	Enum3         string            `json:"enum_3,omitempty"`
+	Enum4         string            `json:"enum_4,omitempty"`
+	LockVersion   int               `json:"lock_version"`
+	JSONModelType string            `json:"jsonmodel_type"`
+	Repository    map[string]string `json:"repository"`
 }
