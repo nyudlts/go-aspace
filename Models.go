@@ -28,7 +28,7 @@ type Accession struct {
 	RightsStatements       []RightsStatement              `json:"rights_statements"`
 	CollectionManagement   CollectionManagement           `json:"collection_management,omitempty"`
 	UserDefined            UserDefined                    `json:"user_defined,omitempty"`
-	RelatedResources       map[string]string              `json:"related_resources,omitempty"`
+	RelatedResources       []map[string]string            `json:"related_resources,omitempty"`
 	Suppressed             bool                           `json:"suppressed"`
 	AcquisitionType        string                         `json:"acquisition_type,omitempty"`
 	ResourceType           string                         `json:"resource_type,omitempty"`
