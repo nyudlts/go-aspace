@@ -43,3 +43,41 @@ func (a *ASClient) GetAccession(repositoryID int, accessionID int) (Accession, e
 
 	return accession, nil
 }
+
+func (a *ASClient) UpdateAccession(repositoryID int, accessionID int, accession Accession) (string, error) {
+	endpoint := fmt.Sprintf("/repositories/%d/accessions/%d", repositoryID, accessionID)
+	body, err := json.Marshal(accession)
+	if err != nil {
+		return "", err
+	}
+	response, err := a.post(endpoint, true, string(body))
+	if err != nil {
+		return "", err
+	}
+
+	msg, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return "", err
+	}
+
+	return string(msg), nil
+}
+
+func (a *ASClient) CreateAccession(repositoryID int, accession Accession) (string, error) {
+	endpoint := fmt.Sprintf("/repositories/%d/accessions", repositoryID, accession)
+	body, err := json.Marshal(accession)
+	if err != nil {
+		return "", err
+	}
+	response, err := a.post(endpoint, true, string(body))
+	if err != nil {
+		return "", err
+	}
+
+	msg, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return "", err
+	}
+
+	return string(msg), nil
+}
