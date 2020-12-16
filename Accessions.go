@@ -44,6 +44,22 @@ func (a *ASClient) GetAccession(repositoryID int, accessionID int) (Accession, e
 	return accession, nil
 }
 
+func (a *ASClient) GetRandomAccessionID() (int, int, error) {
+	repositoryID, err := a.GetRandomRepository()
+	if err != nil {
+		return 0, 0, err
+	}
+
+	accessionIDs, err := a.GetAccessionIDs(repositoryID)
+	if err != nil {
+		return 0, 0, err
+	}
+
+	accessionID := accessionIDs[rGen.Intn(len(accessionIDs))]
+
+	return repositoryID, accessionID, nil
+}
+
 func (a *ASClient) UpdateAccession(repositoryID int, accessionID int, accession Accession) (string, error) {
 	endpoint := fmt.Sprintf("/repositories/%d/accessions/%d", repositoryID, accessionID)
 	body, err := json.Marshal(accession)
@@ -64,7 +80,7 @@ func (a *ASClient) UpdateAccession(repositoryID int, accessionID int, accession 
 }
 
 func (a *ASClient) CreateAccession(repositoryID int, accession Accession) (string, error) {
-	endpoint := fmt.Sprintf("/repositories/%d/accessions", repositoryID, accession)
+	endpoint := fmt.Sprintf("/repositories/%d/accessions", repositoryID)
 	body, err := json.Marshal(accession)
 	if err != nil {
 		return "", err
@@ -80,4 +96,19 @@ func (a *ASClient) CreateAccession(repositoryID int, accession Accession) (strin
 	}
 
 	return string(msg), nil
+}
+
+func (a *ASClient) DeleteAccession(repositoryID int, accessionID int) (string, error) {
+	endpoint := fmt.Sprintf("/repositories/%d/accessions/%d", repositoryID, accessionID)
+	response, err := a.delete(endpoint)
+	if err != nil {
+		return fmt.Sprintf("code %d", response.StatusCode), err
+	}
+	msg, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return fmt.Sprintf("code %d", response.StatusCode), err
+	}
+
+	return string(msg), nil
+
 }

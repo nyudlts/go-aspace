@@ -13,22 +13,13 @@ func TestAccessions(t *testing.T) {
 	}
 
 	t.Run("Test an accession", func(t *testing.T) {
-		repositoryID, err := client.GetRandomRepository()
+
+		accessionID, RepoID, err := client.GetRandomAccessionID()
 		if err != nil {
 			t.Error(err)
 		}
 
-		accessionIDs, err := client.GetAccessionIDs(repositoryID)
-		if err != nil {
-			t.Error(err)
-		}
-
-		accessionID := accessionIDs[rGen.Intn(len(accessionIDs))]
-
-		accession, err := client.GetAccession(repositoryID, accessionID)
-		if err != nil {
-			t.Error(err)
-		}
+		accession, err := client.GetAccession(accessionID, RepoID)
 
 		t.Logf("Successfully serialized %s %s", accession.URI, accession.Title)
 
