@@ -92,17 +92,17 @@ func (a *ASClient) DeleteDigitalObject(repositoryId int, doId int) (string, erro
 	return string(body), nil
 }
 
-func RandomDigitalObject(client *ASClient) (int, int, error) {
+func (a *ASClient) GetRandomDigitalObject() (int, int, error) {
 	var repositoryID = 0
 	var digitalObjectID = 0
-	repositoryIDs, err := client.GetRepositories()
+	repositoryIDs, err := a.GetRepositories()
 	if err != nil {
 		return repositoryID, digitalObjectID, err
 	}
 
 	repositoryID = repositoryIDs[rGen.Intn(len(repositoryIDs))]
 
-	digitalObjectIDs, err := client.GetDigitalObjectIDs(repositoryID)
+	digitalObjectIDs, err := a.GetDigitalObjectIDs(repositoryID)
 	if err != nil {
 		return repositoryID, digitalObjectID, err
 	}

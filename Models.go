@@ -391,21 +391,25 @@ type RepositoryReference struct {
 }
 
 type Repository struct {
-	LockVersion           int            `json:"lock_version,omitempty"`
+	URI                   string         `json:"uri"`
 	RepoCode              string         `json:"repo_code,omitempty"`
 	Name                  string         `json:"name,omitempty"`
 	OrgCode               string         `json:"org_code,omitempty"`
+	Country               string         `json:"country,omitempty"`
 	ParentInstitutionName string         `json:"parent_institution_name,omitempty"`
+	Description           string         `json:"description,omitempty""`
 	URL                   string         `json:",omitempty"`
+	ImageURL              string         `json:"image_url,omitempty"`
+	ContactPersons        string         `json:"contact_persons,omitempty"`
 	Publish               bool           `json:"publish,omitempty"`
+	DisplayString         string         `json:"display_string"`
 	OAIIsDisabled         bool           `json:"oai_is_disabled,omitempty"`
+	OAISetsAvailable      string         `json:"oai_sets_available,omitempty"`
 	Slug                  string         `json:"slug,omitempty"`
 	IsSlugAuto            bool           `json:"is_slug_auto"`
-	Country               string         `json:"country,omitempty"`
-	JSONModelType         string         `json:"jsonmodel_type,omitempty"`
-	URI                   string         `json:"uri,omitempty"`
-	DisplayString         string         `json:"display_string"`
 	AgentRepresentation   AgentReference `json:"agent_representation"`
+	LockVersion           int            `json:"lock_version,omitempty"`
+	JSONModelType         string         `json:"jsonmodel_type,omitempty"`
 }
 
 type Resource struct {

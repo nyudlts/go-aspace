@@ -29,7 +29,7 @@ func (a *ASClient) GetArchivalObject(repositoryId int, aoId int) (ArchivalObject
 	return ao, nil
 }
 
-func (a *ASClient) GetArchivalObjectsForResource(repositoryId int, resourceId int) ([]string, error){
+func (a *ASClient) GetArchivalObjectsForResource(repositoryId int, resourceId int) ([]string, error) {
 
 	aos := []string{}
 	tree, err := a.GetResourceTree(repositoryId, resourceId)
@@ -42,7 +42,7 @@ func (a *ASClient) GetArchivalObjectsForResource(repositoryId int, resourceId in
 	return aos, nil
 }
 
-func (a *ASClient) UpdateArchivalObject(repositoryId int, archivalObjectId int, archivalObject ArchivalObject ) (string, error) {
+func (a *ASClient) UpdateArchivalObject(repositoryId int, archivalObjectId int, archivalObject ArchivalObject) (string, error) {
 	responseMessage := ""
 	endpoint := fmt.Sprintf("/repositories/%d/archival_objects/%d", repositoryId, archivalObjectId)
 	body, err := json.Marshal(archivalObject)
@@ -70,4 +70,15 @@ func getChildArchivalObjectURIs(children []ResourceTree, aos *[]string) {
 			getChildArchivalObjectURIs(child.Children, aos)
 		}
 	}
+}
+
+func (a *ASClient) GetRandomArchivalObject() (int, int, error) {
+	repositoryID, resourceID, err := a.GetRandomResourceID()
+	if err != nil {
+		return 0, 0, err
+	}
+	aoURIs, err := a.GetArchivalObjectsForResource(repositoryID, resourceID)
+	aoURI := aoURIs[rGen.Intn(len(aoURIs))]
+	_, aoID, _ := URISplit(aoURI)
+	return repositoryID, aoID, nil
 }

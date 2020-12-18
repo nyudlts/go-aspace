@@ -14,7 +14,7 @@ func TestDigitalObject(t *testing.T) {
 	}
 
 	t.Run("Test serialize a digital object", func(t *testing.T) {
-		repositoryID, digitalObjectID, err := RandomDigitalObject(client)
+		repositoryID, digitalObjectID, err := client.GetRandomDigitalObject()
 		if err != nil {
 			t.Error(err)
 		}

@@ -7,6 +7,7 @@ import (
 	"strconv"
 )
 
+// Return a slice of Repository IDs for the instance
 func (a *ASClient) GetRepositories() ([]int, error) {
 	repIds := []int{}
 	endpoint := "/repositories"
@@ -34,6 +35,7 @@ func (a *ASClient) GetRepositories() ([]int, error) {
 	return repIds, nil
 }
 
+//Return a Repository struct for given Repository ID
 func (a *ASClient) GetRepository(repositoryID int) (Repository, error) {
 	repository := Repository{}
 	endpoint := fmt.Sprintf("/repositories/%d", repositoryID)
@@ -55,6 +57,7 @@ func (a *ASClient) GetRepository(repositoryID int) (Repository, error) {
 	return repository, nil
 }
 
+//Get a random Repository ID
 func (a *ASClient) GetRandomRepository() (int, error) {
 
 	repositoryIDs, err := a.GetRepositories()

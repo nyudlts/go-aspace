@@ -13,15 +13,9 @@ func TestArchivalObject(t *testing.T) {
 	}
 
 	t.Run("Test serialize and archival object", func(t *testing.T) {
-		repositoryId, resourceId, err := client.GetRandomResourceID()
-		if err != nil {
-			t.Error(err)
-		}
+		repositoryID, aoID, err := client.GetRandomArchivalObject()
 
-		aoURIs, err := client.GetArchivalObjectsForResource(repositoryId, resourceId)
-		aoURI := aoURIs[rGen.Intn(len(aoURIs))]
-		_, aoID, _ := URISplit(aoURI)
-		ao, err := client.GetArchivalObject(repositoryId, aoID)
+		ao, err := client.GetArchivalObject(repositoryID, aoID)
 		if err != nil {
 			t.Error(err)
 		} else {
