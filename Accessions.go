@@ -7,7 +7,7 @@ import (
 	"log"
 )
 
-// Get a list of Accession IDs for a given Repository
+// Get a list of Accession IDs for a given Repository ID
 func (a *ASClient) GetAccessionIDs(repositoryID int) ([]int, error) {
 	var accessions = []int{}
 	endpoint := fmt.Sprintf("/repositories/%d/accessions?all_ids=true", repositoryID)
@@ -43,7 +43,6 @@ func (a *ASClient) GetAccession(repositoryID int, accessionID int) (Accession, e
 	if err != nil {
 		return accession, err
 	}
-
 	return accession, nil
 }
 
@@ -55,7 +54,7 @@ func (a *ASClient) GetRandomAccessionID() (int, int, error) {
 		return 0, 0, err
 	}
 
-	log.Println(repositoryID)
+	//log.Println(repositoryID)
 	accessionIDs, err := a.GetAccessionIDs(repositoryID)
 	if err != nil {
 		return 0, 0, err

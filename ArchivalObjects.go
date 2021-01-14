@@ -82,3 +82,18 @@ func (a *ASClient) GetRandomArchivalObject() (int, int, error) {
 	_, aoID, _ := URISplit(aoURI)
 	return repositoryID, aoID, nil
 }
+
+func (a *ASClient) SearchArchivalObjects(repoID int, s string) ([]ArchivalObject, error) {
+	aos := []ArchivalObject{}
+	results, err := a.Search(repoID, "archival_object", s, 1)
+	if err != nil {
+		return aos, err
+	}
+
+	for _, r := range results.Results {
+		ao_json, _ := json.Marshal(r["json"])
+
+		fmt.Println(fmt.Sprintf("%T\n", ao_json))
+	}
+	return aos, nil
+}

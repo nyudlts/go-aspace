@@ -20,8 +20,11 @@ func TestAccessions(t *testing.T) {
 		}
 
 		accession, err := client.GetAccession(accessionID, RepoID)
+		if err != nil {
+			t.Error(err)
+		}
 
-		t.Logf("Successfully serialized %s %s", accession.URI, accession.Title)
+		t.Logf("Successfully unmarshalled %s %s", accession.URI, accession.Title)
 
 	})
 
