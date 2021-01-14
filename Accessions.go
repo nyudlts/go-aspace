@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 )
 
 // Get a list of Accession IDs for a given Repository
@@ -54,11 +55,12 @@ func (a *ASClient) GetRandomAccessionID() (int, int, error) {
 		return 0, 0, err
 	}
 
+	log.Println(repositoryID)
 	accessionIDs, err := a.GetAccessionIDs(repositoryID)
 	if err != nil {
 		return 0, 0, err
 	}
-
+	log.Println(len(accessionIDs))
 	accessionID := accessionIDs[rGen.Intn(len(accessionIDs))]
 
 	return repositoryID, accessionID, nil
