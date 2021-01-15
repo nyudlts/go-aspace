@@ -85,15 +85,30 @@ func (a *ASClient) GetRandomArchivalObject() (int, int, error) {
 
 func (a *ASClient) SearchArchivalObjects(repoID int, s string) ([]ArchivalObject, error) {
 	aos := []ArchivalObject{}
-	results, err := a.Search(repoID, "archival_object", s, 1)
+	iresults, err := a.Search(repoID, "archival_object", s, 1)
+
 	if err != nil {
 		return aos, err
 	}
 
-	for _, r := range results.Results {
-		ao_json, _ := json.Marshal(r["json"])
+	lastPage := iresults.LastPage
 
-		fmt.Println(fmt.Sprintf("%T\n", ao_json))
+	//itterate here through pages
+	for i := 1; i < lastPage; i++ {
+		results, err := a.Search(repoID, "archival_object", s, i)
+		for _, r := range results.Results {
+			ao_json := []byte(fmt.Sprintf("%v", r["json"]))
+			if err != nil {
+				return aos, err
+			}
+			ao := ArchivalObject{}
+			err := json.Unmarshal(ao_json, &ao)
+			if err != nil {
+				return aos, err
+			}
+			aos = append(aos, ao)
+		}
 	}
+
 	return aos, nil
 }
