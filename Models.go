@@ -153,8 +153,8 @@ type Classification struct {
 }
 
 type CollectionManagement struct {
-	LockVersion                    int               `json:"lock_version"`
-	JSONModelType                  string            `json:"jsonmodel_type"`
+	LockVersion                    int               `json:"lock_version,omitempty"`
+	JSONModelType                  string            `json:"jsonmodel_type,omitempty"`
 	URI                            string            `json:"uri,omitempty"`
 	ProcessingHoursPerFootEstimate string            `json:"processing_hours_per_foot_estimate,omitempty"`
 	ProcessingTotalExtent          string            `json:"processing_total_extent,omitempty"`
@@ -213,7 +213,7 @@ type DigitalObject struct {
 	RightsStatememts     []RightsStatement    `json:"rights_statememts,omitempty"`
 	LinkedAgents         []LinkedAgent        `json:"linked_agents,omitempty"`
 	FileVersions         []FileVersion        `json:"file_versions,omitempty"`
-	Notes                []Note               `json:"notes,omitempty"`
+	Notes                []NoteDigitalObject  `json:"notes,omitempty"`
 	LinkedInstances      []LinkedInstance     `json:"linked_instances,omitempty"`
 	URI                  string               `json:"uri,omitempty"`
 	Repository           LinkedRepository     `json:"repository,omitempty"`
@@ -221,7 +221,7 @@ type DigitalObject struct {
 	Level                string               `json:"level,omitempty"`
 	Slug                 string               `json:"slug,omitempty"`
 	DigitalObjectType    string               `json:"digital_object_type,omitempty"`
-	UserDefined          UserDefined          `json:"user_defined"`
+	UserDefined          *UserDefined          `json:"user_defined,omitempty"`
 	CollectionManagement CollectionManagement `json:"collection_management,omitempty"`
 }
 
@@ -323,23 +323,23 @@ type LinkedAgent struct {
 
 type LinkedEvent struct {
 	Ref      string `json:"ref,omitempty"`
-	Resolved Event  `json:"_resolved,omitEmpty"`
+	Resolved Event  `json:"_resolved,omitempty"`
 }
 
 type LinkedInstance struct {
 	Ref      string   `json:"ref,omitempty"`
-	Resolved Instance `json:"_resolved,omitEmpty"`
+	Resolved Instance `json:"_resolved,omitempty"`
 }
 
 type LinkedRecord struct {
 	Role     string `json:"role"`
 	Ref      string `json:"ref"`
-	Resolved Agent  `json:"_resolved,omitEmpty"`
+	Resolved Agent  `json:"_resolved,omitempty"`
 }
 
 type LinkedRepository struct {
 	Ref      string     `json:"ref"`
-	Resolved Repository `json:"_resolved,omitEmpty"`
+	Resolved Repository `json:"_resolved,omitempty"`
 }
 
 type Name struct {
@@ -377,6 +377,18 @@ type Note struct {
 	Content           []string               `json:"content,omitempty"`
 	Publish           bool                   `json:"publish,omitempty"`
 	RightsRestriction map[string]interface{} `json:"rights_restriction,omitempty"`
+}
+
+type NoteDigitalObject struct {
+	Label string `json:"label,omitempty"`
+	Publish bool `json:"publish"`
+	PersistentId string `json:"persistent_id"`
+	IngestProblem string `json:"ingest_problem,omitempty"`
+	LockVersion *int `json:"lock_version,omitempty"`
+	JsonModelType string `json:"jsonmodel_type"`
+	Repository LinkedRepository `json:"repository"`
+	Content []string `json:"content"`
+	Type string `json:"type"`
 }
 
 type NoteLangmaterial struct {
@@ -607,9 +619,9 @@ type Term struct {
 }
 
 type UserDefined struct {
-	Boolean1      bool              `json:"boolean_1,omitempty"`
-	Boolean2      bool              `json:"boolean_2,omitempty"`
-	Boolean3      bool              `json:"boolean_3,omitempty"`
+	Boolean1      *bool              `json:"boolean_1,omitempty"`
+	Boolean2      *bool              `json:"boolean_2,omitempty"`
+	Boolean3      *bool              `json:"boolean_3,omitempty"`
 	Integer1      string            `json:"integer_1,omitempty"`
 	Integer2      string            `json:"integer_2,omitempty"`
 	Integer3      string            `json:"integer_3,omitempty"`
@@ -634,5 +646,5 @@ type UserDefined struct {
 	Enum4         string            `json:"enum_4,omitempty"`
 	LockVersion   int               `json:"lock_version"`
 	JSONModelType string            `json:"jsonmodel_type"`
-	Repository    map[string]string `json:"repository"`
+	Repository    Repository `json:"repository"`
 }

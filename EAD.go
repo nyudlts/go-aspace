@@ -38,7 +38,6 @@ func (a *ASClient) SerializeEAD(repositoryId int, resourceId int, daos bool, unp
 }
 
 func ValidateEAD(fa []byte) error {
-
 	eadxsd, err := xsd.Parse(box.Box.Get("/ead.xsd"))
 	if err != nil {
 		return err
