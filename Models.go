@@ -580,7 +580,14 @@ type SearchResult struct {
 
 type SubContainer struct {
 	JSONModel    string                 `json:"jsonmodel_type,omitempty"`
-	TopContainer map[string]interface{} `json:"top_container,omitempty"`
+	TopContainer map[string]string `json:"top_container,omitempty"`
+	Type_2	string `json:"type_2,omitempty"`
+	Indicator_2 string `json:"indicator_2,omitempty"`
+	Barcode_2 string `json:"barcode_2,omitempty"`
+	Type_3	string `json:"type_3",omitempty`
+	Indicator_3 string `json:"indicator_3,omitempty"`
+	DisplayString string `json:"display_string,omitempty"`
+	Repository interface{}
 }
 
 type Subject struct {
@@ -614,8 +621,32 @@ type Term struct {
 	XForeignKeyX      int64  `json:"x_foreign_key_x,omitempty"`
 	TermType          string `json:"term_type,omitempty"`
 	JSONModelType     string `json:"json_model_type,omitempty"`
-	URI               string `json:"ur,omitempty"`
+	URI               string `json:"uri,omitempty"`
 	Vocabulary        string `json:"vocabulary,omitempty"`
+}
+
+type TopContainer struct {
+	URI string `json:"uri,omitempty"`
+	Indicator string `json:"indicator"`
+	Type string `json:"type"`
+	Barcode string `json:"barcode"`
+	DisplayString string `json:"display_string"`
+	LongDisplayString string `json:"long_display_string"`
+	SubcontainerBarcodes string `json:"subcontainer_barcodes"`
+	ILSHoldingID string `json:"ils_holding_id,omitempty"`
+	ILSItemID string `json:"ils_item_id,omitempty"`
+	ExportToILS string `json:"export_to_ils,omitempty"`
+	Restricted bool `json:"restricted"`
+	CreatedForCollection string `json:"created_for_collection,omitempty"`
+	IsLinkedToPublishedRecord bool `json:"is_linked_to_published_record"`
+	ActiveRestrictions []interface{} `json:"active_restrictions"`
+	ContainerLocations []interface{} `json:"container_locations"`
+	ContainerProfile interface{} `json:"container_profile"`
+	Series []interface{} `json:"series"`
+	Collection []interface{} `json:"collection"`
+	Repository []interface{} `json:"repository"`
+	JSONMOdelType string `json:"json_model_type"`
+
 }
 
 type UserDefined struct {
