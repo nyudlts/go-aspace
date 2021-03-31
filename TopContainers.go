@@ -47,7 +47,7 @@ func (a *ASClient) GetTopContainer(repositoryID int, topContainerID int) (TopCon
 	return tc, nil
 }
 
-func (a *ASClient) GetTopContainersForResource(repositoryID int, resourceID int) ([]string, error) {
+func (a *ASClient) GetTopContainerIDsForResource(repositoryID int, resourceID int) ([]string, error) {
 	tcs := []string{}
 	responseMap := []map[string]string{}
 	endpoint := fmt.Sprintf("/repositories/%d/resources/%d/top_containers", repositoryID, resourceID)
@@ -71,5 +71,26 @@ func (a *ASClient) GetTopContainersForResource(repositoryID int, resourceID int)
 		tcs = append(tcs, tc["ref"])
 	}
 
+	return tcs, nil
+}
+
+func (a *ASClient) GetTopContainersForResource(repositoryID int, resourceID int) (map[string]TopContainer, error) {
+	tcs := map[string]TopContainer{}
+	tcIds, err := a.GetTopContainerIDsForResource(repositoryID, resourceID)
+	if err != nil {
+		return tcs, err
+	}
+	for _, tcId := range tcIds {
+		_, tcId, err := URISplit(tcId)
+		if err != nil {
+			return tcs, err
+		}
+
+		tc, err := a.GetTopContainer(repositoryID, tcId)
+		if err != nil {
+			return tcs, err
+		}
+		tcs[tc.Indicator] = tc
+	}
 	return tcs, nil
 }
