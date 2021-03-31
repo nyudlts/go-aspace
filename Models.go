@@ -641,10 +641,10 @@ type TopContainer struct {
 	IsLinkedToPublishedRecord bool `json:"is_linked_to_published_record"`
 	ActiveRestrictions []interface{} `json:"active_restrictions"`
 	ContainerLocations []interface{} `json:"container_locations"`
-	ContainerProfile interface{} `json:"container_profile"`
+	ContainerProfile map[string]string `json:"container_profile"`
 	Series []interface{} `json:"series"`
 	Collection []interface{} `json:"collection"`
-	Repository []interface{} `json:"repository"`
+	Repository map[string]string `json:"repository"`
 	JSONMOdelType string `json:"json_model_type"`
 
 }

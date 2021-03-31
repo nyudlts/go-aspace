@@ -24,3 +24,52 @@ func (a *ASClient) GetTopContainerIDs(repositoryID int) ([]int, error) {
 
 	return topContainers, nil
 }
+
+func (a *ASClient) GetTopContainer(repositoryID int, topContainerID int) (TopContainer, error) {
+	tc := TopContainer{}
+	endpoint := fmt.Sprintf("/repositories/%d/top_containers/%d", repositoryID, topContainerID)
+
+	reponse, err := a.get(endpoint, true)
+	if err != nil {
+		return tc, err
+	}
+
+	body, err := ioutil.ReadAll(reponse.Body)
+	if err != nil {
+		return tc, err
+	}
+
+	err = json.Unmarshal(body, &tc)
+	if err != nil {
+		return tc, err
+	}
+
+	return tc, nil
+}
+
+func (a *ASClient) GetTopContainersForResource(repositoryID int, resourceID int) ([]string, error) {
+	tcs := []string{}
+	responseMap := []map[string]string{}
+	endpoint := fmt.Sprintf("/repositories/%d/resources/%d/top_containers", repositoryID, resourceID)
+
+	reponse, err := a.get(endpoint, true)
+	if err != nil {
+		return tcs, err
+	}
+
+	body, err := ioutil.ReadAll(reponse.Body)
+	if err != nil {
+		return tcs, err
+	}
+
+	err = json.Unmarshal(body, &responseMap)
+	if err != nil {
+		return tcs, err
+	}
+
+	for _, tc := range responseMap {
+		tcs = append(tcs, tc["ref"])
+	}
+
+	return tcs, nil
+}

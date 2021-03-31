@@ -2,9 +2,13 @@ package aspace
 
 import (
 	"flag"
+	"fmt"
 	"testing"
 )
 
+var topContainerID int
+var repositoryID int
+var resourceID int
 
 func TestTopContainers(t *testing.T) {
 	flag.Parse()
@@ -12,8 +16,12 @@ func TestTopContainers(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
+
+	repositoryID, _ = client.GetRandomRepository()
+	resourceIDs, _ := client.GetResourceIDs(repositoryID)
+
 	t.Run("Test Get TopContainer IDS", func(t *testing.T) {
-		topContainers, err := client.GetTopContainerIDs(6)
+		topContainers, err := client.GetTopContainerIDs(repositoryID)
 		if err != nil {
 			t.Error(err)
 		}
@@ -24,6 +32,24 @@ func TestTopContainers(t *testing.T) {
 			t.Log("returned", len(topContainers), "Top Containers")
 		}
 
+		topContainerID = topContainers[0]
+
 	})
 
+	t.Run("Test Get A Top Container", func(t *testing.T){
+		topContainer, err := client.GetTopContainer(repositoryID, topContainerID)
+		if err != nil {
+			t.Error(err)
+		}
+
+		t.Log("Top Container", topContainer.URI, "serialized")
+	})
+
+	t.Run("Test Get Top Containers for Resource", func(t *testing.T) {
+		topContainers, err := client.GetTopContainersForResource(repositoryID, resourceIDs[0])
+		if err != nil {
+			t.Error(err)
+		}
+		fmt.Println(topContainers)
+	})
 }
