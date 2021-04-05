@@ -74,8 +74,8 @@ func (a *ASClient) GetTopContainerIDsForResource(repositoryID int, resourceID in
 	return tcs, nil
 }
 
-func (a *ASClient) GetTopContainersForResource(repositoryID int, resourceID int) (map[string]TopContainer, error) {
-	tcs := map[string]TopContainer{}
+func (a *ASClient) GetTopContainersForResource(repositoryID int, resourceID int) ([]TopContainer, error) {
+	tcs := []TopContainer{}
 	tcIds, err := a.GetTopContainerIDsForResource(repositoryID, resourceID)
 	if err != nil {
 		return tcs, err
@@ -90,7 +90,7 @@ func (a *ASClient) GetTopContainersForResource(repositoryID int, resourceID int)
 		if err != nil {
 			return tcs, err
 		}
-		tcs[tc.Indicator] = tc
+		tcs = append(tcs, tc)
 	}
 	return tcs, nil
 }
