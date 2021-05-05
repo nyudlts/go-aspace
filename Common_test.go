@@ -2,14 +2,13 @@ package aspace
 
 import (
 	"flag"
+	goaspacetest "github.com/nyudlts/go-aspace/goaspace_testing"
 	"testing"
 )
 
-var envPtr = flag.String("environment", "dev", "The environment to run tests on")
-
 func TestCommon(t *testing.T) {
 	flag.Parse()
-	client, err := NewClient(*envPtr, 10)
+	client, err := NewClient(goaspacetest.ConfigFile, *goaspacetest.EnvPtr, 10)
 	if err != nil {
 		t.Error(err)
 	}

@@ -3,12 +3,13 @@ package aspace
 import (
 	"flag"
 	"fmt"
+	goaspacetest "github.com/nyudlts/go-aspace/goaspace_testing"
 	"testing"
 )
 
 func TestDigitalObject(t *testing.T) {
 	flag.Parse()
-	client, err := NewClient(*envPtr, 10)
+	client, err := NewClient(goaspacetest.ConfigFile, *goaspacetest.EnvPtr, 10)
 	if err != nil {
 		t.Error(err)
 	}
@@ -29,8 +30,7 @@ func TestDigitalObject(t *testing.T) {
 
 	t.Run("Test Unamarshal a digital object with notes", func(t *testing.T) {
 
-
-		do, err := client.GetDigitalObject(2,261)
+		do, err := client.GetDigitalObject(2, 261)
 		if err != nil {
 			t.Error(err)
 		} else {

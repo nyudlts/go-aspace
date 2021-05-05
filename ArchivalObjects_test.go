@@ -2,12 +2,13 @@ package aspace
 
 import (
 	"flag"
+	goaspacetest "github.com/nyudlts/go-aspace/goaspace_testing"
 	"testing"
 )
 
 func TestArchivalObject(t *testing.T) {
 	flag.Parse()
-	client, err := NewClient(*envPtr, 10)
+	client, err := NewClient(goaspacetest.ConfigFile, *goaspacetest.EnvPtr, 10)
 	if err != nil {
 		t.Error(err)
 	}
@@ -23,14 +24,15 @@ func TestArchivalObject(t *testing.T) {
 		}
 	})
 
-	t.Run("Test Basic Search", func(t *testing.T) {
+	/*
+		t.Run("Test Basic Search", func(t *testing.T) {
 
-		aos, err := client.SearchArchivalObjects(2, "Broadway")
-		if err != nil {
-			t.Error(err)
-		}
+			aos, err := client.SearchArchivalObjects(2, "Broadway")
+			if err != nil {
+				t.Error(err)
+			}
 
-		t.Logf("Search returned %d results", len(aos))
-	})
-
+			t.Logf("Search returned %d results", len(aos))
+		})
+	*/
 }

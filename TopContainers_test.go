@@ -3,6 +3,7 @@ package aspace
 import (
 	"flag"
 	"fmt"
+	goaspacetest "github.com/nyudlts/go-aspace/goaspace_testing"
 	"testing"
 )
 
@@ -12,7 +13,7 @@ var resourceID int
 
 func TestTopContainers(t *testing.T) {
 	flag.Parse()
-	client, err := NewClient(*envPtr, 10)
+	client, err := NewClient(goaspacetest.ConfigFile, *goaspacetest.EnvPtr, 10)
 	if err != nil {
 		t.Error(err)
 	}
@@ -38,7 +39,7 @@ func TestTopContainers(t *testing.T) {
 
 	})
 
-	t.Run("Test Get A Top Container", func(t *testing.T){
+	t.Run("Test Get A Top Container", func(t *testing.T) {
 		topContainer, err := client.GetTopContainer(repositoryID, topContainerID)
 		if err != nil {
 			t.Error(err)
@@ -60,7 +61,7 @@ func TestTopContainers(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
-		for k,v := range topContainers {
+		for k, v := range topContainers {
 			fmt.Println(k, "->", v.Barcode)
 		}
 	})

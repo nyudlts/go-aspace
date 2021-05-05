@@ -7,6 +7,7 @@ import (
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -22,9 +23,12 @@ type Creds struct {
 	Password string `yaml:"password"`
 }
 
-func NewClient(environment string, timeout int) (*ASClient, error) {
+func NewClient(configFile string, environment string, timeout int) (*ASClient, error) {
 
 	var client *ASClient
+	if _, err := os.Stat(configFile); os.IsNotExist(err) {
+		return client, fmt.Errorf("Configuration file %s does not exist", configFile)
+	}
 
 	tr := &http.Transport{
 		MaxIdleConns:       10,
@@ -36,7 +40,7 @@ func NewClient(environment string, timeout int) (*ASClient, error) {
 		Transport: tr,
 	}
 
-	creds, err := getCreds(environment)
+	creds, err := getCreds(environment, configFile)
 	if err != nil {
 		return client, err
 	}
@@ -55,9 +59,9 @@ func NewClient(environment string, timeout int) (*ASClient, error) {
 	return client, err
 }
 
-func getCreds(environment string) (Creds, error) {
+func getCreds(environment string, configFile string) (Creds, error) {
 	credsMap := map[string]Creds{}
-	source, err := ioutil.ReadFile("/etc/go-aspace.yml")
+	source, err := ioutil.ReadFile(configFile)
 	if err != nil {
 		return Creds{}, err
 	}

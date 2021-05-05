@@ -221,7 +221,7 @@ type DigitalObject struct {
 	Level                string               `json:"level,omitempty"`
 	Slug                 string               `json:"slug,omitempty"`
 	DigitalObjectType    string               `json:"digital_object_type,omitempty"`
-	UserDefined          *UserDefined          `json:"user_defined,omitempty"`
+	UserDefined          *UserDefined         `json:"user_defined,omitempty"`
 	CollectionManagement CollectionManagement `json:"collection_management,omitempty"`
 }
 
@@ -380,15 +380,15 @@ type Note struct {
 }
 
 type NoteDigitalObject struct {
-	Label string `json:"label,omitempty"`
-	Publish bool `json:"publish"`
-	PersistentId string `json:"persistent_id"`
-	IngestProblem string `json:"ingest_problem,omitempty"`
-	LockVersion *int `json:"lock_version,omitempty"`
-	JsonModelType string `json:"jsonmodel_type"`
-	Repository LinkedRepository `json:"repository"`
-	Content []string `json:"content"`
-	Type string `json:"type"`
+	Label         string           `json:"label,omitempty"`
+	Publish       bool             `json:"publish"`
+	PersistentId  string           `json:"persistent_id"`
+	IngestProblem string           `json:"ingest_problem,omitempty"`
+	LockVersion   *int             `json:"lock_version,omitempty"`
+	JsonModelType string           `json:"jsonmodel_type"`
+	Repository    LinkedRepository `json:"repository"`
+	Content       []string         `json:"content"`
+	Type          string           `json:"type"`
 }
 
 type NoteLangmaterial struct {
@@ -579,15 +579,15 @@ type SearchResult struct {
 }
 
 type SubContainer struct {
-	JSONModel    string                 `json:"jsonmodel_type,omitempty"`
-	TopContainer map[string]string `json:"top_container,omitempty"`
-	Type_2	string `json:"type_2,omitempty"`
-	Indicator_2 string `json:"indicator_2,omitempty"`
-	Barcode_2 string `json:"barcode_2,omitempty"`
-	Type_3	string `json:"type_3",omitempty`
-	Indicator_3 string `json:"indicator_3,omitempty"`
-	DisplayString string `json:"display_string,omitempty"`
-	Repository interface{}
+	JSONModel     string            `json:"jsonmodel_type,omitempty"`
+	TopContainer  map[string]string `json:"top_container,omitempty"`
+	Type_2        string            `json:"type_2,omitempty"`
+	Indicator_2   string            `json:"indicator_2,omitempty"`
+	Barcode_2     string            `json:"barcode_2,omitempty"`
+	Type_3        string            `json:"type_3",omitempty`
+	Indicator_3   string            `json:"indicator_3,omitempty"`
+	DisplayString string            `json:"display_string,omitempty"`
+	Repository    interface{}       `json:"repository,omitempty"`
 }
 
 type Subject struct {
@@ -626,56 +626,55 @@ type Term struct {
 }
 
 type TopContainer struct {
-	URI string `json:"uri,omitempty"`
-	Indicator string `json:"indicator"`
-	Type string `json:"type"`
-	Barcode string `json:"barcode"`
-	DisplayString string `json:"display_string"`
-	LongDisplayString string `json:"long_display_string"`
-	SubcontainerBarcodes string `json:"subcontainer_barcodes"`
-	ILSHoldingID string `json:"ils_holding_id,omitempty"`
-	ILSItemID string `json:"ils_item_id,omitempty"`
-	ExportToILS string `json:"export_to_ils,omitempty"`
-	Restricted bool `json:"restricted"`
-	CreatedForCollection string `json:"created_for_collection,omitempty"`
-	IsLinkedToPublishedRecord bool `json:"is_linked_to_published_record"`
-	ActiveRestrictions []interface{} `json:"active_restrictions"`
-	ContainerLocations []interface{} `json:"container_locations"`
-	ContainerProfile map[string]string `json:"container_profile"`
-	Series []interface{} `json:"series"`
-	Collection []interface{} `json:"collection"`
-	Repository map[string]string `json:"repository"`
-	JSONMOdelType string `json:"json_model_type"`
-
+	URI                       string            `json:"uri,omitempty"`
+	Indicator                 string            `json:"indicator"`
+	Type                      string            `json:"type"`
+	Barcode                   string            `json:"barcode"`
+	DisplayString             string            `json:"display_string"`
+	LongDisplayString         string            `json:"long_display_string"`
+	SubcontainerBarcodes      string            `json:"subcontainer_barcodes"`
+	ILSHoldingID              string            `json:"ils_holding_id,omitempty"`
+	ILSItemID                 string            `json:"ils_item_id,omitempty"`
+	ExportToILS               string            `json:"export_to_ils,omitempty"`
+	Restricted                bool              `json:"restricted"`
+	CreatedForCollection      string            `json:"created_for_collection,omitempty"`
+	IsLinkedToPublishedRecord bool              `json:"is_linked_to_published_record"`
+	ActiveRestrictions        []interface{}     `json:"active_restrictions"`
+	ContainerLocations        []interface{}     `json:"container_locations"`
+	ContainerProfile          map[string]string `json:"container_profile"`
+	Series                    []interface{}     `json:"series"`
+	Collection                []interface{}     `json:"collection"`
+	Repository                map[string]string `json:"repository"`
+	JSONMOdelType             string            `json:"json_model_type"`
 }
 
 type UserDefined struct {
-	Boolean1      *bool              `json:"boolean_1,omitempty"`
-	Boolean2      *bool              `json:"boolean_2,omitempty"`
-	Boolean3      *bool              `json:"boolean_3,omitempty"`
-	Integer1      string            `json:"integer_1,omitempty"`
-	Integer2      string            `json:"integer_2,omitempty"`
-	Integer3      string            `json:"integer_3,omitempty"`
-	Real1         string            `json:"real_1,omitempty"`
-	Real2         string            `json:"real_2,omitempty"`
-	Real3         string            `json:"real_3,omitempty"`
-	String1       string            `json:"string_1,omitempty"`
-	String2       string            `json:"string_2,omitempty"`
-	String3       string            `json:"string_3,omitempty"`
-	String4       string            `json:"string_4,omitempty"`
-	Text1         string            `json:"text_1,omitempty"`
-	Text2         string            `json:"text_2,omitempty"`
-	Text3         string            `json:"text_3,omitempty"`
-	Text4         string            `json:"text_4,omitempty"`
-	Text5         string            `json:"text_5,omitempty"`
-	Date1         Date              `json:"date_1,omitempty"`
-	Date2         Date              `json:"date_2,omitempty"`
-	Date3         Date              `json:"date_3,omitempty"`
-	Enum1         string            `json:"enum_1,omitempty"`
-	Enum2         string            `json:"enum_2,omitempty"`
-	Enum3         string            `json:"enum_3,omitempty"`
-	Enum4         string            `json:"enum_4,omitempty"`
-	LockVersion   int               `json:"lock_version"`
-	JSONModelType string            `json:"jsonmodel_type"`
+	Boolean1      *bool      `json:"boolean_1,omitempty"`
+	Boolean2      *bool      `json:"boolean_2,omitempty"`
+	Boolean3      *bool      `json:"boolean_3,omitempty"`
+	Integer1      string     `json:"integer_1,omitempty"`
+	Integer2      string     `json:"integer_2,omitempty"`
+	Integer3      string     `json:"integer_3,omitempty"`
+	Real1         string     `json:"real_1,omitempty"`
+	Real2         string     `json:"real_2,omitempty"`
+	Real3         string     `json:"real_3,omitempty"`
+	String1       string     `json:"string_1,omitempty"`
+	String2       string     `json:"string_2,omitempty"`
+	String3       string     `json:"string_3,omitempty"`
+	String4       string     `json:"string_4,omitempty"`
+	Text1         string     `json:"text_1,omitempty"`
+	Text2         string     `json:"text_2,omitempty"`
+	Text3         string     `json:"text_3,omitempty"`
+	Text4         string     `json:"text_4,omitempty"`
+	Text5         string     `json:"text_5,omitempty"`
+	Date1         Date       `json:"date_1,omitempty"`
+	Date2         Date       `json:"date_2,omitempty"`
+	Date3         Date       `json:"date_3,omitempty"`
+	Enum1         string     `json:"enum_1,omitempty"`
+	Enum2         string     `json:"enum_2,omitempty"`
+	Enum3         string     `json:"enum_3,omitempty"`
+	Enum4         string     `json:"enum_4,omitempty"`
+	LockVersion   int        `json:"lock_version"`
+	JSONModelType string     `json:"jsonmodel_type"`
 	Repository    Repository `json:"repository"`
 }
