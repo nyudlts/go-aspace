@@ -13,7 +13,7 @@ import (
 
 var p = parser.New()
 
-var LibraryVersion = "v0.3.7"
+var LibraryVersion = "v0.3.8b"
 
 var seed = rand.NewSource(time.Now().UnixNano())
 var rGen = rand.New(seed)
