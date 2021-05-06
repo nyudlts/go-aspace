@@ -23,13 +23,8 @@ type Creds struct {
 	Password string `yaml:"password"`
 }
 
-func NewClient(configFile string, environment string, timeout int) (*ASClient, error) {
-
+func NewClientBufferedConfig(config []byte, environment string, timeout int) (*ASClient, error) {
 	var client *ASClient
-	if _, err := os.Stat(configFile); os.IsNotExist(err) {
-		return client, fmt.Errorf("Configuration file %s does not exist", configFile)
-	}
-
 	tr := &http.Transport{
 		MaxIdleConns:       10,
 		IdleConnTimeout:    time.Duration(timeout) * time.Second,
@@ -40,7 +35,7 @@ func NewClient(configFile string, environment string, timeout int) (*ASClient, e
 		Transport: tr,
 	}
 
-	creds, err := getCreds(environment, configFile)
+	creds, err := getCreds(environment, config)
 	if err != nil {
 		return client, err
 	}
@@ -59,15 +54,51 @@ func NewClient(configFile string, environment string, timeout int) (*ASClient, e
 	return client, err
 }
 
-func getCreds(environment string, configFile string) (Creds, error) {
-	credsMap := map[string]Creds{}
-	source, err := ioutil.ReadFile(configFile)
-	if err != nil {
-		return Creds{}, err
+func NewClient(configFile string, environment string, timeout int) (*ASClient, error) {
+
+	var client *ASClient
+	if _, err := os.Stat(configFile); os.IsNotExist(err) {
+		return client, fmt.Errorf("Configuration file %s does not exist", configFile)
 	}
 
-	err = yaml.Unmarshal(source, &credsMap)
+	bytes, err := ioutil.ReadFile(configFile)
 	if err != nil {
+		return client, err
+	}
+
+	tr := &http.Transport{
+		MaxIdleConns:       10,
+		IdleConnTimeout:    time.Duration(timeout) * time.Second,
+		DisableCompression: true,
+	}
+
+	nclient := &http.Client{
+		Transport: tr,
+	}
+
+	creds, err := getCreds(environment, bytes)
+	if err != nil {
+		return client, err
+	}
+
+	token, err := getSessionKey(creds)
+	if err != nil {
+		return client, err
+	}
+
+	client = &ASClient{
+		sessionKey: token,
+		rootURL:    creds.URL,
+		nclient:    nclient,
+	}
+
+	return client, err
+}
+
+func getCreds(environment string, configBytes []byte) (Creds, error) {
+	credsMap := map[string]Creds{}
+
+	err := yaml.Unmarshal(configBytes, &credsMap);if err != nil {
 		return Creds{}, err
 	}
 
