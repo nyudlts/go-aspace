@@ -1,11 +1,15 @@
 package aspace
 
 import (
+	"embed"
 	"fmt"
 	"github.com/lestrrat-go/libxml2/xsd"
-	"github.com/nyudlts/go-aspace/box"
 	"io/ioutil"
+	_ "embed"
 )
+
+//go:embed schema
+var schemas embed.FS
 
 func (a *ASClient) GetEADAsByteArray(repositoryId int, resourceId int) ([]byte, error) {
 	eadBytes := []byte{}
@@ -38,7 +42,11 @@ func (a *ASClient) SerializeEAD(repositoryId int, resourceId int, daos bool, unp
 }
 
 func ValidateEAD(fa []byte) error {
-	eadxsd, err := xsd.Parse(box.Box.Get("/ead.xsd"))
+	schema, err := schemas.ReadFile("schema/ead.xsd")
+	if err != nil {
+		return err
+	}
+	eadxsd, err := xsd.Parse(schema)
 	if err != nil {
 		return err
 	}
