@@ -86,7 +86,7 @@ type Agent struct {
 
 type AgentReference struct {
 	Ref   string `json:"ref,omitempty"`
-	Agent Agent  `json:"agent,oitempty"`
+	Agent Agent  `json:"agent,omitempty"`
 }
 
 type AgentContact struct {
@@ -120,7 +120,7 @@ type ArchivalObject struct {
 	Title                   string              `json:"title,omitempty"`
 	DisplayString           string              `json:"display_string,omitempty"`
 	RestrictionsApply       bool                `json:"restrictions_apply,omitempty"`
-	Supressed               bool                `json:"supressed,omitempty"`
+	Suppressed               bool                `json:"suppressed,omitempty"`
 	IsSlugAuto              bool                `json:"is_slug_auto,omitempty"`
 	Level                   string              `json:"level,omitempty"`
 	JSONModelType           string              `json:"jsonmodel_type,omitempty"`
@@ -131,7 +131,7 @@ type ArchivalObject struct {
 	LangMaterials           []LangMaterial      `json:"lang_materials,omitempty"`
 	Dates                   []Date              `json:"dates,omitempty"`
 	ExternalDocuments       []ExternalDocument  `json:"external_documents,omitempty"`
-	RightsStatememts        []RightsStatement   `json:"rights_statememts,omitempty"`
+	RightsStatements        []RightsStatement   `json:"rights_statements,omitempty"`
 	LinkedAgents            []LinkedAgent       `json:"linked_agents,omitempty"`
 	Ancestors               []Ancestor          `json:"ancestors,omitempty"`
 	Instances               []Instance          `json:"instances,omitempty"`
@@ -200,7 +200,7 @@ type DigitalObject struct {
 	Title                string               `json:"title,omitempty"`
 	Publish              bool                 `json:"publish,omitempty"`
 	Restrictions         bool                 `json:"restrictions,omitempty"`
-	Supressed            bool                 `json:"supressed,omitempty"`
+	Suppressed            bool                 `json:"suppressed,omitempty"`
 	IsSlugAuto           bool                 `json:"is_slug_auto,omitempty"`
 	JSONModelType        string               `json:"jsonmodel_type,omitempty"`
 	ExternalIds          []ExternalID         `json:"external_ids,omitempty"`
@@ -210,10 +210,10 @@ type DigitalObject struct {
 	LangMaterials        []LangMaterial       `json:"lang_materials,omitempty"`
 	Dates                []Date               `json:"dates,omitempty"`
 	ExternalDocuments    []ExternalDocument   `json:"external_documents,omitempty"`
-	RightsStatememts     []RightsStatement    `json:"rights_statememts,omitempty"`
+	RightsStatements     []RightsStatement    `json:"rights_statements,omitempty"`
 	LinkedAgents         []LinkedAgent        `json:"linked_agents,omitempty"`
 	FileVersions         []FileVersion        `json:"file_versions,omitempty"`
-	Notes                []NoteDigitalObject  `json:"notes,omitempty"`
+	Notes                []interface{}  `json:"notes,omitempty"`
 	LinkedInstances      []LinkedInstance     `json:"linked_instances,omitempty"`
 	URI                  string               `json:"uri,omitempty"`
 	Repository           LinkedRepository     `json:"repository,omitempty"`
@@ -221,8 +221,8 @@ type DigitalObject struct {
 	Level                string               `json:"level,omitempty"`
 	Slug                 string               `json:"slug,omitempty"`
 	DigitalObjectType    string               `json:"digital_object_type,omitempty"`
-	UserDefined          *UserDefined         `json:"user_defined,omitempty"`
-	CollectionManagement CollectionManagement `json:"collection_management,omitempty"`
+	UserDefined          []UserDefined      	`json:"user_defined,omitempty"`
+	CollectionManagement []CollectionManagement			`json:"collection_management,omitempty"`
 }
 
 type ExternalDocument struct {
@@ -253,12 +253,12 @@ type Event struct {
 	Refid             string             `json:"refid,omitempty"`
 	ExternalIDs       []ExternalID       `json:"external_ids,omitempty"`
 	ExternalDocuments []ExternalDocument `json:"external_documents,omitempty"`
-	Event_Type        string             `json:"event_type"`
+	EventType        string             `json:"event_type"`
 	Date              Date               `json:"date"`
 	Timestamp         string             `json:"timestamp,omitempty"`
 	Outcome           string             `json:"outcome,omitempty"`
 	OutcomeNote       string             `json:"outcome_note,omitempty"`
-	Supressed         bool               `json:"supressed,omitempty"`
+	Suppressed         bool               `json:"suppressed,omitempty"`
 	LinkedAgents      []LinkedAgent      `json:"linked_agents"`
 	LinkedRecords     []LinkedRecord     `json:"linked_records"`
 	LockVersion       int                `json:"lock_version"`
@@ -287,7 +287,7 @@ type FileVersion struct {
 type Instance struct {
 	InstanceType     string       `json:"instance_type,omitempty"`
 	SubContainer     SubContainer `json:"sub_container,omitempty"`
-	DigitalObjects   interface{}  `json:"digital_object,omitempty"`
+	DigitalObject    map[string]string  `json:"digital_object,omitempty"`
 	IsRepresentative bool         `json:"is_representative,omitempty"`
 	JSONModelType    string       `json:"jsonmodel_type,omitempty"`
 }
@@ -300,7 +300,7 @@ type Inherited struct {
 
 type LangMaterial struct {
 	LanguageAndScript LanguageAndScript  `json:"language_and_script,omitempty"`
-	Notes             []NoteLangmaterial `json:"notes,omitempty"`
+	Notes             []NoteLangMaterial `json:"notes,omitempty"`
 	JSONModelType     string             `json:"jsonmodel_type,omitempty"`
 }
 
@@ -362,8 +362,8 @@ type Name struct {
 	JSONModelType        string        `json:"jsonmodel_type,omitempty"`
 	UseDates             []interface{} `json:"use_dates,omitempty"`
 	AuthorityID          string        `json:"authority_id,omitempty"`
-	Subordinate_Name_1   string        `json:"subordinate_name_1,omitempty"`
-	Subordinate_Name_2   string        `json:"subordinate_name_2,omitempty"`
+	SubordinateName1   string        `json:"subordinate_name_1,omitempty"`
+	SubordinateName2   string        `json:"subordinate_name_2,omitempty"`
 	SortNameAutoGenerate bool          `json:"sort_name_auto_generate"`
 	FamilyName           string        `json:"family_name"`
 }
@@ -372,11 +372,24 @@ type Note struct {
 	JSONModelType     string                 `json:"jsonmodel_type,omitempty"`
 	PersistentID      string                 `json:"persistent_id,omitempty"`
 	Label             string                 `json:"label,omitempty"`
-	Type              string                 `json:"type,omitemptye"`
+	Type              string                 `json:"type,omitempty"`
 	Subnotes          []interface{}          `json:"subnotes,omitempty"`
 	Content           []string               `json:"content,omitempty"`
 	Publish           bool                   `json:"publish,omitempty"`
 	RightsRestriction map[string]interface{} `json:"rights_restriction,omitempty"`
+}
+
+type NoteBibliography struct {
+	Label			string 				`json:"label,omitempty"`
+	Publish 		bool 				`json:"publish,omitempty"`
+	PersistentId	string 				`json:"persistent_id,omitempty"`
+	IngestProblem 	string 				`json:"ingest_problem,omitempty"`
+	LockVersion		*int 				`json:"lock_version,omitempty"`
+	JSONModelType	string 				`json:"jsonmodel_type"`
+	Repository 		LinkedRepository	`json:"repository,omitempty"`
+	Content			[]string 			`json:"content,omitempty"`
+	Items 			[]string 			`json:"items,omitempty"`
+	Inherited		Inherited 			`json:"inherited,omitempty"`
 }
 
 type NoteDigitalObject struct {
@@ -386,14 +399,14 @@ type NoteDigitalObject struct {
 	IngestProblem string           `json:"ingest_problem,omitempty"`
 	LockVersion   *int             `json:"lock_version,omitempty"`
 	JsonModelType string           `json:"jsonmodel_type"`
-	Repository    LinkedRepository `json:"repository"`
+	Repository    LinkedRepository `json:"repository,omitempty"`
 	Content       []string         `json:"content"`
 	Type          string           `json:"type"`
 }
 
-type NoteLangmaterial struct {
+type NoteLangMaterial struct {
 	JSONModelType string   `json:"jsonmodel_type,omitempty"`
-	PersistantID  string   `json:"persistant_id,omitempty"`
+	PersistentID  string   `json:"persistent_id,omitempty"`
 	Label         string   `json:"label,omitempty"`
 	Type          string   `json:"type,omitempty"`
 	Content       []string `json:"content,omitempty"`
@@ -402,7 +415,7 @@ type NoteLangmaterial struct {
 
 type NoteRightsStatement struct {
 	JSONModelType string   `json:"jsonmodel_type,omitempty"`
-	PersistantID  string   `json:"persistant_id,omitempty"`
+	PersistentID  string   `json:"persistent_id,omitempty"`
 	Type          string   `json:"type,omitempty"`
 	Content       []string `json:"content,omitempty"`
 	Publish       bool     `json:"publish,omitempty"`
@@ -410,7 +423,7 @@ type NoteRightsStatement struct {
 
 type NoteRightsStatementAct struct {
 	JSONModelType string   `json:"jsonmodel_type,omitempty"`
-	PersistantID  string   `json:"persistant_id,omitempty"`
+	PersistentID  string   `json:"persistent_id,omitempty"`
 	Type          string   `json:"type,omitempty"`
 	Content       []string `json:"content,omitempty"`
 	Publish       bool     `json:"publish,omitempty"`
@@ -443,7 +456,7 @@ type Repository struct {
 	OrgCode               string         `json:"org_code,omitempty"`
 	Country               string         `json:"country,omitempty"`
 	ParentInstitutionName string         `json:"parent_institution_name,omitempty"`
-	Description           string         `json:"description,omitempty""`
+	Description           string         `json:"description,omitempty"`
 	URL                   string         `json:",omitempty"`
 	ImageURL              string         `json:"image_url,omitempty"`
 	ContactPersons        string         `json:"contact_persons,omitempty"`
@@ -504,7 +517,7 @@ type Resource struct {
 	RightsStatements           []RightsStatement   `json:"rights_statements,omitempty"`
 	Slug                       string              `json:"slug,omitempty"`
 	Subjects                   []map[string]string `json:"subjects,omitempty"`
-	Supressed                  bool                `json:"supressed,omitempty"`
+	Suppressed                  bool                `json:"suppressed,omitempty"`
 	Title                      string              `json:"title,omitempty"`
 	Tree                       map[string]string   `json:"tree,omitempty"`
 	UserDefined                UserDefined         `json:"user_defined,omitempty"`
@@ -521,7 +534,7 @@ type ResourceTree struct {
 	Id            int            `json:"id,omitempty"`
 	NodeType      string         `json:"node_type,omitempty"`
 	Publish       bool           `json:"publish,omitempty"`
-	Supressed     bool           `json:"supressed,omitempty"`
+	Suppressed     bool          `json:"suppressed,omitempty"`
 	HasChildren   bool           `json:"has_children,omitempty"`
 	Children      []ResourceTree `json:"children,omitempty"`
 	RecordURI     string         `json:"record_uri,omitempty"`
@@ -560,7 +573,7 @@ type RightsStatement struct {
 
 type RightsStatementsAct struct {
 	StartDate     string                   `json:"start_date,omitempty"`
-	EndDate       string                   `json:"etart_date,omitempty"`
+	EndDate       string                   `json:"end_date,omitempty"`
 	ActType       string                   `json:"act_type,omitempty"`
 	Restriction   string                   `json:"restriction,omitempty"`
 	JSONModelType string                   `json:"json_model_type,omitempty"`
@@ -581,11 +594,11 @@ type SearchResult struct {
 type SubContainer struct {
 	JSONModel     string            `json:"jsonmodel_type,omitempty"`
 	TopContainer  map[string]string `json:"top_container,omitempty"`
-	Type_2        string            `json:"type_2,omitempty"`
-	Indicator_2   string            `json:"indicator_2,omitempty"`
-	Barcode_2     string            `json:"barcode_2,omitempty"`
-	Type_3        string            `json:"type_3",omitempty`
-	Indicator_3   string            `json:"indicator_3,omitempty"`
+	Type2        string            `json:"type_2,omitempty"`
+	Indicator2   string            `json:"indicator_2,omitempty"`
+	Barcode2     string            `json:"barcode_2,omitempty"`
+	Type3        string            `json:"type_3,omitempty"`
+	Indicator3   string            `json:"indicator_3,omitempty"`
 	DisplayString string            `json:"display_string,omitempty"`
 	Repository    interface{}       `json:"repository,omitempty"`
 }
@@ -645,7 +658,7 @@ type TopContainer struct {
 	Series                    []interface{}     `json:"series"`
 	Collection                []interface{}     `json:"collection"`
 	Repository                map[string]string `json:"repository"`
-	JSONMOdelType             string            `json:"json_model_type"`
+	JSONModelType             string            `json:"json_model_type"`
 }
 
 type UserDefined struct {

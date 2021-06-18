@@ -142,4 +142,3 @@ func (a *ASClient) GetRandomResourceID() (int, int, error) {
 
 	return repositoryID, resourceID, nil
 }
-

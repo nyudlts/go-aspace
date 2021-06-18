@@ -111,3 +111,28 @@ func (a *ASClient) GetRandomDigitalObject() (int, int, error) {
 
 	return repositoryID, digitalObjectID, nil
 }
+
+func (a *ASClient) GetDigitalObjectIDsForResource(repositoryId int, resourceId int) ([]string, error) {
+	doURIs := []string{}
+
+	aoURIs, err := a.GetArchivalObjectsForResource(repositoryId, resourceId, "digital_object")
+
+	if err != nil {
+		return doURIs, err
+	}
+
+	for _, aoURI := range aoURIs {
+		_, aoId, _ := URISplit(aoURI)
+		ao, err := a.GetArchivalObject(repositoryId, aoId)
+		if err != nil {
+			return doURIs, err
+		}
+
+		for _,instance := range ao.Instances {
+			if instance.InstanceType == "digital_object" {
+				doURIs = append(doURIs, instance.DigitalObject["ref"])
+			}
+		}
+	}
+	return doURIs, nil
+}

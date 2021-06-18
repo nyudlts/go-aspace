@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"regexp"
+	"strings"
 )
 
 func (a *ASClient) GetArchivalObject(repositoryId int, aoId int) (ArchivalObject, error) {
@@ -29,7 +31,7 @@ func (a *ASClient) GetArchivalObject(repositoryId int, aoId int) (ArchivalObject
 	return ao, nil
 }
 
-func (a *ASClient) GetArchivalObjectsForResource(repositoryId int, resourceId int) ([]string, error) {
+func (a *ASClient) GetArchivalObjectsForResource(repositoryId int, resourceId int, filter string) ([]string, error) {
 
 	aos := []string{}
 	tree, err := a.GetResourceTree(repositoryId, resourceId)
@@ -37,8 +39,11 @@ func (a *ASClient) GetArchivalObjectsForResource(repositoryId int, resourceId in
 		return aos, err
 	}
 
-	getChildArchivalObjectURIs(tree.Children, &aos)
-
+	if filter == "" {
+		getChildArchivalObjectURIsFiltered(tree.Children, &aos, filter)
+	} else {
+		getChildArchivalObjectURIs(tree.Children, &aos)
+	}
 	return aos, nil
 }
 
@@ -72,12 +77,25 @@ func getChildArchivalObjectURIs(children []ResourceTree, aos *[]string) {
 	}
 }
 
+func getChildArchivalObjectURIsFiltered(children []ResourceTree, aos *[]string, filter string) {
+	matcher := regexp.MustCompile(filter)
+	for _, child := range children {
+		if matcher.MatchString(strings.Join(child.InstanceTypes, " ")) == true {
+			*aos = append(*aos, child.RecordURI)
+		}
+
+		if child.HasChildren {
+			getChildArchivalObjectURIs(child.Children, aos)
+		}
+	}
+}
+
 func (a *ASClient) GetRandomArchivalObject() (int, int, error) {
 	repositoryID, resourceID, err := a.GetRandomResourceID()
 	if err != nil {
 		return 0, 0, err
 	}
-	aoURIs, err := a.GetArchivalObjectsForResource(repositoryID, resourceID)
+	aoURIs, err := a.GetArchivalObjectsForResource(repositoryID, resourceID, "")
 	aoURI := aoURIs[rGen.Intn(len(aoURIs))]
 	_, aoID, _ := URISplit(aoURI)
 	return repositoryID, aoID, nil
@@ -93,7 +111,7 @@ func (a *ASClient) SearchArchivalObjects(repoID int, s string) ([]ArchivalObject
 
 	lastPage := iresults.LastPage
 
-	//itterate here through pages
+	//iterate here through pages
 	for i := 1; i < lastPage; i++ {
 		results, err := a.Search(repoID, "archival_object", s, i)
 		for _, r := range results.Results {
