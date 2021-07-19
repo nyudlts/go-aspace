@@ -120,3 +120,18 @@ func (a *ASClient) DeleteAccession(repositoryID int, accessionID int) (string, e
 	return string(msg), nil
 
 }
+
+func (a Accession) MergeIDS() string {
+	ids:= a.ID0
+	if a.ID1 != "" {
+		ids = ids + "." + a.ID1
+	}
+	if a.ID2 != "" {
+		ids = ids + "." + a.ID2
+	}
+	if a.ID3 != "" {
+		ids = ids + "." + a.ID3
+	}
+
+	return ids
+}
