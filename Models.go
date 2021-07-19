@@ -195,34 +195,34 @@ type Deaccession struct {
 }
 
 type DigitalObject struct {
-	LockVersion          *int                 `json:"lock_version,omitempty"`
-	DigitalObjectID      string               `json:"digital_object_id,omitempty"`
-	Title                string               `json:"title,omitempty"`
-	Publish              bool                 `json:"publish,omitempty"`
-	Restrictions         bool                 `json:"restrictions,omitempty"`
-	Suppressed            bool                 `json:"suppressed,omitempty"`
-	IsSlugAuto           bool                 `json:"is_slug_auto,omitempty"`
-	JSONModelType        string               `json:"jsonmodel_type,omitempty"`
-	ExternalIds          []ExternalID         `json:"external_ids,omitempty"`
-	Subjects             []SubjectReference   `json:"subjects,omitempty"`
-	LinkedEvents         []map[string]string  `json:"linked_events,omitempty"`
-	Extents              []Extent             `json:"extents,omitempty"`
-	LangMaterials        []LangMaterial       `json:"lang_materials,omitempty"`
-	Dates                []Date               `json:"dates,omitempty"`
-	ExternalDocuments    []ExternalDocument   `json:"external_documents,omitempty"`
-	RightsStatements     []RightsStatement    `json:"rights_statements,omitempty"`
-	LinkedAgents         []LinkedAgent        `json:"linked_agents,omitempty"`
-	FileVersions         []FileVersion        `json:"file_versions,omitempty"`
-	Notes                []interface{}  `json:"notes,omitempty"`
-	LinkedInstances      []LinkedInstance     `json:"linked_instances,omitempty"`
-	URI                  string               `json:"uri,omitempty"`
-	Repository           LinkedRepository     `json:"repository,omitempty"`
-	Tree                 map[string]string    `json:"tree,omitempty"`
-	Level                string               `json:"level,omitempty"`
-	Slug                 string               `json:"slug,omitempty"`
-	DigitalObjectType    string               `json:"digital_object_type,omitempty"`
+	LockVersion          *int                 	`json:"lock_version,omitempty"`
+	DigitalObjectID      string               	`json:"digital_object_id,omitempty"`
+	Title                string               	`json:"title,omitempty"`
+	Publish              bool                 	`json:"publish,omitempty"`
+	Restrictions         bool                 	`json:"restrictions,omitempty"`
+	Suppressed            bool                 	`json:"suppressed,omitempty"`
+	IsSlugAuto           bool                 	`json:"is_slug_auto,omitempty"`
+	JSONModelType        string               	`json:"jsonmodel_type,omitempty"`
+	ExternalIds          []ExternalID         	`json:"external_ids,omitempty"`
+	Subjects             []SubjectReference   	`json:"subjects,omitempty"`
+	LinkedEvents         []map[string]string  	`json:"linked_events,omitempty"`
+	Extents              []Extent             	`json:"extents,omitempty"`
+	LangMaterials        []LangMaterial       	`json:"lang_materials,omitempty"`
+	Dates                []Date               	`json:"dates,omitempty"`
+	ExternalDocuments    []ExternalDocument   	`json:"external_documents,omitempty"`
+	RightsStatements     []RightsStatement    	`json:"rights_statements,omitempty"`
+	LinkedAgents         []LinkedAgent        	`json:"linked_agents,omitempty"`
+	FileVersions         []FileVersion        	`json:"file_versions,omitempty"`
+	Notes                []interface{}  	  	`json:"notes,omitempty"`
+	LinkedInstances      []LinkedInstance     	`json:"linked_instances,omitempty"`
+	URI                  string               	`json:"uri,omitempty"`
+	Repository           LinkedRepository     	`json:"repository,omitempty"`
+	Tree                 map[string]string    	`json:"tree,omitempty"`
+	Level                string               	`json:"level,omitempty"`
+	Slug                 string               	`json:"slug,omitempty"`
+	DigitalObjectType    string               	`json:"digital_object_type,omitempty"`
 	UserDefined          []UserDefined      	`json:"user_defined,omitempty"`
-	CollectionManagement []CollectionManagement			`json:"collection_management,omitempty"`
+	CollectionManagement []CollectionManagement	`json:"collection_management,omitempty"`
 }
 
 type ExternalDocument struct {
