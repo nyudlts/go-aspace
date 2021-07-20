@@ -142,3 +142,13 @@ func (a *ASClient) GetRandomResourceID() (int, int, error) {
 
 	return repositoryID, resourceID, nil
 }
+
+func (r Resource) MergeIDs() string {
+	ids := r.ID0
+	for _, i := range []string{r.ID1, r.ID2, r.ID3} {
+		if i != "" {
+			ids = ids + "." + i
+		}
+	}
+	return ids
+}

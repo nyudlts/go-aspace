@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"strconv"
+	"strings"
 )
 
 // Get a list of Accession IDs for a given Repository ID
@@ -121,17 +123,24 @@ func (a *ASClient) DeleteAccession(repositoryID int, accessionID int) (string, e
 
 }
 
-func (a Accession) MergeIDS() string {
-	ids:= a.ID0
-	if a.ID1 != "" {
-		ids = ids + "." + a.ID1
+func (a Accession) MergeIDs() string {
+	ids := a.ID0
+	for _, i := range []string{a.ID1, a.ID2, a.ID3} {
+		if i != "" {
+			ids = ids + "." + i
+		}
 	}
-	if a.ID2 != "" {
-		ids = ids + "." + a.ID2
-	}
-	if a.ID3 != "" {
-		ids = ids + "." + a.ID3
-	}
-
 	return ids
+}
+
+func (a Accession) GetParentResourceID() int {
+	if len(a.RelatedResources) <= 0 {
+		return 0
+	}
+	resId := strings.Split(a.RelatedResources[0]["ref"], "/")[4]
+	i, err := strconv.Atoi(resId)
+	if err != nil {
+		return 0
+	}
+	return i
 }
