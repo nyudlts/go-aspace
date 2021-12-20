@@ -77,6 +77,25 @@ func getChildArchivalObjectURIs(children []ResourceTree, aos *[]string) {
 	}
 }
 
+func (a ASClient) DeleteArchivalObject(repositoryID int, archivalObjectID int) (string, error) {
+	responseMessage := ""
+	endpoint := fmt.Sprintf("/repositories/%d/archival_objects/%d", repositoryID, archivalObjectID)
+
+	response, err := a.delete(endpoint)
+	if err != nil {
+		return responseMessage, err
+	}
+
+	responseBody, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return responseMessage, err
+	}
+
+	responseMessage = string(responseBody)
+
+	return responseMessage, nil
+}
+
 func getChildArchivalObjectURIsFiltered(children []ResourceTree, aos *[]string, filter string) {
 	matcher := regexp.MustCompile(filter)
 	for _, child := range children {
