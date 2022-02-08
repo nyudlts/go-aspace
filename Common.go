@@ -13,7 +13,7 @@ import (
 
 var p = parser.New()
 
-var LibraryVersion = "v0.3.11b"
+var LibraryVersion = "v0.3.12b"
 
 var seed = rand.NewSource(time.Now().UnixNano())
 var rGen = rand.New(seed)
@@ -99,7 +99,7 @@ func (a *ASClient) GetEndpoint(e string) ([]byte, error) {
 
 //slice contains methods
 func containsInt(list []int, id int) bool {
-	for _,i := range list {
+	for _, i := range list {
 		if id == i {
 			return true
 		}
