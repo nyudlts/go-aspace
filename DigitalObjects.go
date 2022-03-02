@@ -128,11 +128,20 @@ func (a *ASClient) GetDigitalObjectIDsForResource(repositoryId int, resourceId i
 			return doURIs, err
 		}
 
-		for _,instance := range ao.Instances {
+		for _, instance := range ao.Instances {
 			if instance.InstanceType == "digital_object" {
 				doURIs = append(doURIs, instance.DigitalObject["ref"])
 			}
 		}
 	}
 	return doURIs, nil
+}
+
+func (do DigitalObject) ContainsUseStatement(role string) bool {
+	for _, version := range do.FileVersions {
+		if version.UseStatement == role {
+			return true
+		}
+	}
+	return false
 }
