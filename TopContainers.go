@@ -48,8 +48,8 @@ func (a *ASClient) GetTopContainer(repositoryID int, topContainerID int) (TopCon
 }
 
 //Update a Top Container for a given Repository and Accession ID
-func (a *ASClient) UpdateTopContainer(repositoryID int, accessionID int, topContainer TopContainer) (string, error) {
-	endpoint := fmt.Sprintf("/repositories/%d/accessions/%d", repositoryID, accessionID)
+func (a *ASClient) UpdateTopContainer(repositoryID int, topContainerID int, topContainer TopContainer) (string, error) {
+	endpoint := fmt.Sprintf("/repositories/%d/top_containers/%d", repositoryID, topContainerID)
 	body, err := json.Marshal(topContainer)
 	if err != nil {
 		return "", err
@@ -69,7 +69,7 @@ func (a *ASClient) UpdateTopContainer(repositoryID int, accessionID int, topCont
 
 //Delete a Top Container
 func (a *ASClient) DeleteTopContainer(repositoryID int, topContainerID int) (string, error) {
-	endpoint := fmt.Sprintf("/repositories/%d/topcontainers/%d", repositoryID, topContainerID)
+	endpoint := fmt.Sprintf("/repositories/%d/top_containers/%d", repositoryID, topContainerID)
 	response, err := a.delete(endpoint)
 	if err != nil {
 		return fmt.Sprintf("code %d", response.StatusCode), err
