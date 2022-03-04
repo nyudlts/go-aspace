@@ -47,6 +47,41 @@ func (a *ASClient) GetTopContainer(repositoryID int, topContainerID int) (TopCon
 	return tc, nil
 }
 
+//Update a Top Container for a given Repository and Accession ID
+func (a *ASClient) UpdateTopContainer(repositoryID int, accessionID int, topContainer TopContainer) (string, error) {
+	endpoint := fmt.Sprintf("/repositories/%d/accessions/%d", repositoryID, accessionID)
+	body, err := json.Marshal(topContainer)
+	if err != nil {
+		return "", err
+	}
+	response, err := a.post(endpoint, true, string(body))
+	if err != nil {
+		return "", err
+	}
+
+	msg, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return "", err
+	}
+
+	return string(msg), nil
+}
+
+//Delete a Top Container
+func (a *ASClient) DeleteTopContainer(repositoryID int, topContainerID int) (string, error) {
+	endpoint := fmt.Sprintf("/repositories/%d/topcontainers/%d", repositoryID, topContainerID)
+	response, err := a.delete(endpoint)
+	if err != nil {
+		return fmt.Sprintf("code %d", response.StatusCode), err
+	}
+	msg, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return fmt.Sprintf("code %d", response.StatusCode), err
+	}
+
+	return string(msg), nil
+}
+
 func (a *ASClient) GetTopContainerIDsForResource(repositoryID int, resourceID int) ([]string, error) {
 	tcs := []string{}
 	responseMap := []map[string]string{}
