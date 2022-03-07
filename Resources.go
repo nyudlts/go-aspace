@@ -41,6 +41,7 @@ func (a *ASClient) GetResource(repositoryId int, resourceId int) (Resource, erro
 	if err != nil {
 		return r, err
 	}
+	r.Json = body
 	return r, nil
 }
 
@@ -63,6 +64,25 @@ func (a *ASClient) UpdateResource(repositoryId int, resourceId int, resource Res
 
 	responseMessage = string(responseBody)
 	return responseMessage, nil
+}
+
+func (a *ASClient) UpdateResourceJson(repositoryID int, resourceID int, resourceJSON []byte) (int, string, error) {
+	responseCode := 0
+	responseMessage := ""
+	endpoint := fmt.Sprintf("/repositories/%d/resources/%d", repositoryID, resourceID)
+	response, err := a.post(endpoint, true, string(resourceJSON))
+	if err != nil {
+		return response.StatusCode, "", err
+	}
+
+	responseBody, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return responseCode, responseMessage, err
+	}
+
+	responseMessage = string(responseBody)
+	return responseCode, responseMessage, nil
+
 }
 
 func (a *ASClient) CreateResource(repositoryId int, resource Resource) (string, error) {
@@ -143,11 +163,11 @@ func (a *ASClient) GetRandomResourceID() (int, int, error) {
 	return repositoryID, resourceID, nil
 }
 
-func (r Resource) MergeIDs() string {
+func (r Resource) MergeIDs(delimiter string) string {
 	ids := r.ID0
 	for _, i := range []string{r.ID1, r.ID2, r.ID3} {
 		if i != "" {
-			ids = ids + "." + i
+			ids = ids + delimiter + i
 		}
 	}
 	return ids
