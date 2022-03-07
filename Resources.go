@@ -67,7 +67,7 @@ func (a *ASClient) UpdateResource(repositoryId int, resourceId int, resource Res
 }
 
 func (a *ASClient) UpdateResourceJson(repositoryID int, resourceID int, resourceJSON []byte) (int, string, error) {
-	responseCode := 0
+
 	responseMessage := ""
 	endpoint := fmt.Sprintf("/repositories/%d/resources/%d", repositoryID, resourceID)
 	response, err := a.post(endpoint, true, string(resourceJSON))
@@ -76,12 +76,13 @@ func (a *ASClient) UpdateResourceJson(repositoryID int, resourceID int, resource
 	}
 
 	responseBody, err := ioutil.ReadAll(response.Body)
+
 	if err != nil {
-		return responseCode, responseMessage, err
+		return response.StatusCode, responseMessage, err
 	}
 
 	responseMessage = string(responseBody)
-	return responseCode, responseMessage, nil
+	return response.StatusCode, responseMessage, nil
 
 }
 
