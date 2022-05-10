@@ -173,3 +173,55 @@ func (r Resource) MergeIDs(delimiter string) string {
 	}
 	return ids
 }
+
+type ResourceList struct {
+	Page     int                 `json:"this_page"`
+	LastPage int                 `json:"last_page"`
+	Results  []ResourceListEntry `json:"results"`
+}
+
+type ResourceListEntry struct {
+	ID    string `json:"id"`
+	EADID string `json:"ead_id"`
+	Title string `json:"title"`
+}
+
+func (a *ASClient) GetResourceList(repositoryID int) (*[]ResourceListEntry, error) {
+	currentPage := 1
+	resourceList, err := a.getResourcePage(repositoryID, currentPage)
+	if err != nil {
+		return nil, err
+	}
+
+	entries := resourceList.Results
+
+	lastPage := resourceList.LastPage
+	currentPage++
+	for i := currentPage; i <= lastPage; i++ {
+		r, err := a.getResourcePage(repositoryID, i)
+		if err != nil {
+			return nil, err
+		}
+		entries = append(entries, r.Results...)
+	}
+
+	return &entries, nil
+}
+
+func (a *ASClient) getResourcePage(repositoryID int, page int) (*ResourceList, error) {
+	endpoint := fmt.Sprintf("/repositories/%d/search?page=%d&type[]=resource&fields[]=id,ead_id,title", repositoryID, page)
+	response, err := a.get(endpoint, true)
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	resourceList := ResourceList{}
+	json.Unmarshal(body, &resourceList)
+
+	return &resourceList, nil
+}

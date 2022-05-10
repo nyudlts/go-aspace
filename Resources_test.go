@@ -13,16 +13,27 @@ func TestResource(t *testing.T) {
 		t.Error(err)
 	}
 
-	repositoryId, resourceId, err := client.GetRandomResourceID()
-	if err != nil {
-		t.Error(err)
-	}
+	t.Run("Test serialize Random Resource", func(t *testing.T) {
 
-	resource, err := client.GetResource(repositoryId, resourceId)
-	if err != nil {
-		t.Error(err)
-	}
+		repositoryId, resourceId, err := client.GetRandomResourceID()
+		if err != nil {
+			t.Error(err)
+		}
 
-	t.Logf("Successfully requested and serialized %s: %s", resource.URI, resource.Title)
+		resource, err := client.GetResource(repositoryId, resourceId)
+		if err != nil {
+			t.Error(err)
+		}
 
+		t.Logf("Successfully requested and serialized %s: %s", resource.URI, resource.Title)
+	})
+
+	t.Run("Test request resource list", func(t *testing.T) {
+		entries, err := client.GetResourceList(3)
+		if err != nil {
+			t.Error(err)
+		}
+
+		t.Logf("Returned %d entries", len(*entries))
+	})
 }
