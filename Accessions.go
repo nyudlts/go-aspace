@@ -123,11 +123,11 @@ func (a *ASClient) DeleteAccession(repositoryID int, accessionID int) (string, e
 
 }
 
-func (a Accession) MergeIDs() string {
+func (a Accession) MergeIDs(delimiter string) string {
 	ids := a.ID0
 	for _, i := range []string{a.ID1, a.ID2, a.ID3} {
 		if i != "" {
-			ids = ids + "." + i
+			ids = ids + delimiter + i
 		}
 	}
 	return ids
