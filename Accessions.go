@@ -209,7 +209,7 @@ func processAccessionList(list *AccessionSearchResult, repoID int, resourceID in
 }
 
 func (a *ASClient) getAccessionPage(repoID int, resID int, currentPage int) (*AccessionSearchResult, error) {
-	endpoint := fmt.Sprintf("/repositories/%d/search?page=%d&page_size=50&type[]=accession&fields[]=id,identifiers,title&q=repositories/%d/resources/%d", repoID, currentPage, repoID, resID)
+	endpoint := fmt.Sprintf("/repositories/%d/search?page=%d&page_size=50&type[]=accession&fields[]=id,identifier,title&q=repositories/%d/resources/%d", repoID, currentPage, repoID, resID)
 	response, err := a.get(endpoint, true)
 	if err != nil {
 		return nil, err
