@@ -181,9 +181,11 @@ type ResourceList struct {
 }
 
 type ResourceListEntry struct {
-	ID    string `json:"id"`
-	EADID string `json:"ead_id"`
-	Title string `json:"title"`
+	ID           string `json:"id"`
+	RepositoryID int    `json:"repository_id"`
+	ResourceID   int    `json:"resource_id"`
+	EADID        string `json:"ead_id"`
+	Title        string `json:"title"`
 }
 
 func (a *ASClient) GetResourceList(repositoryID int) (*[]ResourceListEntry, error) {
@@ -223,5 +225,13 @@ func (a *ASClient) getResourcePage(repositoryID int, page int) (*ResourceList, e
 	resourceList := ResourceList{}
 	json.Unmarshal(body, &resourceList)
 
+	for _, resource := range resourceList.Results {
+		resourceID, _, err := URISplit(resource.ID)
+		if err != nil {
+			return nil, err
+		}
+		resource.RepositoryID = repositoryID
+		resource.ResourceID = resourceID
+	}
 	return &resourceList, nil
 }
