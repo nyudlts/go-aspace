@@ -29,4 +29,16 @@ func TestAccessions(t *testing.T) {
 
 	})
 
+	t.Run("Test get Accession List for Resource", func(t *testing.T) {
+		repositoryID := 3
+		resourceID := 1823
+		accessions, err := client.GetAccessionList(repositoryID, resourceID)
+		if err != nil {
+			t.Error(err)
+		}
+
+		t.Logf("Found %d accessions", len(accessions))
+		t.Logf("%v", accessions[0])
+	})
+
 }

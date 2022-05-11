@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -143,4 +144,86 @@ func (a Accession) GetParentResourceID() int {
 		return 0
 	}
 	return i
+}
+
+type AccessionSearchResult struct {
+	Page     int              `json:"this_page"`
+	LastPage int              `json:"last_page"`
+	Results  []AccessionEntry `json:"results"`
+}
+
+type AccessionEntry struct {
+	ID            string `json:"id"`
+	RespositoryID int    `json:"respository_id"`
+	ResourceID    int    `json:"resource_id"`
+	AccessionID   int    `json:"accession_id"`
+	Title         string `json:"title"`
+	Identifiers   string `json:"identifiers"`
+}
+
+func (a *ASClient) GetAccessionList(repositoryID int, resourceID int) ([]AccessionEntry, error) {
+	currentPage := 1
+	accessionList, err := a.getAccessionPage(repositoryID, resourceID, currentPage)
+	if err != nil {
+		return nil, err
+	}
+
+	entries, err := processAccessionList(accessionList, repositoryID, resourceID)
+	if err != nil {
+		return nil, err
+	}
+
+	currentPage++
+	for i := currentPage; i <= accessionList.LastPage; i++ {
+		al, err := a.getAccessionPage(repositoryID, resourceID, currentPage)
+		if err != nil {
+			return nil, err
+		}
+		accessions, err := processAccessionList(al, repositoryID, resourceID)
+		if err != nil {
+			return nil, err
+		}
+		entries = append(entries, accessions...)
+	}
+
+	sort.Slice(entries, func(i int, j int) bool {
+		return entries[i].Title < entries[j].Title
+	})
+
+	return entries, nil
+}
+
+func processAccessionList(list *AccessionSearchResult, repoID int, resourceID int) ([]AccessionEntry, error) {
+	accessions := []AccessionEntry{}
+	for _, accession := range list.Results {
+		_, accessionID, err := URISplit(accession.ID)
+		if err != nil {
+			return nil, err
+		}
+		accession.ResourceID = resourceID
+		accession.RespositoryID = repoID
+		accession.AccessionID = accessionID
+		accessions = append(accessions, accession)
+	}
+	return accessions, nil
+}
+
+func (a *ASClient) getAccessionPage(repoID int, resID int, currentPage int) (*AccessionSearchResult, error) {
+	endpoint := fmt.Sprintf("/repositories/%d/search?page=%d&page_size=50&type[]=accession&fields[]=id,identifiers,title&q=repositories/%d/resources/%d", repoID, currentPage, repoID, resID)
+	response, err := a.get(endpoint, true)
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	accessionSearchResult := AccessionSearchResult{}
+	err = json.Unmarshal(body, &accessionSearchResult)
+	if err != nil {
+		return nil, err
+	}
+	return &accessionSearchResult, nil
 }
