@@ -158,7 +158,7 @@ type AccessionEntry struct {
 	ResourceID    int    `json:"resource_id"`
 	AccessionID   int    `json:"accession_id"`
 	Title         string `json:"title"`
-	Identifiers   string `json:"identifiers"`
+	Identifier    string `json:"identifier"`
 }
 
 func (a *ASClient) GetAccessionList(repositoryID int, resourceID int) ([]AccessionEntry, error) {
