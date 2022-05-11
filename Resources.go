@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"sort"
 )
 
 func (a *ASClient) GetResourceIDs(repositoryId int) ([]int, error) {
@@ -188,15 +189,17 @@ type ResourceListEntry struct {
 	Title        string `json:"title"`
 }
 
-func (a *ASClient) GetResourceList(repositoryID int) (*[]ResourceListEntry, error) {
+func (a *ASClient) GetResourceList(repositoryID int) ([]ResourceListEntry, error) {
 	currentPage := 1
 	resourceList, err := a.getResourcePage(repositoryID, currentPage)
 	if err != nil {
 		return nil, err
 	}
 
-	entries := resourceList.Results
-
+	entries, err := processEntryList(resourceList)
+	if err != nil {
+		return nil, err
+	}
 	lastPage := resourceList.LastPage
 	currentPage++
 	for i := currentPage; i <= lastPage; i++ {
@@ -204,10 +207,33 @@ func (a *ASClient) GetResourceList(repositoryID int) (*[]ResourceListEntry, erro
 		if err != nil {
 			return nil, err
 		}
-		entries = append(entries, r.Results...)
+		resources, err := processEntryList(r)
+		if err != nil {
+			return nil, err
+		}
+		entries = append(entries, resources...)
 	}
 
-	return &entries, nil
+	sort.Slice(entries, func(i, j int) bool {
+		return entries[i].Title < entries[j].Title
+	})
+
+	return entries, nil
+}
+
+func processEntryList(resourceList *ResourceList) ([]ResourceListEntry, error) {
+	resources := []ResourceListEntry{}
+	for _, resource := range resourceList.Results {
+		repoId, resID, err := URISplit(resource.ID)
+		if err != nil {
+			return nil, err
+		}
+		resource.RepositoryID = repoId
+		resource.ResourceID = resID
+		resources = append(resources, resource)
+	}
+
+	return resources, nil
 }
 
 func (a *ASClient) getResourcePage(repositoryID int, page int) (*ResourceList, error) {
@@ -225,13 +251,5 @@ func (a *ASClient) getResourcePage(repositoryID int, page int) (*ResourceList, e
 	resourceList := ResourceList{}
 	json.Unmarshal(body, &resourceList)
 
-	for _, resource := range resourceList.Results {
-		resourceID, _, err := URISplit(resource.ID)
-		if err != nil {
-			return nil, err
-		}
-		resource.RepositoryID = repositoryID
-		resource.ResourceID = resourceID
-	}
 	return &resourceList, nil
 }

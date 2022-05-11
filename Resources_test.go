@@ -33,7 +33,7 @@ func TestResource(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
-
-		t.Logf("Returned %d entries", len(*entries))
+		t.Logf("%v", entries[0])
+		t.Logf("Returned %d entries", len(entries))
 	})
 }
