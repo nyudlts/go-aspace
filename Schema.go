@@ -3,7 +3,7 @@ package aspace
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 )
 
 func (a *ASClient) GetSchemas() (map[string]interface{}, error) {
@@ -14,7 +14,7 @@ func (a *ASClient) GetSchemas() (map[string]interface{}, error) {
 		return schemas, err
 	}
 
-	body, err := ioutil.ReadAll(response.Body)
+	body, err := io.ReadAll(response.Body)
 
 	if err != nil {
 		return schemas, err
@@ -35,7 +35,7 @@ func (a *ASClient) GetSchema(s string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	schema, err = ioutil.ReadAll(response.Body)
+	schema, err = io.ReadAll(response.Body)
 	if err != nil {
 		return "", err
 	}

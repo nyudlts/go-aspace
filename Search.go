@@ -3,7 +3,7 @@ package aspace
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 )
 
 func (a *ASClient) AdvancedSearch(page int, repositoryId int, queryType string, adQuery string) (SearchResult, error) {
@@ -14,7 +14,7 @@ func (a *ASClient) AdvancedSearch(page int, repositoryId int, queryType string, 
 		return SearchResult{}, err
 	}
 	body := response.Body
-	bodyBytes, err := ioutil.ReadAll(body)
+	bodyBytes, err := io.ReadAll(body)
 	if err != nil {
 		return SearchResult{}, err
 	}
@@ -37,7 +37,7 @@ func (a *ASClient) Search(repositoryId int, searchType string, query string, pag
 		return SearchResult{}, err
 	}
 	body := response.Body
-	bodyBytes, err := ioutil.ReadAll(body)
+	bodyBytes, err := io.ReadAll(body)
 	if err != nil {
 		return SearchResult{}, err
 	}

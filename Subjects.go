@@ -3,7 +3,7 @@ package aspace
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 )
 
 func (a *ASClient) GetSubject(subjectID int) (Subject, error) {
@@ -15,7 +15,7 @@ func (a *ASClient) GetSubject(subjectID int) (Subject, error) {
 		return subject, err
 	}
 
-	body, err := ioutil.ReadAll(response.Body)
+	body, err := io.ReadAll(response.Body)
 	if err != nil {
 		return subject, err
 	}
@@ -36,7 +36,7 @@ func (a *ASClient) DeleteSubject(subjectID int) (string, error) {
 		return msg, err
 	}
 
-	body, err := ioutil.ReadAll(response.Body)
+	body, err := io.ReadAll(response.Body)
 	if err != nil {
 		return msg, err
 	}
@@ -53,7 +53,7 @@ func (a *ASClient) GetSubjectIDs() ([]int, error) {
 		return subjectIDs, err
 	}
 
-	body, err := ioutil.ReadAll(response.Body)
+	body, err := io.ReadAll(response.Body)
 	if err != nil {
 		return subjectIDs, err
 	}

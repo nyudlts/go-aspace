@@ -3,7 +3,7 @@ package aspace
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"sort"
 )
 
@@ -14,7 +14,7 @@ func (a *ASClient) GetResourceIDs(repositoryId int) ([]int, error) {
 	if err != nil {
 		return repositoryIds, err
 	}
-	body, _ := ioutil.ReadAll(response.Body)
+	body, _ := io.ReadAll(response.Body)
 	err = json.Unmarshal(body, &repositoryIds)
 	if err != nil {
 		return repositoryIds, err
@@ -33,7 +33,7 @@ func (a *ASClient) GetResource(repositoryId int, resourceId int) (Resource, erro
 		return r, err
 	}
 
-	body, err := ioutil.ReadAll(response.Body)
+	body, err := io.ReadAll(response.Body)
 	if err != nil {
 		return r, err
 	}
@@ -58,7 +58,7 @@ func (a *ASClient) UpdateResource(repositoryId int, resourceId int, resource Res
 		return responseMessage, err
 	}
 
-	responseBody, err := ioutil.ReadAll(response.Body)
+	responseBody, err := io.ReadAll(response.Body)
 	if err != nil {
 		return responseMessage, err
 	}
@@ -76,7 +76,7 @@ func (a *ASClient) UpdateResourceJson(repositoryID int, resourceID int, resource
 		return response.StatusCode, "", err
 	}
 
-	responseBody, err := ioutil.ReadAll(response.Body)
+	responseBody, err := io.ReadAll(response.Body)
 
 	if err != nil {
 		return response.StatusCode, responseMessage, err
@@ -99,7 +99,7 @@ func (a *ASClient) CreateResource(repositoryId int, resource Resource) (string, 
 		return responseMessage, err
 	}
 
-	responseBody, err := ioutil.ReadAll(response.Body)
+	responseBody, err := io.ReadAll(response.Body)
 	if err != nil {
 		return responseMessage, err
 	}
@@ -117,7 +117,7 @@ func (a *ASClient) DeleteResource(repositoryId int, resourceId int) (string, err
 		return responseMessage, err
 	}
 
-	responseBody, err := ioutil.ReadAll(response.Body)
+	responseBody, err := io.ReadAll(response.Body)
 	if err != nil {
 		return responseMessage, err
 	}
@@ -132,7 +132,7 @@ func (a *ASClient) GetResourceTree(repositoryId int, resourceId int) (ResourceTr
 	endpoint := fmt.Sprintf("/repositories/%d/resources/%d/tree", repositoryId, resourceId)
 	response, err := a.get(endpoint, true)
 
-	body, err := ioutil.ReadAll(response.Body)
+	body, err := io.ReadAll(response.Body)
 	if err != nil {
 		return tree, err
 	}
@@ -243,7 +243,7 @@ func (a *ASClient) getResourcePage(repositoryID int, page int) (*ResourceList, e
 		return nil, err
 	}
 
-	body, err := ioutil.ReadAll(response.Body)
+	body, err := io.ReadAll(response.Body)
 	if err != nil {
 		return nil, err
 	}

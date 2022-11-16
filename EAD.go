@@ -5,7 +5,7 @@ import (
 	_ "embed"
 	"fmt"
 	"github.com/lestrrat-go/libxml2/xsd"
-	"io/ioutil"
+	"io"
 )
 
 //go:embed schema
@@ -19,7 +19,7 @@ func (a *ASClient) GetEADAsByteArray(repositoryId int, resourceId int, unpublish
 		return eadBytes, err
 	}
 
-	eadBytes, err = ioutil.ReadAll(response.Body)
+	eadBytes, err = io.ReadAll(response.Body)
 	return eadBytes, err
 }
 
@@ -32,7 +32,7 @@ func (a *ASClient) SerializeEAD(repositoryId int, resourceId int, daos bool, unp
 		return ead, err
 	}
 
-	ead, err = ioutil.ReadAll(response.Body)
+	ead, err = io.ReadAll(response.Body)
 	if err != nil {
 		return ead, err
 	}

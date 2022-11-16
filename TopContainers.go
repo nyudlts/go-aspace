@@ -3,7 +3,7 @@ package aspace
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 )
 
 func (a *ASClient) GetTopContainerIDs(repositoryID int) ([]int, error) {
@@ -13,7 +13,7 @@ func (a *ASClient) GetTopContainerIDs(repositoryID int) ([]int, error) {
 	if err != nil {
 		return topContainers, err
 	}
-	body, err := ioutil.ReadAll(response.Body)
+	body, err := io.ReadAll(response.Body)
 	if err != nil {
 		return topContainers, err
 	}
@@ -34,7 +34,7 @@ func (a *ASClient) GetTopContainer(repositoryID int, topContainerID int) (TopCon
 		return tc, err
 	}
 
-	body, err := ioutil.ReadAll(reponse.Body)
+	body, err := io.ReadAll(reponse.Body)
 	if err != nil {
 		return tc, err
 	}
@@ -47,7 +47,7 @@ func (a *ASClient) GetTopContainer(repositoryID int, topContainerID int) (TopCon
 	return tc, nil
 }
 
-//Update a Top Container for a given Repository and Accession ID
+// Update a Top Container for a given Repository and Accession ID
 func (a *ASClient) UpdateTopContainer(repositoryID int, topContainerID int, topContainer TopContainer) (string, error) {
 	endpoint := fmt.Sprintf("/repositories/%d/top_containers/%d", repositoryID, topContainerID)
 	body, err := json.Marshal(topContainer)
@@ -59,7 +59,7 @@ func (a *ASClient) UpdateTopContainer(repositoryID int, topContainerID int, topC
 		return "", err
 	}
 
-	msg, err := ioutil.ReadAll(response.Body)
+	msg, err := io.ReadAll(response.Body)
 	if err != nil {
 		return "", err
 	}
@@ -67,14 +67,14 @@ func (a *ASClient) UpdateTopContainer(repositoryID int, topContainerID int, topC
 	return string(msg), nil
 }
 
-//Delete a Top Container
+// Delete a Top Container
 func (a *ASClient) DeleteTopContainer(repositoryID int, topContainerID int) (string, error) {
 	endpoint := fmt.Sprintf("/repositories/%d/top_containers/%d", repositoryID, topContainerID)
 	response, err := a.delete(endpoint)
 	if err != nil {
 		return fmt.Sprintf("code %d", response.StatusCode), err
 	}
-	msg, err := ioutil.ReadAll(response.Body)
+	msg, err := io.ReadAll(response.Body)
 	if err != nil {
 		return fmt.Sprintf("code %d", response.StatusCode), err
 	}
@@ -92,7 +92,7 @@ func (a *ASClient) GetTopContainerIDsForResource(repositoryID int, resourceID in
 		return tcs, err
 	}
 
-	body, err := ioutil.ReadAll(reponse.Body)
+	body, err := io.ReadAll(reponse.Body)
 	if err != nil {
 		return tcs, err
 	}

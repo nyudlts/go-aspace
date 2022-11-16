@@ -5,11 +5,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"gopkg.in/yaml.v2"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"time"
-
 )
 
 type ASClient struct {
@@ -99,7 +99,8 @@ func NewClient(configFile string, environment string, timeout int) (*ASClient, e
 func getCreds(environment string, configBytes []byte) (Creds, error) {
 	credsMap := map[string]Creds{}
 
-	err := yaml.Unmarshal(configBytes, &credsMap);if err != nil {
+	err := yaml.Unmarshal(configBytes, &credsMap)
+	if err != nil {
 		return Creds{}, err
 	}
 
@@ -125,7 +126,7 @@ func getSessionKey(creds Creds) (string, error) {
 		return "", fmt.Errorf("Did not return a 200 while authenticating, recieved a %d", request.StatusCode)
 	}
 
-	body, err := ioutil.ReadAll(request.Body)
+	body, err := io.ReadAll(request.Body)
 	if err != nil {
 		return "", err
 	}
@@ -153,7 +154,7 @@ func (a *ASClient) do(request *http.Request, authenticated bool) (*http.Response
 
 	response, err := a.nclient.Do(request)
 	if response.StatusCode != 200 {
-		body, _ := ioutil.ReadAll(response.Body)
+		body, _ := io.ReadAll(response.Body)
 		return response, fmt.Errorf("ArchivesSpace responded with a non-200:\nstatus-code: %d\n%s", response.StatusCode, string(body))
 	}
 	if err != nil {

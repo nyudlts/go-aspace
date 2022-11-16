@@ -3,7 +3,7 @@ package aspace
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 )
 
 func (a *ASClient) GetDigitalObjectIDs(repositoryId int) ([]int, error) {
@@ -13,7 +13,7 @@ func (a *ASClient) GetDigitalObjectIDs(repositoryId int) ([]int, error) {
 	if err != nil {
 		return daoIds, err
 	}
-	body, _ := ioutil.ReadAll(response.Body)
+	body, _ := io.ReadAll(response.Body)
 	err = json.Unmarshal(body, &daoIds)
 	if err != nil {
 		return daoIds, err
@@ -29,7 +29,7 @@ func (a *ASClient) GetDigitalObject(repositoryId int, daoId int) (DigitalObject,
 	if err != nil {
 		return do, err
 	}
-	body, err := ioutil.ReadAll(response.Body)
+	body, err := io.ReadAll(response.Body)
 	if err != nil {
 		return do, err
 	}
@@ -52,7 +52,7 @@ func (a *ASClient) UpdateDigitalObject(repositoryId int, daoId int, dao DigitalO
 		return "", err
 	}
 
-	body, err = ioutil.ReadAll(response.Body)
+	body, err = io.ReadAll(response.Body)
 	if err != nil {
 		return "", err
 	}
@@ -71,7 +71,7 @@ func (a *ASClient) CreateDigitalObject(repositoryId int, dao DigitalObject) (str
 		return "", err
 	}
 
-	body, err = ioutil.ReadAll(response.Body)
+	body, err = io.ReadAll(response.Body)
 	if err != nil {
 		return "", err
 	}
@@ -85,7 +85,7 @@ func (a *ASClient) DeleteDigitalObject(repositoryId int, doId int) (string, erro
 	if err != nil {
 		return "", err
 	}
-	body, err := ioutil.ReadAll(response.Body)
+	body, err := io.ReadAll(response.Body)
 	if err != nil {
 		return string(body), err
 	}

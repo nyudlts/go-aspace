@@ -4,7 +4,7 @@ import (
 	_ "embed"
 	"fmt"
 	"github.com/lestrrat-go/libxml2/xsd"
-	"io/ioutil"
+	"io"
 )
 
 func (a *ASClient) GetMARCAsByteArray(repositoryId int, resourceId int, unpublished bool) ([]byte, error) {
@@ -16,7 +16,7 @@ func (a *ASClient) GetMARCAsByteArray(repositoryId int, resourceId int, unpublis
 		return marcBytes, err
 	}
 
-	marcBytes, err = ioutil.ReadAll(response.Body)
+	marcBytes, err = io.ReadAll(response.Body)
 	return marcBytes, err
 }
 

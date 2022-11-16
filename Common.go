@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/lestrrat-go/libxml2/parser"
-	"io/ioutil"
+	"io"
 	"math/rand"
 	"strconv"
 	"strings"
@@ -13,7 +13,7 @@ import (
 
 var p = parser.New()
 
-var LibraryVersion = "v0.3.12b"
+var LibraryVersion = "v0.3.13b"
 
 var seed = rand.NewSource(time.Now().UnixNano())
 var rGen = rand.New(seed)
@@ -56,13 +56,21 @@ func (a AspaceInfo) String() string {
 	return msg
 }
 
+func (a *ASClient) Reindex() (*int, error) {
+	response, err := a.post("/plugins/reindex", true, "")
+	if err != nil {
+		return nil, err
+	}
+	return &response.StatusCode, nil
+}
+
 func (a *ASClient) GetAspaceInfo() (AspaceInfo, error) {
 	var aspaceInfo AspaceInfo
 	response, err := a.get("", false)
 	if err != nil {
 		return aspaceInfo, err
 	}
-	body, _ := ioutil.ReadAll(response.Body)
+	body, _ := io.ReadAll(response.Body)
 	err = json.Unmarshal(body, &aspaceInfo)
 	if err != nil {
 		return aspaceInfo, err
@@ -75,7 +83,7 @@ func (a *ASClient) PrintResponse(endpoint string) error {
 	if err != nil {
 		return err
 	}
-	body, err := ioutil.ReadAll(response.Body)
+	body, err := io.ReadAll(response.Body)
 	if err != nil {
 		return err
 	}
@@ -89,7 +97,7 @@ func (a *ASClient) GetEndpoint(e string) ([]byte, error) {
 	if err != nil {
 		return []byte{}, err
 	}
-	body, err := ioutil.ReadAll(response.Body)
+	body, err := io.ReadAll(response.Body)
 
 	if err != nil {
 		return []byte{}, err
@@ -97,7 +105,7 @@ func (a *ASClient) GetEndpoint(e string) ([]byte, error) {
 	return body, nil
 }
 
-//slice contains methods
+// slice contains methods
 func containsInt(list []int, id int) bool {
 	for _, i := range list {
 		if id == i {

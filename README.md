@@ -16,7 +16,7 @@ import (
 )
 
 func main() {
-    aspaceClient, err := aspace.NewClient(/path/to/go-aspace.yml, "environment from yaml", timeout)
+    aspaceClient, err := aspace.NewClient(/path/to/go-aspace.yml, "environment to use from config", timeout)
     if err != nil {
         panic(err)
     }
@@ -28,4 +28,26 @@ func main() {
 	
     fmt.Println(repositories) //prints the array of Repository IDs from ArchivesSpace.
 }
+```
+
+## Config Format
+A config template can be found in go-aspace.yml_template
+
+```
+dev:
+  url: https://your-archivesspace-api.url:8089
+  username: your-username
+  password: your-password
+  
+local:
+  url: https:/localhost:8089
+  username: your-username
+  password: your-password
+```
+
+## Example
+A simple example application can be found at /example/main.go
+
+```
+go run example/main.go --config /path/to/go-aspace.yml --environment the-environemnt-to-use
 ```

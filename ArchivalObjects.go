@@ -3,7 +3,7 @@ package aspace
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"regexp"
 	"strings"
 )
@@ -18,7 +18,7 @@ func (a *ASClient) GetArchivalObject(repositoryId int, aoId int) (ArchivalObject
 		return ao, err
 	}
 
-	body, err := ioutil.ReadAll(reponse.Body)
+	body, err := io.ReadAll(reponse.Body)
 	if err != nil {
 		return ao, err
 	}
@@ -59,7 +59,7 @@ func (a *ASClient) UpdateArchivalObject(repositoryId int, archivalObjectId int, 
 		return responseMessage, err
 	}
 
-	responseBody, err := ioutil.ReadAll(response.Body)
+	responseBody, err := io.ReadAll(response.Body)
 	if err != nil {
 		return responseMessage, err
 	}
@@ -86,7 +86,7 @@ func (a ASClient) DeleteArchivalObject(repositoryID int, archivalObjectID int) (
 		return responseMessage, err
 	}
 
-	responseBody, err := ioutil.ReadAll(response.Body)
+	responseBody, err := io.ReadAll(response.Body)
 	if err != nil {
 		return responseMessage, err
 	}

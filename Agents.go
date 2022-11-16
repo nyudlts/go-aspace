@@ -3,7 +3,7 @@ package aspace
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 )
 
 func (a *ASClient) GetAgentIds(agentType string) ([]int, error) {
@@ -13,7 +13,7 @@ func (a *ASClient) GetAgentIds(agentType string) ([]int, error) {
 	if err != nil {
 		return agentIDs, err
 	}
-	body, err := ioutil.ReadAll(response.Body)
+	body, err := io.ReadAll(response.Body)
 	if err != nil {
 		return agentIDs, err
 	}
@@ -33,7 +33,7 @@ func (a *ASClient) GetAgent(agentType string, agentID int) (Agent, error) {
 	if err != nil {
 		return agent, err
 	}
-	body, err := ioutil.ReadAll(response.Body)
+	body, err := io.ReadAll(response.Body)
 	if err != nil {
 		return agent, err
 	}
@@ -54,7 +54,7 @@ func (a *ASClient) CreateAgent(agentType string, agent Agent) (string, error) {
 		return "", err
 	}
 
-	r, err := ioutil.ReadAll(response.Body)
+	r, err := io.ReadAll(response.Body)
 	if err != nil {
 		return "", err
 	}
@@ -74,7 +74,7 @@ func (a *ASClient) UpdateAgent(agentType string, agentId int, agent Agent) (stri
 		return "", err
 	}
 
-	r, err := ioutil.ReadAll(response.Body)
+	r, err := io.ReadAll(response.Body)
 	if err != nil {
 		return "", err
 	}
@@ -90,7 +90,7 @@ func (a *ASClient) DeleteAgent(agentType string, agentId int) (string, error) {
 		return "", err
 	}
 
-	r, err := ioutil.ReadAll(response.Body)
+	r, err := io.ReadAll(response.Body)
 	if err != nil {
 		return "", err
 	}

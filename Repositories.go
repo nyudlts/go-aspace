@@ -3,7 +3,7 @@ package aspace
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"strconv"
 )
 
@@ -15,7 +15,7 @@ func (a *ASClient) GetRepositories() ([]int, error) {
 	if err != nil {
 		return repIds, err
 	}
-	body, err := ioutil.ReadAll(response.Body)
+	body, err := io.ReadAll(response.Body)
 	if err != nil {
 		return repIds, err
 	}
@@ -35,7 +35,7 @@ func (a *ASClient) GetRepositories() ([]int, error) {
 	return repIds, nil
 }
 
-//Return a Repository struct for given Repository ID
+// Return a Repository struct for given Repository ID
 func (a *ASClient) GetRepository(repositoryID int) (Repository, error) {
 	repository := Repository{}
 	endpoint := fmt.Sprintf("/repositories/%d", repositoryID)
@@ -44,7 +44,7 @@ func (a *ASClient) GetRepository(repositoryID int) (Repository, error) {
 		return repository, err
 	}
 
-	body, err := ioutil.ReadAll(response.Body)
+	body, err := io.ReadAll(response.Body)
 	if err != nil {
 		return repository, err
 	}
@@ -57,7 +57,7 @@ func (a *ASClient) GetRepository(repositoryID int) (Repository, error) {
 	return repository, nil
 }
 
-//Get a random Repository ID
+// Get a random Repository ID
 func (a *ASClient) GetRandomRepository() (int, error) {
 
 	repositoryIDs, err := a.GetRepositories()

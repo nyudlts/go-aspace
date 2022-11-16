@@ -3,7 +3,7 @@ package aspace
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"sort"
 	"strconv"
@@ -18,7 +18,7 @@ func (a *ASClient) GetAccessionIDs(repositoryID int) ([]int, error) {
 	if err != nil {
 		return accessions, err
 	}
-	body, err := ioutil.ReadAll(response.Body)
+	body, err := io.ReadAll(response.Body)
 	if err != nil {
 		return accessions, err
 	}
@@ -30,7 +30,7 @@ func (a *ASClient) GetAccessionIDs(repositoryID int) ([]int, error) {
 	return accessions, nil
 }
 
-//Get an Accession object for a given Repository ID and Accession ID
+// Get an Accession object for a given Repository ID and Accession ID
 func (a *ASClient) GetAccession(repositoryID int, accessionID int) (Accession, error) {
 	var accession = Accession{}
 	endpoint := fmt.Sprintf("/repositories/%d/accessions/%d", repositoryID, accessionID)
@@ -38,7 +38,7 @@ func (a *ASClient) GetAccession(repositoryID int, accessionID int) (Accession, e
 	if err != nil {
 		return accession, err
 	}
-	body, err := ioutil.ReadAll(response.Body)
+	body, err := io.ReadAll(response.Body)
 	if err != nil {
 		return accession, err
 	}
@@ -49,8 +49,8 @@ func (a *ASClient) GetAccession(repositoryID int, accessionID int) (Accession, e
 	return accession, nil
 }
 
-//Get a randomly selected Repository and Accession IDs
-//This function will return an error if the Repository selected does not contain any Accession records.
+// Get a randomly selected Repository and Accession IDs
+// This function will return an error if the Repository selected does not contain any Accession records.
 func (a *ASClient) GetRandomAccessionID() (int, int, error) {
 	repositoryID, err := a.GetRandomRepository()
 	if err != nil {
@@ -68,7 +68,7 @@ func (a *ASClient) GetRandomAccessionID() (int, int, error) {
 	return repositoryID, accessionID, nil
 }
 
-//Update an Accession record for a given Repository and Accession ID
+// Update an Accession record for a given Repository and Accession ID
 func (a *ASClient) UpdateAccession(repositoryID int, accessionID int, accession Accession) (string, error) {
 	endpoint := fmt.Sprintf("/repositories/%d/accessions/%d", repositoryID, accessionID)
 	body, err := json.Marshal(accession)
@@ -80,7 +80,7 @@ func (a *ASClient) UpdateAccession(repositoryID int, accessionID int, accession 
 		return "", err
 	}
 
-	msg, err := ioutil.ReadAll(response.Body)
+	msg, err := io.ReadAll(response.Body)
 	if err != nil {
 		return "", err
 	}
@@ -88,7 +88,7 @@ func (a *ASClient) UpdateAccession(repositoryID int, accessionID int, accession 
 	return string(msg), nil
 }
 
-//Create a new Accession with in a given Repository
+// Create a new Accession with in a given Repository
 func (a *ASClient) CreateAccession(repositoryID int, accession Accession) (string, error) {
 	endpoint := fmt.Sprintf("/repositories/%d/accessions", repositoryID)
 	body, err := json.Marshal(accession)
@@ -100,7 +100,7 @@ func (a *ASClient) CreateAccession(repositoryID int, accession Accession) (strin
 		return "", err
 	}
 
-	msg, err := ioutil.ReadAll(response.Body)
+	msg, err := io.ReadAll(response.Body)
 	if err != nil {
 		return "", err
 	}
@@ -108,14 +108,14 @@ func (a *ASClient) CreateAccession(repositoryID int, accession Accession) (strin
 	return string(msg), nil
 }
 
-//Delete an Accession within a Repository
+// Delete an Accession within a Repository
 func (a *ASClient) DeleteAccession(repositoryID int, accessionID int) (string, error) {
 	endpoint := fmt.Sprintf("/repositories/%d/accessions/%d", repositoryID, accessionID)
 	response, err := a.delete(endpoint)
 	if err != nil {
 		return fmt.Sprintf("code %d", response.StatusCode), err
 	}
-	msg, err := ioutil.ReadAll(response.Body)
+	msg, err := io.ReadAll(response.Body)
 	if err != nil {
 		return fmt.Sprintf("code %d", response.StatusCode), err
 	}
@@ -215,7 +215,7 @@ func (a *ASClient) getAccessionPage(repoID int, resID int, currentPage int) (*Ac
 		return nil, err
 	}
 
-	body, err := ioutil.ReadAll(response.Body)
+	body, err := io.ReadAll(response.Body)
 	if err != nil {
 		return nil, err
 	}
