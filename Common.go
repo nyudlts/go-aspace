@@ -6,6 +6,7 @@ import (
 	"github.com/lestrrat-go/libxml2/parser"
 	"io"
 	"math/rand"
+	"net/http"
 	"strconv"
 	"strings"
 	"time"
@@ -13,7 +14,7 @@ import (
 
 var p = parser.New()
 
-var LibraryVersion = "v0.3.13b"
+var LibraryVersion = "v0.3.14b"
 
 var seed = rand.NewSource(time.Now().UnixNano())
 var rGen = rand.New(seed)
@@ -91,18 +92,20 @@ func (a *ASClient) PrintResponse(endpoint string) error {
 	return nil
 }
 
-func (a *ASClient) GetEndpoint(e string) ([]byte, error) {
-
+func (a *ASClient) GetEndpoint(e string) (*http.Response, error) {
 	response, err := a.get(e, true)
 	if err != nil {
-		return []byte{}, err
+		return nil, err
 	}
-	body, err := io.ReadAll(response.Body)
+	return response, nil
+}
 
+func (a *ASClient) PostEndpoint(endpoint string, requestBody string, authenticated bool) (*http.Response, error) {
+	response, err := a.post(endpoint, authenticated, requestBody)
 	if err != nil {
-		return []byte{}, err
+		return nil, err
 	}
-	return body, nil
+	return response, nil
 }
 
 // slice contains methods

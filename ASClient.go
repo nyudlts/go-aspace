@@ -23,37 +23,6 @@ type Creds struct {
 	Password string `yaml:"password"`
 }
 
-func NewClientBufferedConfig(config []byte, environment string, timeout int) (*ASClient, error) {
-	var client *ASClient
-	tr := &http.Transport{
-		MaxIdleConns:       10,
-		IdleConnTimeout:    time.Duration(timeout) * time.Second,
-		DisableCompression: true,
-	}
-
-	nclient := &http.Client{
-		Transport: tr,
-	}
-
-	creds, err := getCreds(environment, config)
-	if err != nil {
-		return client, err
-	}
-
-	token, err := getSessionKey(creds)
-	if err != nil {
-		return client, err
-	}
-
-	client = &ASClient{
-		sessionKey: token,
-		rootURL:    creds.URL,
-		nclient:    nclient,
-	}
-
-	return client, err
-}
-
 func NewClient(configFile string, environment string, timeout int) (*ASClient, error) {
 
 	var client *ASClient
@@ -116,32 +85,37 @@ func getSessionKey(creds Creds) (string, error) {
 
 	url := fmt.Sprintf("%s/users/%s/login?password=%s", creds.URL, creds.Username, creds.Password)
 
-	request, err := http.Post(url, "text/json", nil)
+	response, err := http.Post(url, "text/json", nil)
 	if err != nil {
 		return "", err
 	}
 
-	if request.StatusCode != 200 {
-		return "", fmt.Errorf("Did not return a 200 while authenticating, recieved a %d", request.StatusCode)
+	if response.StatusCode != 200 {
+		return "", fmt.Errorf("Did not return a 200 while authenticating, recieved a %d", response.StatusCode)
 	}
 
-	body, err := io.ReadAll(request.Body)
+	body, err := io.ReadAll(response.Body)
 	if err != nil {
 		return "", err
 	}
 
-	var result map[string]interface{}
-	err = json.Unmarshal(body, &result)
+	var responseMap map[string]interface{}
+	err = json.Unmarshal(body, &responseMap)
 	if err != nil {
 		return "", err
 	}
-	sessionKey := fmt.Sprintf("%v", result["session"])
+	sessionKey := fmt.Sprintf("%v", responseMap["session"])
 
+	// --> TODO the session key should be validated against a regex
 	if sessionKey != "" {
 		return sessionKey, nil
 	} else {
 		return sessionKey, fmt.Errorf("Session field was empty")
 	}
+}
+
+func (a *ASClient) GetSessionKey() string {
+	return a.sessionKey
 }
 
 func (a *ASClient) do(request *http.Request, authenticated bool) (*http.Response, error) {
@@ -162,6 +136,7 @@ func (a *ASClient) do(request *http.Request, authenticated bool) (*http.Response
 
 	return response, nil
 }
+
 func (a *ASClient) get(endpoint string, authenticated bool) (*http.Response, error) {
 	var response *http.Response
 	url := a.rootURL + endpoint

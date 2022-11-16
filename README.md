@@ -49,12 +49,12 @@ local:
 A simple example application can be found at /example/main.go
 
 ```shell
-go run example/main.go --config /path/to/go-aspace.yml --environment the-environemnt-to-use
+go run example/main.go --config /path/to/go-aspace.yml --environment the-environment-to-use
 ```
 
 ## Testing
 to run the test suite
 ```shell
-go test -v --config /path/to/go-aspace.yml --environment the-environemnt-to-use
+go test -v --config /path/to/go-aspace.yml --environment the-environment-to-use
 ```
-The test suite will select random objects from the specified which may fail serialization to go structs
+The test suite will select random objects from the specified aspace instance, which may fail serialization to go structs
