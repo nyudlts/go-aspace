@@ -13,7 +13,7 @@ var resourceID int
 
 func TestTopContainers(t *testing.T) {
 	flag.Parse()
-	client, err := NewClient(goaspacetest.ConfigFile, *goaspacetest.EnvPtr, 10)
+	client, err := NewClient(goaspacetest.Config, goaspacetest.Environment, 20)
 	if err != nil {
 		t.Error(err)
 	}

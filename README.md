@@ -1,4 +1,4 @@
-# go-aspace v0.3.12b
+# go-aspace v0.3.13b
 a Go library for ArchivesSpace integrations
 
 ## Use
@@ -48,6 +48,13 @@ local:
 ## Example
 A simple example application can be found at /example/main.go
 
-```
+```shell
 go run example/main.go --config /path/to/go-aspace.yml --environment the-environemnt-to-use
 ```
+
+## Testing
+to run the test suite
+```shell
+go test -v --config /path/to/go-aspace.yml --environment the-environemnt-to-use
+```
+The test suite will select random objects from the specified which may fail serialization to go structs

@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"gopkg.in/yaml.v2"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"time"
@@ -62,7 +61,7 @@ func NewClient(configFile string, environment string, timeout int) (*ASClient, e
 		return client, fmt.Errorf("Configuration file %s does not exist", configFile)
 	}
 
-	bytes, err := ioutil.ReadFile(configFile)
+	bytes, err := os.ReadFile(configFile)
 	if err != nil {
 		return client, err
 	}

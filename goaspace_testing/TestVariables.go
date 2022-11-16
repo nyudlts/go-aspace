@@ -2,5 +2,12 @@ package goaspace_testing
 
 import "flag"
 
-var ConfigFile = "/etc/go-aspace.yml"
-var EnvPtr = flag.String("environment", "dev", "The environment to run tests on")
+var (
+	Config      string
+	Environment string
+)
+
+func init() {
+	flag.StringVar(&Config, "config", "", "")
+	flag.StringVar(&Environment, "environment", "", "")
+}
