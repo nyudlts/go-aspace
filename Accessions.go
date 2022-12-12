@@ -31,22 +31,22 @@ func (a *ASClient) GetAccessionIDs(repositoryID int) ([]int, error) {
 }
 
 // Get an Accession object for a given Repository ID and Accession ID
-func (a *ASClient) GetAccession(repositoryID int, accessionID int) (Accession, error) {
+func (a *ASClient) GetAccession(repositoryID int, accessionID int) (*Accession, error) {
 	var accession = Accession{}
 	endpoint := fmt.Sprintf("/repositories/%d/accessions/%d", repositoryID, accessionID)
 	response, err := a.get(endpoint, true)
 	if err != nil {
-		return accession, err
+		return &accession, err
 	}
 	body, err := io.ReadAll(response.Body)
 	if err != nil {
-		return accession, err
+		return &accession, err
 	}
 	err = json.Unmarshal(body, &accession)
 	if err != nil {
-		return accession, err
+		return &accession, err
 	}
-	return accession, nil
+	return &accession, nil
 }
 
 // Get a randomly selected Repository and Accession IDs

@@ -129,7 +129,9 @@ func (a *ASClient) do(request *http.Request, authenticated bool) (*http.Response
 	if response.StatusCode != 200 {
 		body, _ := io.ReadAll(response.Body)
 		return response, fmt.Errorf("ArchivesSpace responded with a non-200:\nstatus-code: %d\n%s", response.StatusCode, string(body))
+
 	}
+	a.nclient.CloseIdleConnections()
 	if err != nil {
 		return response, err
 	}
