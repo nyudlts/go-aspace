@@ -13,7 +13,7 @@ import (
 
 type ASClient struct {
 	sessionKey string
-	rootURL    string
+	RootURL    string
 	nclient    *http.Client
 }
 
@@ -57,7 +57,7 @@ func NewClient(configFile string, environment string, timeout int) (*ASClient, e
 
 	client = &ASClient{
 		sessionKey: token,
-		rootURL:    creds.URL,
+		RootURL:    creds.URL,
 		nclient:    nclient,
 	}
 
@@ -129,9 +129,8 @@ func (a *ASClient) do(request *http.Request, authenticated bool) (*http.Response
 	if response.StatusCode != 200 {
 		body, _ := io.ReadAll(response.Body)
 		return response, fmt.Errorf("ArchivesSpace responded with a non-200:\nstatus-code: %d\n%s", response.StatusCode, string(body))
-
 	}
-	a.nclient.CloseIdleConnections()
+
 	if err != nil {
 		return response, err
 	}
@@ -141,7 +140,7 @@ func (a *ASClient) do(request *http.Request, authenticated bool) (*http.Response
 
 func (a *ASClient) get(endpoint string, authenticated bool) (*http.Response, error) {
 	var response *http.Response
-	url := a.rootURL + endpoint
+	url := a.RootURL + endpoint
 
 	request, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -159,7 +158,7 @@ func (a *ASClient) get(endpoint string, authenticated bool) (*http.Response, err
 
 func (a *ASClient) post(endpoint string, authenticated bool, body string) (*http.Response, error) {
 	var response *http.Response
-	url := a.rootURL + endpoint
+	url := a.RootURL + endpoint
 	request, err := http.NewRequest("POST", url, bytes.NewBufferString(body))
 	if err != nil {
 		return response, err
@@ -175,7 +174,7 @@ func (a *ASClient) post(endpoint string, authenticated bool, body string) (*http
 
 func (a *ASClient) delete(endpoint string) (*http.Response, error) {
 	var response *http.Response
-	url := a.rootURL + endpoint
+	url := a.RootURL + endpoint
 	request, err := http.NewRequest("DELETE", url, nil)
 	if err != nil {
 		return response, err
@@ -190,7 +189,7 @@ func (a *ASClient) delete(endpoint string) (*http.Response, error) {
 
 func (a *ASClient) JsonRequest(endpoint string, method string, body string) (*http.Response, error) {
 	var response *http.Response
-	url := a.rootURL + endpoint
+	url := a.RootURL + endpoint
 	request, err := http.NewRequest(method, url, bytes.NewBufferString(body))
 	if err != nil {
 		return response, err

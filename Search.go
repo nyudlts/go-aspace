@@ -42,6 +42,7 @@ func (a *ASClient) Search(repositoryId int, searchType string, query string, pag
 		return SearchResult{}, err
 	}
 
+	response.Body.Close()
 	results := SearchResult{}
 	err = json.Unmarshal(bodyBytes, &results)
 	if err != nil {

@@ -127,7 +127,7 @@ func (a *ASClient) GetDigitalObjectIDsForResource(repositoryId int, resourceId i
 		if err != nil {
 			return doURIs, err
 		}
-
+		fmt.Println(ao.URI)
 		for _, instance := range ao.Instances {
 			if instance.InstanceType == "digital_object" {
 				doURIs = append(doURIs, instance.DigitalObject["ref"])
