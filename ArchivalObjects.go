@@ -8,6 +8,22 @@ import (
 	"strings"
 )
 
+func (a *ASClient) GetArchivalObjectID(repositoryID int) ([]int, error) {
+	aoIds := []int{}
+	endpoint := fmt.Sprintf("/repositories/%d/archival_objects?all_ids=true", repositoryID)
+	response, err := a.get(endpoint, true)
+	if err != nil {
+		return aoIds, err
+	}
+	body, _ := io.ReadAll(response.Body)
+	err = json.Unmarshal(body, &aoIds)
+	if err != nil {
+		return aoIds, err
+	}
+
+	return aoIds, nil
+}
+
 func (a *ASClient) GetArchivalObject(repositoryId int, aoId int) (ArchivalObject, error) {
 
 	ao := ArchivalObject{}
