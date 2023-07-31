@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func (a *ASClient) GetArchivalObjectID(repositoryID int) ([]int, error) {
+func (a *ASClient) GetArchivalObjectIDs(repositoryID int) ([]int, error) {
 	aoIds := []int{}
 	endpoint := fmt.Sprintf("/repositories/%d/archival_objects?all_ids=true", repositoryID)
 	response, err := a.get(endpoint, true)
