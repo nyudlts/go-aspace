@@ -3,7 +3,6 @@ package aspace
 import (
 	_ "embed"
 	"fmt"
-	"github.com/lestrrat-go/libxml2/xsd"
 	"io"
 )
 
@@ -18,23 +17,4 @@ func (a *ASClient) GetMARCAsByteArray(repositoryId int, resourceId int, unpublis
 
 	marcBytes, err = io.ReadAll(response.Body)
 	return marcBytes, err
-}
-
-func ValidateMARC(fa []byte) error {
-	schema, err := schemas.ReadFile("schema/MARC21slim.xsd")
-	if err != nil {
-		return err
-	}
-	eadxsd, err := xsd.Parse(schema)
-	if err != nil {
-		return err
-	}
-	doc, err := p.Parse(fa)
-	if err != nil {
-		return err
-	}
-	if err := eadxsd.Validate(doc); err != nil {
-		return err
-	}
-	return nil
 }

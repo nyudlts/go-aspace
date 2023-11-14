@@ -3,7 +3,6 @@ package aspace
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/lestrrat-go/libxml2/parser"
 	"io"
 	"math/rand"
 	"net/http"
@@ -11,8 +10,6 @@ import (
 	"strings"
 	"time"
 )
-
-var p = parser.New()
 
 var LibraryVersion = "v0.3.14b"
 

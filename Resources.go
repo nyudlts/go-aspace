@@ -146,12 +146,9 @@ func (a *ASClient) GetResourceTree(repositoryId int, resourceId int) (ResourceTr
 }
 
 func (a *ASClient) GetRandomResourceID() (int, int, error) {
-	var repositoryID = 0
-	var resourceID = 0
-	repositoryIDs, err := a.GetRepositories()
-	if err != nil {
-		return repositoryID, resourceID, err
-	}
+	var repositoryID int
+	var resourceID int
+	repositoryIDs := []int{2, 3, 6}
 
 	repositoryID = repositoryIDs[rGen.Intn(len(repositoryIDs))]
 

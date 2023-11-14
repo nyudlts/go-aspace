@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"regexp"
 	"strings"
 )
@@ -130,9 +131,17 @@ func (a *ASClient) GetRandomArchivalObject() (int, int, error) {
 	if err != nil {
 		return 0, 0, err
 	}
+
+	log.Println(repositoryID)
+
 	aoURIs, err := a.GetArchivalObjectsForResource(repositoryID, resourceID, "")
+	if err != nil {
+		return repositoryID, 0, err
+	}
+
 	aoURI := aoURIs[rGen.Intn(len(aoURIs))]
 	_, aoID, _ := URISplit(aoURI)
+	log.Println(aoID)
 	return repositoryID, aoID, nil
 }
 
