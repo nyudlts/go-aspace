@@ -129,8 +129,14 @@ func (a *ASClient) DeleteResource(repositoryId int, resourceId int) (string, err
 
 func (a *ASClient) GetResourceTree(repositoryId int, resourceId int) (ResourceTree, error) {
 	tree := ResourceTree{}
-	endpoint := fmt.Sprintf("/repositories/%d/resources/%d/tree", repositoryId, resourceId)
+
+	endpoint := fmt.Sprintf("/repositories/%d/resources/%d/tree/root", repositoryId, resourceId)
+
 	response, err := a.get(endpoint, true)
+	if err != nil {
+
+		return tree, err
+	}
 
 	body, err := io.ReadAll(response.Body)
 	if err != nil {

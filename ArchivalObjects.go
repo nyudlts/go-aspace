@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"log"
 	"regexp"
 	"strings"
 )
@@ -48,19 +47,20 @@ func (a *ASClient) GetArchivalObject(repositoryId int, aoId int) (ArchivalObject
 	return ao, nil
 }
 
-func (a *ASClient) GetArchivalObjectsForResource(repositoryId int, resourceId int, filter string) ([]string, error) {
-
+func (a *ASClient) GetArchivalObjectsForResource(repositoryId int, resourceId int) ([]string, error) {
 	aos := []string{}
-	tree, err := a.GetResourceTree(repositoryId, resourceId)
+
+	rootNode, err := a.GetRootNode(repositoryId, resourceId)
 	if err != nil {
 		return aos, err
 	}
 
-	if filter == "" {
-		getChildArchivalObjectURIsFiltered(tree.Children, &aos, filter)
-	} else {
-		getChildArchivalObjectURIs(tree.Children, &aos)
+	aos = []string{}
+
+	for _, node := range rootNode.PrecomputedWaypoints[""].Nodes {
+		aos = append(aos, node.URI)
 	}
+
 	return aos, nil
 }
 
@@ -126,22 +126,15 @@ func getChildArchivalObjectURIsFiltered(children []ResourceTree, aos *[]string, 
 	}
 }
 
-func (a *ASClient) GetRandomArchivalObject() (int, int, error) {
-	repositoryID, resourceID, err := a.GetRandomResourceID()
-	if err != nil {
-		return 0, 0, err
-	}
+func (a *ASClient) GetRandomArchivalObject(repositoryID int, resourceID int) (int, int, error) {
 
-	log.Println(repositoryID)
-
-	aoURIs, err := a.GetArchivalObjectsForResource(repositoryID, resourceID, "")
+	aoURIs, err := a.GetArchivalObjectsForResource(repositoryID, resourceID)
 	if err != nil {
 		return repositoryID, 0, err
 	}
 
 	aoURI := aoURIs[rGen.Intn(len(aoURIs))]
 	_, aoID, _ := URISplit(aoURI)
-	log.Println(aoID)
 	return repositoryID, aoID, nil
 }
 

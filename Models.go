@@ -530,6 +530,10 @@ type LinkedTree struct {
 	Resolved ResourceTree `json:"_resolved,omitempty"`
 }
 
+type PrecomputedWaypoint struct {
+	Nodes []Node `json:"0,omitempty"`
+}
+
 type ResourceTree struct {
 	Title         string         `json:"title,omitempty"`
 	Id            int            `json:"id,omitempty"`
@@ -660,6 +664,22 @@ type TopContainer struct {
 	Collection                []interface{}     `json:"collection"`
 	Repository                map[string]string `json:"repository"`
 	JSONModelType             string            `json:"json_model_type"`
+}
+
+type Node struct {
+	ChildCount           int                            `json:"child_count,omitempty"`
+	Waypoints            int                            `json:"waypoints,omitempty"`
+	WaypointSize         int                            `json:"waypoint_size,omitempty"`
+	Title                string                         `json:"title,omitempty"`
+	URI                  string                         `json:"uri,omitempty"`
+	SluggedURL           string                         `json:"slugged_url,omitempty"`
+	JSONModelType        string                         `json:"jsonmodel_type,omitempty"`
+	ParsedTitle          string                         `json:"parsed_title,omitempty"`
+	Suppressed           bool                           `json:"suppresed,omitempty"`
+	HasDigitalInstance   bool                           `json:"has_digital_instanceint,omitempty"`
+	Level                string                         `json:"level,omitempty"`
+	Identifier           string                         `json:"identifier,omitempty"`
+	PrecomputedWaypoints map[string]PrecomputedWaypoint `json:"precomputed_waypoints,omitempty"`
 }
 
 type UserDefined struct {

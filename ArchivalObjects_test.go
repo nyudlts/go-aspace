@@ -2,8 +2,9 @@ package aspace
 
 import (
 	"flag"
-	goaspacetest "github.com/nyudlts/go-aspace/goaspace_testing"
 	"testing"
+
+	goaspacetest "github.com/nyudlts/go-aspace/goaspace_testing"
 )
 
 func TestArchivalObject(t *testing.T) {
@@ -13,8 +14,18 @@ func TestArchivalObject(t *testing.T) {
 		t.Error(err)
 	}
 
-	t.Run("Test serialize and archival object", func(t *testing.T) {
-		repositoryID, aoID, err := client.GetRandomArchivalObject()
+	t.Run("Test serialize an archival object", func(t *testing.T) {
+		repositoryID, resourceID, err := client.GetRandomResourceID()
+		if err != nil {
+			t.Error(err)
+		}
+
+		t.Log("Testing repoID: ", repositoryID, " resourceID: ", resourceID)
+
+		repositoryID, aoID, err := client.GetRandomArchivalObject(repositoryID, resourceID)
+		if err != nil {
+			t.Error(err)
+		}
 
 		ao, err := client.GetArchivalObject(repositoryID, aoID)
 		if err != nil {

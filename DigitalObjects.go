@@ -115,7 +115,7 @@ func (a *ASClient) GetRandomDigitalObject() (int, int, error) {
 func (a *ASClient) GetDigitalObjectIDsForResource(repositoryId int, resourceId int) ([]string, error) {
 	doURIs := []string{}
 
-	aoURIs, err := a.GetArchivalObjectsForResource(repositoryId, resourceId, "digital_object")
+	aoURIs, err := a.GetArchivalObjectsForResource(repositoryId, resourceId)
 
 	if err != nil {
 		return doURIs, err
