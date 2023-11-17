@@ -24,8 +24,8 @@ func GetWorkOrderHeader() string {
 
 // A WorkOrder stores the header and constituent rows for a parsed work order
 type WorkOrder struct {
-	header []string
-	rows   []WorkOrderRow
+	Header []string
+	Rows   []WorkOrderRow
 }
 
 // A WorkOrderRow holds the values for a single row in the parsed WorkOrder

@@ -61,7 +61,7 @@ func TestGetResourceID(t *testing.T) {
 	sut := createAndLoadWorkOrder(filepath.Join(fixtureRoot, "valid_wo.tsv"), t)
 
 	want = "DLTS.2022"
-	got = sut.rows[1].GetResourceID()
+	got = sut.Rows[1].GetResourceID()
 	assertStringsEqual(want, got, t)
 }
 
@@ -71,7 +71,7 @@ func TestGetRefID(t *testing.T) {
 	sut := createAndLoadWorkOrder(filepath.Join(fixtureRoot, "valid_wo.tsv"), t)
 
 	want = "4a6f56d2b69962a05792478cae78e888"
-	got = sut.rows[2].GetRefID()
+	got = sut.Rows[2].GetRefID()
 	assertStringsEqual(want, got, t)
 }
 
@@ -81,7 +81,7 @@ func TestGetURI(t *testing.T) {
 	sut := createAndLoadWorkOrder(filepath.Join(fixtureRoot, "valid_wo.tsv"), t)
 
 	want = "/repositories/3/archival_objects/979520"
-	got = sut.rows[0].GetURI()
+	got = sut.Rows[0].GetURI()
 	assertStringsEqual(want, got, t)
 }
 
@@ -91,7 +91,7 @@ func TestGetContainerIndicator1(t *testing.T) {
 	sut := createAndLoadWorkOrder(filepath.Join(fixtureRoot, "valid_wo.tsv"), t)
 
 	want = "V01"
-	got = sut.rows[1].GetContainerIndicator1()
+	got = sut.Rows[1].GetContainerIndicator1()
 	assertStringsEqual(want, got, t)
 }
 
@@ -101,7 +101,7 @@ func TestGetContainerIndicator2(t *testing.T) {
 	sut := createAndLoadWorkOrder(filepath.Join(fixtureRoot, "valid_wo.tsv"), t)
 
 	want = "I02"
-	got = sut.rows[2].GetContainerIndicator2()
+	got = sut.Rows[2].GetContainerIndicator2()
 	assertStringsEqual(want, got, t)
 }
 
@@ -111,7 +111,7 @@ func TestGetContainerIndicator3(t *testing.T) {
 	sut := createAndLoadWorkOrder(filepath.Join(fixtureRoot, "valid_wo.tsv"), t)
 
 	want = "A03"
-	got = sut.rows[0].GetContainerIndicator3()
+	got = sut.Rows[0].GetContainerIndicator3()
 	assertStringsEqual(want, got, t)
 }
 
@@ -121,7 +121,7 @@ func TestGetContainerTitle(t *testing.T) {
 	sut := createAndLoadWorkOrder(filepath.Join(fixtureRoot, "valid_wo.tsv"), t)
 
 	want = "Video Test"
-	got = sut.rows[1].GetTitle()
+	got = sut.Rows[1].GetTitle()
 	assertStringsEqual(want, got, t)
 }
 
@@ -131,6 +131,6 @@ func TestGetComponentID(t *testing.T) {
 	sut := createAndLoadWorkOrder(filepath.Join(fixtureRoot, "valid_wo.tsv"), t)
 
 	want = "cuid39671"
-	got = sut.rows[2].GetComponentID()
+	got = sut.Rows[2].GetComponentID()
 	assertStringsEqual(want, got, t)
 }
