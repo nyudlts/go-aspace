@@ -9,6 +9,19 @@ import (
 // HEADER_ROW is the list of expected work order field names
 var HEADER_ROW = []string{"Resource ID", "Ref ID", "URI", "Container Indicator 1", "Container Indicator 2", "Container Indicator 3", "Title", "Component ID"}
 
+// Get a Header Row as a string
+func GetWorkOrderHeader() string {
+	var header string
+	for i, h := range HEADER_ROW {
+		if i < len(HEADER_ROW)-1 {
+			header = fmt.Sprintf(header+"%s\t", h)
+		} else {
+			header = header + h
+		}
+	}
+	return header
+}
+
 // A WorkOrder stores the header and constituent rows for a parsed work order
 type WorkOrder struct {
 	header []string
