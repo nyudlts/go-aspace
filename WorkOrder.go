@@ -4,6 +4,7 @@ import (
 	"encoding/csv"
 	"fmt"
 	"io"
+	"strings"
 )
 
 // HEADER_ROW is the list of expected work order field names
@@ -18,6 +19,11 @@ type WorkOrder struct {
 // A WorkOrderRow holds the values for a single row in the parsed WorkOrder
 type WorkOrderRow struct {
 	fields []string
+}
+
+// convert a work order row into a tabe delimited string
+func (wor WorkOrderRow) String() string {
+	return strings.Join(wor.fields, "\t")
 }
 
 // assertHeaderFields ensures that the fields in the the work order being processed match expectations
