@@ -130,7 +130,7 @@ func (a *ASClient) GetDigitalObjectIDsForResource(repositoryId int, resourceId i
 
 		for _, instance := range ao.Instances {
 			if instance.InstanceType == "digital_object" {
-				doURIs = append(doURIs, instance.DigitalObject.URI)
+				doURIs = append(doURIs, instance.DigitalObject["ref"])
 			}
 		}
 	}
@@ -144,4 +144,21 @@ func (do DigitalObject) ContainsUseStatement(role string) bool {
 		}
 	}
 	return false
+}
+
+func (a *ASClient) GetDigitalObjectIDsForArchivalObjectFromURI(aoURI string) ([]string, error) {
+	doURIs := []string{}
+
+	ao, err := a.GetArchivalObjectFromURI(aoURI)
+	if err != nil {
+		return doURIs, err
+	}
+
+	for _, instance := range ao.Instances {
+		if instance.InstanceType == "digital_object" {
+			doURIs = append(doURIs, instance.DigitalObject["ref"])
+		}
+	}
+
+	return doURIs, nil
 }

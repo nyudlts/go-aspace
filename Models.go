@@ -187,7 +187,7 @@ type Deaccession struct {
 	Scope         string   `json:"scope,omitempty"`
 	Description   string   `json:"description,omitempty"`
 	Date          Date     `json:"date,omitempty"`
-	Reason        string   `json:"reason,omitempty,omitempty"`
+	Reason        string   `json:"reason,omitempty"`
 	Disposition   string   `json:"disposition,omitempty"`
 	Notification  bool     `json:"notification,omitempty"`
 	Extents       []Extent `json:"extents,omitempty"`
@@ -285,11 +285,11 @@ type FileVersion struct {
 }
 
 type Instance struct {
-	InstanceType     string        `json:"instance_type,omitempty"`
-	SubContainer     SubContainer  `json:"sub_container,omitempty"`
-	DigitalObject    DigitalObject `json:"digital_object,omitempty"`
-	IsRepresentative bool          `json:"is_representative,omitempty"`
-	JSONModelType    string        `json:"jsonmodel_type,omitempty"`
+	InstanceType     string            `json:"instance_type,omitempty"`
+	SubContainer     SubContainer      `json:"sub_container,omitempty"`
+	DigitalObject    map[string]string `json:"digital_object,omitempty"`
+	IsRepresentative bool              `json:"is_representative,omitempty"`
+	JSONModelType    string            `json:"jsonmodel_type,omitempty"`
 }
 
 type Inherited struct {

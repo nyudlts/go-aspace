@@ -3,8 +3,10 @@ package aspace
 import (
 	"flag"
 	"fmt"
-	goaspacetest "github.com/nyudlts/go-aspace/goaspace_testing"
+	"slices"
 	"testing"
+
+	goaspacetest "github.com/nyudlts/go-aspace/goaspace_testing"
 )
 
 func TestDigitalObject(t *testing.T) {
@@ -37,5 +39,33 @@ func TestDigitalObject(t *testing.T) {
 			t.Log(do.Notes)
 			t.Log(fmt.Sprintf("Successfully requested and serialized digital object %s %s\n", do.URI, do.Title))
 		}
+	})
+
+	t.Run("Test DigitalObjectIDs from an ArchivalObject", func(t *testing.T) {
+
+		aoURI := "/repositories/3/archival_objects/912180"
+
+		got, err := client.GetDigitalObjectIDsForArchivalObjectFromURI(aoURI)
+		if err != nil {
+			t.Error(err)
+			t.FailNow()
+		}
+
+		want := []string{"/repositories/3/digital_objects/45716", "/repositories/3/digital_objects/45726", "/repositories/3/digital_objects/45717"}
+		if len(want) != len(got) {
+			t.Errorf("expected %d digital objects but got %d", len(want), len(got))
+			t.FailNow()
+		}
+
+		slices.Sort(want)
+		slices.Sort(got)
+
+		for i, w := range want {
+			if w != got[i] {
+				t.Errorf("expected %s but got %s", w, got[i])
+				t.FailNow()
+			}
+		}
+		t.Logf("Successfully retrieved DigitalObjectIDs for archival object: %s\n", aoURI)
 	})
 }
