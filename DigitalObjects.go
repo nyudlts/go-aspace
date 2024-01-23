@@ -130,7 +130,7 @@ func (a *ASClient) GetDigitalObjectIDsForResource(repositoryId int, resourceId i
 
 		for _, instance := range ao.Instances {
 			if instance.InstanceType == "digital_object" {
-				doURIs = append(doURIs, instance.DigitalObject["ref"])
+				doURIs = append(doURIs, instance.DigitalObject.URI)
 			}
 		}
 	}
