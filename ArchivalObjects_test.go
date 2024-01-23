@@ -31,7 +31,7 @@ func TestArchivalObject(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		} else {
-			t.Logf("Successfully requested and serialized archival %s: %s\n", ao.URI, ao.Title)
+			t.Logf("Successfully requested and serialized archival object %s: %s\n", ao.URI, ao.Title)
 		}
 	})
 
