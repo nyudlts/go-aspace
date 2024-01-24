@@ -23,22 +23,9 @@ func (a *ASClient) GetDigitalObjectIDs(repositoryId int) ([]int, error) {
 }
 
 func (a *ASClient) GetDigitalObject(repositoryId int, daoId int) (DigitalObject, error) {
-	do := DigitalObject{}
-	endpoint := fmt.Sprintf("/repositories/%d/digital_objects/%d", repositoryId, daoId)
-	response, err := a.get(endpoint, true)
-	if err != nil {
-		return do, err
-	}
-	body, err := io.ReadAll(response.Body)
-	if err != nil {
-		return do, err
-	}
-	err = json.Unmarshal(body, &do)
-	if err != nil {
-		return do, err
-	}
+	doURI := fmt.Sprintf("/repositories/%d/digital_objects/%d", repositoryId, daoId)
 
-	return do, nil
+	return a.GetDigitalObjectFromURI(doURI)
 }
 
 func (a *ASClient) GetDigitalObjectFromURI(doURI string) (DigitalObject, error) {
