@@ -2,7 +2,6 @@ package aspace
 
 import (
 	"flag"
-	"fmt"
 	"slices"
 	"testing"
 
@@ -20,13 +19,14 @@ func TestDigitalObject(t *testing.T) {
 		repositoryID, digitalObjectID, err := client.GetRandomDigitalObject()
 		if err != nil {
 			t.Error(err)
+			t.FailNow()
 		}
 
 		do, err := client.GetDigitalObject(repositoryID, digitalObjectID)
 		if err != nil {
 			t.Error(err)
 		} else {
-			t.Log(fmt.Sprintf("Successfully requested and serialized digital object %s %s\n", do.URI, do.Title))
+			t.Logf("Successfully requested and serialized digital object %s %s\n", do.URI, do.Title)
 		}
 	})
 
@@ -37,7 +37,7 @@ func TestDigitalObject(t *testing.T) {
 			t.Error(err)
 		} else {
 			t.Log(do.Notes)
-			t.Log(fmt.Sprintf("Successfully requested and serialized digital object %s %s\n", do.URI, do.Title))
+			t.Logf("Successfully requested and serialized digital object %s %s\n", do.URI, do.Title)
 		}
 	})
 
