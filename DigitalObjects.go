@@ -41,6 +41,24 @@ func (a *ASClient) GetDigitalObject(repositoryId int, daoId int) (DigitalObject,
 	return do, nil
 }
 
+func (a *ASClient) GetDigitalObjectFromURI(doURI string) (DigitalObject, error) {
+	do := DigitalObject{}
+	response, err := a.get(doURI, true)
+	if err != nil {
+		return do, err
+	}
+	body, err := io.ReadAll(response.Body)
+	if err != nil {
+		return do, err
+	}
+	err = json.Unmarshal(body, &do)
+	if err != nil {
+		return do, err
+	}
+
+	return do, nil
+}
+
 func (a *ASClient) UpdateDigitalObject(repositoryId int, daoId int, dao DigitalObject) (string, error) {
 	endpoint := fmt.Sprintf("/repositories/%d/digital_objects/%d", repositoryId, daoId)
 	body, err := json.Marshal(dao)

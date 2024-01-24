@@ -25,12 +25,30 @@ func TestDigitalObject(t *testing.T) {
 		do, err := client.GetDigitalObject(repositoryID, digitalObjectID)
 		if err != nil {
 			t.Error(err)
+			t.FailNow()
 		} else {
 			t.Logf("Successfully requested and serialized digital object %s %s\n", do.URI, do.Title)
 		}
+
 	})
 
-	t.Run("Test Unamarshal a digital object with notes", func(t *testing.T) {
+	t.Run("Test serialize a digital object using doURI", func(t *testing.T) {
+		doURI := "/repositories/3/digital_objects/45726"
+		do, err := client.GetDigitalObjectFromURI(doURI)
+		if err != nil {
+			t.Error(err)
+			t.FailNow()
+		}
+
+		want := "MSS_407_cuid29413B"
+		if do.DigitalObjectID != want {
+			t.Errorf("Expected %s but got %s", want, do.DigitalObjectID)
+			t.FailNow()
+		}
+		t.Logf("Successfully requested and serialized digital object via doURI %s %s\n", do.URI, do.Title)
+	})
+
+	t.Run("Test Unmarshal a digital object with notes", func(t *testing.T) {
 
 		do, err := client.GetDigitalObject(2, 261)
 		if err != nil {
