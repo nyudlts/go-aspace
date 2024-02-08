@@ -114,3 +114,22 @@ func containsInt(list []int, id int) bool {
 	}
 	return false
 }
+
+type CreateResponse struct {
+	Status      string   `json:"status"`
+	Error       string   `json:"error"`
+	ID          int      `json:"id,omitempty"`
+	LockVersion int      `json:"lock_version,omitempty"`
+	Stale       bool     `json:"stale,omitempty"`
+	URI         string   `json:"uri,omitempty"`
+	Warnings    []string `json:"warnings,omitempty"`
+}
+
+func ParseCreateResponse(body string) *CreateResponse {
+	var createResponse CreateResponse
+	err := json.Unmarshal([]byte(body), &createResponse)
+	if err != nil {
+		return nil
+	}
+	return &createResponse
+}
