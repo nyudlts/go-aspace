@@ -115,7 +115,7 @@ func containsInt(list []int, id int) bool {
 	return false
 }
 
-type CreateResponse struct {
+type CreateOrUpdateResponse struct {
 	Status      string   `json:"status"`
 	Error       string   `json:"error"`
 	ID          int      `json:"id,omitempty"`
@@ -125,11 +125,11 @@ type CreateResponse struct {
 	Warnings    []string `json:"warnings,omitempty"`
 }
 
-func ParseCreateResponse(body string) *CreateResponse {
-	var createResponse CreateResponse
-	err := json.Unmarshal([]byte(body), &createResponse)
+func ParseCreateOrUpdateResponse(body string) *CreateOrUpdateResponse {
+	var cour CreateOrUpdateResponse
+	err := json.Unmarshal([]byte(body), &cour)
 	if err != nil {
 		return nil
 	}
-	return &createResponse
+	return &cour
 }

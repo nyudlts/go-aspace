@@ -36,10 +36,10 @@ func TestCommon(t *testing.T) {
 		}
 	})
 
-	t.Run("Test ParseCreateResponse() Created", func(t *testing.T) {
+	t.Run("Test ParseCreateOrUpdateResponse() Created", func(t *testing.T) {
 
 		responseBody := `{"status":"Created","id":61344,"lock_version":0,"stale":true,"uri":"/repositories/6/digital_objects/61344","warnings":[]}`
-		got := ParseCreateResponse(responseBody)
+		got := ParseCreateOrUpdateResponse(responseBody)
 
 		scenarios := [][]string{
 			{"Created", got.Status, "Incorrect Status"},
@@ -57,10 +57,10 @@ func TestCommon(t *testing.T) {
 		}
 	})
 
-	t.Run("Test ParseCreateResponse() Error", func(t *testing.T) {
+	t.Run("Test ParseCreateOrUpdateResponse() Error", func(t *testing.T) {
 
 		responseBody := `{"error":"I need more coffee!"}`
-		got := ParseCreateResponse(responseBody)
+		got := ParseCreateOrUpdateResponse(responseBody)
 
 		scenarios := [][]string{
 			{"", got.Status, "Incorrect Status"},
