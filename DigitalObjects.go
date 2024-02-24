@@ -85,8 +85,13 @@ func (a *ASClient) CreateDigitalObject(repositoryId int, dao DigitalObject) (str
 }
 
 func (a *ASClient) DeleteDigitalObject(repositoryId int, doId int) (string, error) {
-	endpoint := fmt.Sprintf("/repositories/%d/digital_objects/%d", repositoryId, doId)
-	response, err := a.delete(endpoint)
+	doURI := fmt.Sprintf("/repositories/%d/digital_objects/%d", repositoryId, doId)
+
+	return a.DeleteDigitalObjectFromURI(doURI)
+}
+
+func (a *ASClient) DeleteDigitalObjectFromURI(doURI string) (string, error) {
+	response, err := a.delete(doURI)
 	if err != nil {
 		return "", err
 	}
