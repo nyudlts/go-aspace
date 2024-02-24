@@ -198,10 +198,10 @@ type DigitalObject struct {
 	LockVersion          *int                   `json:"lock_version,omitempty"`
 	DigitalObjectID      string                 `json:"digital_object_id,omitempty"`
 	Title                string                 `json:"title,omitempty"`
-	Publish              bool                   `json:"publish,omitempty"`
-	Restrictions         bool                   `json:"restrictions,omitempty"`
-	Suppressed           bool                   `json:"suppressed,omitempty"`
-	IsSlugAuto           bool                   `json:"is_slug_auto,omitempty"`
+	Publish              bool                   `json:"publish"`
+	Restrictions         bool                   `json:"restrictions"`
+	Suppressed           bool                   `json:"suppressed"`
+	IsSlugAuto           bool                   `json:"is_slug_auto"`
 	JSONModelType        string                 `json:"jsonmodel_type,omitempty"`
 	ExternalIds          []ExternalID           `json:"external_ids,omitempty"`
 	Subjects             []SubjectReference     `json:"subjects,omitempty"`
