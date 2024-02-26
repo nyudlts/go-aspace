@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-var LibraryVersion = "v0.3.14b"
+var LibraryVersion = "v0.6.0"
 
 var seed = rand.NewSource(time.Now().UnixNano())
 var rGen = rand.New(seed)
@@ -113,4 +113,23 @@ func containsInt(list []int, id int) bool {
 		}
 	}
 	return false
+}
+
+type CreateOrUpdateResponse struct {
+	Status      string   `json:"status"`
+	Error       string   `json:"error"`
+	ID          int      `json:"id,omitempty"`
+	LockVersion int      `json:"lock_version,omitempty"`
+	Stale       bool     `json:"stale,omitempty"`
+	URI         string   `json:"uri,omitempty"`
+	Warnings    []string `json:"warnings,omitempty"`
+}
+
+func ParseCreateOrUpdateResponse(body string) *CreateOrUpdateResponse {
+	var cour CreateOrUpdateResponse
+	err := json.Unmarshal([]byte(body), &cour)
+	if err != nil {
+		return nil
+	}
+	return &cour
 }

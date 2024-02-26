@@ -23,9 +23,14 @@ func (a *ASClient) GetDigitalObjectIDs(repositoryId int) ([]int, error) {
 }
 
 func (a *ASClient) GetDigitalObject(repositoryId int, daoId int) (DigitalObject, error) {
+	doURI := fmt.Sprintf("/repositories/%d/digital_objects/%d", repositoryId, daoId)
+
+	return a.GetDigitalObjectFromURI(doURI)
+}
+
+func (a *ASClient) GetDigitalObjectFromURI(doURI string) (DigitalObject, error) {
 	do := DigitalObject{}
-	endpoint := fmt.Sprintf("/repositories/%d/digital_objects/%d", repositoryId, daoId)
-	response, err := a.get(endpoint, true)
+	response, err := a.get(doURI, true)
 	if err != nil {
 		return do, err
 	}
@@ -80,8 +85,13 @@ func (a *ASClient) CreateDigitalObject(repositoryId int, dao DigitalObject) (str
 }
 
 func (a *ASClient) DeleteDigitalObject(repositoryId int, doId int) (string, error) {
-	endpoint := fmt.Sprintf("/repositories/%d/digital_objects/%d", repositoryId, doId)
-	response, err := a.delete(endpoint)
+	doURI := fmt.Sprintf("/repositories/%d/digital_objects/%d", repositoryId, doId)
+
+	return a.DeleteDigitalObjectFromURI(doURI)
+}
+
+func (a *ASClient) DeleteDigitalObjectFromURI(doURI string) (string, error) {
+	response, err := a.delete(doURI)
 	if err != nil {
 		return "", err
 	}
@@ -144,4 +154,21 @@ func (do DigitalObject) ContainsUseStatement(role string) bool {
 		}
 	}
 	return false
+}
+
+func (a *ASClient) GetDigitalObjectIDsForArchivalObjectFromURI(aoURI string) ([]string, error) {
+	doURIs := []string{}
+
+	ao, err := a.GetArchivalObjectFromURI(aoURI)
+	if err != nil {
+		return doURIs, err
+	}
+
+	for _, instance := range ao.Instances {
+		if instance.InstanceType == "digital_object" {
+			doURIs = append(doURIs, instance.DigitalObject["ref"])
+		}
+	}
+
+	return doURIs, nil
 }

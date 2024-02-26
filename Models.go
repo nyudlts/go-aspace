@@ -187,7 +187,7 @@ type Deaccession struct {
 	Scope         string   `json:"scope,omitempty"`
 	Description   string   `json:"description,omitempty"`
 	Date          Date     `json:"date,omitempty"`
-	Reason        string   `json:"reason,omitempty,omitempty"`
+	Reason        string   `json:"reason,omitempty"`
 	Disposition   string   `json:"disposition,omitempty"`
 	Notification  bool     `json:"notification,omitempty"`
 	Extents       []Extent `json:"extents,omitempty"`
@@ -198,10 +198,10 @@ type DigitalObject struct {
 	LockVersion          *int                   `json:"lock_version,omitempty"`
 	DigitalObjectID      string                 `json:"digital_object_id,omitempty"`
 	Title                string                 `json:"title,omitempty"`
-	Publish              bool                   `json:"publish,omitempty"`
-	Restrictions         bool                   `json:"restrictions,omitempty"`
-	Suppressed           bool                   `json:"suppressed,omitempty"`
-	IsSlugAuto           bool                   `json:"is_slug_auto,omitempty"`
+	Publish              bool                   `json:"publish"`
+	Restrictions         bool                   `json:"restrictions"`
+	Suppressed           bool                   `json:"suppressed"`
+	IsSlugAuto           bool                   `json:"is_slug_auto"`
 	JSONModelType        string                 `json:"jsonmodel_type,omitempty"`
 	ExternalIds          []ExternalID           `json:"external_ids,omitempty"`
 	Subjects             []SubjectReference     `json:"subjects,omitempty"`
@@ -270,7 +270,7 @@ type FileVersion struct {
 	Identifier            string `json:"identifier,omitempty"`
 	LockVersion           int    `json:"lock_version,omitempty"`
 	FileURI               string `json:"file_uri,omitempty"`
-	Publish               bool   `json:"publish,omitempty"`
+	Publish               bool   `json:"publish"`
 	FileFormatVersion     string `json:"file_format_version,omitempty"`
 	FileSizeBytes         uint64 `json:"file_size_bytes,omitempty"`
 	Checksum              string `json:"checksum,omitempty"`
@@ -281,7 +281,7 @@ type FileVersion struct {
 	XLinkShowAttribute    string `json:"xlink_show_attribute,omitempty"`
 	FileFormatName        string `json:"file_format_name,omitempty"`
 	JSONModelType         string `json:"jsonmodel_type,omitempty"`
-	IsRepresentative      bool   `json:"is_representative,omitempty"`
+	IsRepresentative      bool   `json:"is_representative"`
 }
 
 type Instance struct {

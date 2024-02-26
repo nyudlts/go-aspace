@@ -26,10 +26,16 @@ func (a *ASClient) GetArchivalObjectIDs(repositoryID int) ([]int, error) {
 
 func (a *ASClient) GetArchivalObject(repositoryId int, aoId int) (ArchivalObject, error) {
 
-	ao := ArchivalObject{}
-	endpoint := fmt.Sprintf("/repositories/%d/archival_objects/%d", repositoryId, aoId)
+	aoURI := fmt.Sprintf("/repositories/%d/archival_objects/%d", repositoryId, aoId)
 
-	reponse, err := a.get(endpoint, true)
+	return a.GetArchivalObjectFromURI(aoURI)
+}
+
+func (a *ASClient) GetArchivalObjectFromURI(aoURI string) (ArchivalObject, error) {
+
+	ao := ArchivalObject{}
+
+	reponse, err := a.get(aoURI, true)
 	if err != nil {
 		return ao, err
 	}
