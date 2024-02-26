@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-var LibraryVersion = "v0.3.14b"
+var LibraryVersion = "v0.6.0"
 
 var seed = rand.NewSource(time.Now().UnixNano())
 var rGen = rand.New(seed)

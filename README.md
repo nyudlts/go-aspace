@@ -1,4 +1,4 @@
-# go-aspace v0.3.14b
+# go-aspace v0.6.0
 a Go library for ArchivesSpace integrations
 
 ## Use
