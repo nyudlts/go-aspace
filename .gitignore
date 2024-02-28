@@ -1,3 +1,5 @@
 .idea/*
 json_files/*
 .vscode
+go-aspace.yml
+lab/*

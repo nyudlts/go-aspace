@@ -20,6 +20,7 @@ func PrintClientVersion() {
 	fmt.Println("Go Aspace", LibraryVersion)
 }
 
+// Deprecated: Use AspaceURI type
 func URISplit(uri string) (int, int, error) {
 	splitURI := strings.Split(uri, "/")
 	resourceId, err := strconv.Atoi(splitURI[2])
@@ -31,6 +32,30 @@ func URISplit(uri string) (int, int, error) {
 		return 0, 0, err
 	}
 	return resourceId, objectId, nil
+}
+
+type AspaceURI struct {
+	RepositoryID int
+	ObjectType   string
+	ObjectID     int
+}
+
+func (a AspaceURI) String() string {
+	return fmt.Sprintf("/repositories/%d/%s/%d", a.RepositoryID, a.ObjectType, a.ObjectID)
+}
+
+func ParseAspaceURI(uri string) (AspaceURI, error) {
+	split := strings.Split(uri, "/")
+	//check the size of split
+	repoID, err := strconv.Atoi(split[2])
+	if err != nil {
+		return AspaceURI{}, err
+	}
+	objectID, err := strconv.Atoi(split[4])
+	if err != nil {
+		return AspaceURI{}, err
+	}
+	return AspaceURI{RepositoryID: repoID, ObjectID: objectID, ObjectType: split[3]}, nil
 }
 
 type AspaceInfo struct {

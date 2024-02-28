@@ -78,4 +78,19 @@ func TestCommon(t *testing.T) {
 		}
 	})
 
+	t.Run("Test AspaceURI type", func(t *testing.T) {
+		uri := "/repositories/3/digital_objects/2167"
+		got, err := ParseAspaceURI(uri)
+		if err != nil {
+			t.Error(err)
+		}
+
+		want := AspaceURI{RepositoryID: 3, ObjectType: "digital_objects", ObjectID: 2167}
+
+		if got != want {
+			t.Errorf("Got %s, wanted: %s", got, want)
+		}
+
+	})
+
 }
