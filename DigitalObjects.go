@@ -132,8 +132,12 @@ func (a *ASClient) GetDigitalObjectIDsForResource(repositoryId int, resourceId i
 	}
 
 	for _, aoURI := range aoURIs {
-		_, aoId, _ := URISplit(aoURI)
-		ao, err := a.GetArchivalObject(repositoryId, aoId)
+		aspaceURI, err := ParseAspaceURI(aoURI)
+		if err != nil {
+			return doURIs, err
+		}
+
+		ao, err := a.GetArchivalObject(repositoryId, aspaceURI.ObjectID)
 		if err != nil {
 			return doURIs, err
 		}

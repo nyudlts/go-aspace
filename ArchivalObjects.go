@@ -140,8 +140,11 @@ func (a *ASClient) GetRandomArchivalObject(repositoryID int, resourceID int) (in
 	}
 
 	aoURI := aoURIs[rGen.Intn(len(aoURIs))]
-	_, aoID, _ := URISplit(aoURI)
-	return repositoryID, aoID, nil
+	aspaceURI, err := ParseAspaceURI(aoURI)
+	if err != nil {
+		return repositoryID, 0, err
+	}
+	return repositoryID, aspaceURI.ObjectID, nil
 }
 
 func (a *ASClient) SearchArchivalObjects(repoID int, s string) ([]ArchivalObject, error) {
