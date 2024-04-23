@@ -23,11 +23,6 @@ type WorkOrderRow struct {
 	fields []string
 }
 
-// convert a work order row into a tab-delimited string
-//func (wor WorkOrderRow) String() string {
-//	return strings.Join(wor.fields, "\t")
-//}
-
 func (wor WorkOrderRow) String() string {
 	var b bytes.Buffer
 	out := csv.NewWriter(bufio.NewWriter(&b))
