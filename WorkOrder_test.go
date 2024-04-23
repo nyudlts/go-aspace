@@ -9,12 +9,6 @@ import (
 
 const fixtureRoot = "./goaspace_testing/testdata"
 
-func assertStringsEqual(want, got string, t *testing.T) {
-	if want != got {
-		t.Errorf("want: %s , got: %s", want, got)
-	}
-}
-
 func createAndLoadWorkOrder(path string, t *testing.T) *WorkOrder {
 	var wo WorkOrder
 
