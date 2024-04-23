@@ -107,6 +107,8 @@ func TestWorkOrderRowString(t *testing.T) {
 	}
 
 	scenarios := [][]string{
+		{`TAM.105	7245198c4f6a94511db03f887ff37b25	/repositories/2/archival_objects/990834	80	5		Events and Programs -- Summer School	TW_TAM_105_ER_75`, sut.Rows[0].String(), "Incorrect Work Order Row String"},
+		{`TAM.105	1736fdb9380996e9242697b69126e48a	/repositories/2/archival_objects/992007				"Posters -- ""Turning the Tide Towards Freedom"""	TW_TAM_105_ER_51`, sut.Rows[1].String(), "Incorrect Work Order Row String"},
 		{`TAM.105	9f96bb2de3cdd56860279c1b7063aad3	/repositories/2/archival_objects/992008				"Conventions -- ""Life After Bush"""	TW_TAM_105_ER_45`, sut.Rows[2].String(), "Incorrect Work Order Row String"},
 	}
 
