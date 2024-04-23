@@ -1,6 +1,8 @@
 package aspace
 
 import (
+	"bufio"
+	"bytes"
 	"encoding/csv"
 	"fmt"
 	"io"
@@ -21,9 +23,14 @@ type WorkOrderRow struct {
 	fields []string
 }
 
-// convert a work order row into a tabe delimited string
 func (wor WorkOrderRow) String() string {
-	return strings.Join(wor.fields, "\t")
+	var b bytes.Buffer
+	out := csv.NewWriter(bufio.NewWriter(&b))
+	out.Comma = '\t'
+	out.Write(wor.fields)
+	out.Flush()
+	// the csv writer adds a newline, so we need to trim it
+	return strings.Trim(b.String(), "\n")
 }
 
 // assertHeaderFields ensures that the fields in the the work order being processed match expectations

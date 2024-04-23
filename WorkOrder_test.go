@@ -9,12 +9,6 @@ import (
 
 const fixtureRoot = "./goaspace_testing/testdata"
 
-func assertStringsEqual(want, got string, t *testing.T) {
-	if want != got {
-		t.Errorf("want: %s , got: %s", want, got)
-	}
-}
-
 func createAndLoadWorkOrder(path string, t *testing.T) *WorkOrder {
 	var wo WorkOrder
 
@@ -28,6 +22,24 @@ func createAndLoadWorkOrder(path string, t *testing.T) *WorkOrder {
 	wo.Load(r)
 
 	return &wo
+}
+
+func createAndLoadWorkOrderReturnError(path string, t *testing.T) (*WorkOrder, error) {
+	var wo WorkOrder
+
+	r, err := os.Open(path)
+	if err != nil {
+		t.Errorf("problem opening %s", path)
+	}
+	defer r.Close()
+
+	// note: intentionally ignoring any error here
+	err = wo.Load(r)
+	if err != nil {
+		return nil, err
+	}
+
+	return &wo, nil
 }
 
 //------------------------------------------------------------------------------
@@ -55,82 +67,54 @@ func TestHeader(t *testing.T) {
 	}
 }
 
-func TestGetResourceID(t *testing.T) {
-	var want, got string
+func TestWorkOrderRowAccessors(t *testing.T) {
+	const (
+		wantIdx = 0
+		gotIdx  = 1
+		msgIdx  = 2
+	)
 
 	sut := createAndLoadWorkOrder(filepath.Join(fixtureRoot, "valid_wo.tsv"), t)
 
-	want = "DLTS.2022"
-	got = sut.Rows[1].GetResourceID()
-	assertStringsEqual(want, got, t)
+	scenarios := [][]string{
+		{"DLTS.2022", sut.Rows[1].GetResourceID(), "Incorrect Resource ID"},
+		{"4a6f56d2b69962a05792478cae78e888", sut.Rows[2].GetRefID(), "Incorrect Ref ID"},
+		{"/repositories/3/archival_objects/979520", sut.Rows[0].GetURI(), "Incorrect URI"},
+		{"V01", sut.Rows[1].GetContainerIndicator1(), "Incorrect Container Indicator 1"},
+		{"I02", sut.Rows[2].GetContainerIndicator2(), "Incorrect Container Indicator 2"},
+		{"A03", sut.Rows[0].GetContainerIndicator3(), "Incorrect Container Indicator 3"},
+		{"Video Test", sut.Rows[1].GetTitle(), "Incorrect Title"},
+		{"cuid39671", sut.Rows[2].GetComponentID(), "Incorrect Component ID"},
+	}
+
+	for _, scenario := range scenarios {
+		if scenario[wantIdx] != scenario[gotIdx] {
+			t.Errorf("unexpected result: %s: want: '%s', got: '%s'", scenario[msgIdx], scenario[wantIdx], scenario[gotIdx])
+		}
+	}
 }
 
-func TestGetRefID(t *testing.T) {
-	var want, got string
+func TestWorkOrderRowString(t *testing.T) {
+	const (
+		wantIdx = 0
+		gotIdx  = 1
+		msgIdx  = 2
+	)
 
-	sut := createAndLoadWorkOrder(filepath.Join(fixtureRoot, "valid_wo.tsv"), t)
+	sut, err := createAndLoadWorkOrderReturnError(filepath.Join(fixtureRoot, "aspace_work_order_report_tam_105.tsv"), t)
+	if err != nil {
+		t.Error(err)
+	}
 
-	want = "4a6f56d2b69962a05792478cae78e888"
-	got = sut.Rows[2].GetRefID()
-	assertStringsEqual(want, got, t)
-}
+	scenarios := [][]string{
+		{`TAM.105	7245198c4f6a94511db03f887ff37b25	/repositories/2/archival_objects/990834	80	5		Events and Programs -- Summer School	TW_TAM_105_ER_75`, sut.Rows[0].String(), "Incorrect Work Order Row String"},
+		{`TAM.105	1736fdb9380996e9242697b69126e48a	/repositories/2/archival_objects/992007				"Posters -- ""Turning the Tide Towards Freedom"""	TW_TAM_105_ER_51`, sut.Rows[1].String(), "Incorrect Work Order Row String"},
+		{`TAM.105	9f96bb2de3cdd56860279c1b7063aad3	/repositories/2/archival_objects/992008				"Conventions -- ""Life After Bush"""	TW_TAM_105_ER_45`, sut.Rows[2].String(), "Incorrect Work Order Row String"},
+	}
 
-func TestGetURI(t *testing.T) {
-	var want, got string
-
-	sut := createAndLoadWorkOrder(filepath.Join(fixtureRoot, "valid_wo.tsv"), t)
-
-	want = "/repositories/3/archival_objects/979520"
-	got = sut.Rows[0].GetURI()
-	assertStringsEqual(want, got, t)
-}
-
-func TestGetContainerIndicator1(t *testing.T) {
-	var want, got string
-
-	sut := createAndLoadWorkOrder(filepath.Join(fixtureRoot, "valid_wo.tsv"), t)
-
-	want = "V01"
-	got = sut.Rows[1].GetContainerIndicator1()
-	assertStringsEqual(want, got, t)
-}
-
-func TestGetContainerIndicator2(t *testing.T) {
-	var want, got string
-
-	sut := createAndLoadWorkOrder(filepath.Join(fixtureRoot, "valid_wo.tsv"), t)
-
-	want = "I02"
-	got = sut.Rows[2].GetContainerIndicator2()
-	assertStringsEqual(want, got, t)
-}
-
-func TestGetContainerIndicator3(t *testing.T) {
-	var want, got string
-
-	sut := createAndLoadWorkOrder(filepath.Join(fixtureRoot, "valid_wo.tsv"), t)
-
-	want = "A03"
-	got = sut.Rows[0].GetContainerIndicator3()
-	assertStringsEqual(want, got, t)
-}
-
-func TestGetContainerTitle(t *testing.T) {
-	var want, got string
-
-	sut := createAndLoadWorkOrder(filepath.Join(fixtureRoot, "valid_wo.tsv"), t)
-
-	want = "Video Test"
-	got = sut.Rows[1].GetTitle()
-	assertStringsEqual(want, got, t)
-}
-
-func TestGetComponentID(t *testing.T) {
-	var want, got string
-
-	sut := createAndLoadWorkOrder(filepath.Join(fixtureRoot, "valid_wo.tsv"), t)
-
-	want = "cuid39671"
-	got = sut.Rows[2].GetComponentID()
-	assertStringsEqual(want, got, t)
+	for _, scenario := range scenarios {
+		if scenario[wantIdx] != scenario[gotIdx] {
+			t.Errorf("unexpected result: %s: \nwant: '%s' \ngot : '%s'", scenario[msgIdx], scenario[wantIdx], scenario[gotIdx])
+		}
+	}
 }

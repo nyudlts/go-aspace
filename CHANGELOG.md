@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+#### v0.6.1
+  - bug fix: rewrite `func (wor WorkOrderRow) String()` to use
+    `encoding/csv` to handle string escapes
+  
 #### v0.6.0
   - add `...FromURI()` functions:
     - add `GetArchivalObjectFromURI()`

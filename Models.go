@@ -433,7 +433,7 @@ type NoteText struct {
 	JSONModelType string `json:"jsonmodel_type,omitempty"`
 	Content       string `json:"content,omitempty"`
 	Publish       bool   `json:"publish,omitempty"`
-	Title         string `json:"title,omitEmpty"`
+	Title         string `json:"title,omitempty"`
 }
 
 type RelatedAgent struct {
