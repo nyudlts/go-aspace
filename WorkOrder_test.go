@@ -55,7 +55,7 @@ func TestHeader(t *testing.T) {
 	}
 }
 
-func TestScenarios(t *testing.T) {
+func TestWorkOrderRowAccessors(t *testing.T) {
 	const (
 		wantIdx = 0
 		gotIdx  = 1
@@ -80,5 +80,4 @@ func TestScenarios(t *testing.T) {
 			t.Errorf("unexpected result: %s: want: '%s', got: '%s'", scenario[msgIdx], scenario[wantIdx], scenario[gotIdx])
 		}
 	}
-
 }
