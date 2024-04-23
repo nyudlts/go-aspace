@@ -30,6 +30,24 @@ func createAndLoadWorkOrder(path string, t *testing.T) *WorkOrder {
 	return &wo
 }
 
+func createAndLoadWorkOrderReturnError(path string, t *testing.T) (*WorkOrder, error) {
+	var wo WorkOrder
+
+	r, err := os.Open(path)
+	if err != nil {
+		t.Errorf("problem opening %s", path)
+	}
+	defer r.Close()
+
+	// note: intentionally ignoring any error here
+	err = wo.Load(r)
+	if err != nil {
+		return nil, err
+	}
+
+	return &wo, nil
+}
+
 //------------------------------------------------------------------------------
 // begin tests
 //------------------------------------------------------------------------------
@@ -78,6 +96,29 @@ func TestWorkOrderRowAccessors(t *testing.T) {
 	for _, scenario := range scenarios {
 		if scenario[wantIdx] != scenario[gotIdx] {
 			t.Errorf("unexpected result: %s: want: '%s', got: '%s'", scenario[msgIdx], scenario[wantIdx], scenario[gotIdx])
+		}
+	}
+}
+
+func TestWorkOrderRowString(t *testing.T) {
+	const (
+		wantIdx = 0
+		gotIdx  = 1
+		msgIdx  = 2
+	)
+
+	sut, err := createAndLoadWorkOrderReturnError(filepath.Join(fixtureRoot, "aspace_work_order_report_tam_105.tsv"), t)
+	if err != nil {
+		t.Error(err)
+	}
+
+	scenarios := [][]string{
+		{`TAM.105	9f96bb2de3cdd56860279c1b7063aad3	/repositories/2/archival_objects/992008				"Conventions -- ""Life After Bush"""	TW_TAM_105_ER_45`, sut.Rows[2].String(), "Incorrect Work Order Row String"},
+	}
+
+	for _, scenario := range scenarios {
+		if scenario[wantIdx] != scenario[gotIdx] {
+			t.Errorf("unexpected result: %s: \nwant: '%s' \ngot : '%s'", scenario[msgIdx], scenario[wantIdx], scenario[gotIdx])
 		}
 	}
 }
