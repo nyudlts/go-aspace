@@ -4,11 +4,13 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"gopkg.in/yaml.v2"
 	"io"
+	"log"
 	"net/http"
 	"os"
 	"time"
+
+	"gopkg.in/yaml.v2"
 )
 
 type ASClient struct {
@@ -27,13 +29,20 @@ func NewClient(configFile string, environment string, timeout int) (*ASClient, e
 
 	var client *ASClient
 	if _, err := os.Stat(configFile); os.IsNotExist(err) {
-		return client, fmt.Errorf("Configuration file %s does not exist", configFile)
+		return client, fmt.Errorf("configuration file %s does not exist", configFile)
 	}
 
 	bytes, err := os.ReadFile(configFile)
 	if err != nil {
 		return client, err
 	}
+
+	creds, err := getCreds(environment, bytes)
+	if err != nil {
+		return client, err
+	}
+
+	log.Printf("[DEBUG] url: %s, username: %s, password: %s", creds.URL, creds.Username, creds.Password)
 
 	tr := &http.Transport{
 		MaxIdleConns:       10,
@@ -43,11 +52,6 @@ func NewClient(configFile string, environment string, timeout int) (*ASClient, e
 
 	nclient := &http.Client{
 		Transport: tr,
-	}
-
-	creds, err := getCreds(environment, bytes)
-	if err != nil {
-		return client, err
 	}
 
 	token, err := getSessionKey(creds)
