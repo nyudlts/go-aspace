@@ -1,5 +1,9 @@
+// This file contains tests for the FindByID function in the aspace package.
+// All tests are currently commented out because the tests rely on a running ArchivesSpace instance
+// with a known set of data.
 package aspace
 
+/*
 import (
 	"flag"
 	"testing"
@@ -152,3 +156,4 @@ func TestFindByComponentIDNoResults(t *testing.T) {
 		}
 	})
 }
+*/
