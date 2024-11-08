@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+#### v0.7.0
+  - add `func (a *ASClient) FindArchivalObjectsByID(...)([]string, error)`  
+    that allows you to look up archival objects by the `ref_id` or `component_id` fields
+  
 #### v0.6.1
   - bug fix: rewrite `func (wor WorkOrderRow) String()` to use
     `encoding/csv` to handle string escapes
