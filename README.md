@@ -40,7 +40,7 @@ dev:
   password: your-password
   
 local:
-  url: https:/localhost:8089
+  url: http://localhost:8089
   username: your-username
   password: your-password
 ```

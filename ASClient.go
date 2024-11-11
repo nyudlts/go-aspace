@@ -42,6 +42,13 @@ func NewClient(configFile string, environment string, timeout int) (*ASClient, e
 		return client, err
 	}
 
+	return NewClientFromCreds(creds, timeout)
+}
+
+func NewClientFromCreds(creds Creds, timeout int) (*ASClient, error) {
+
+	var client *ASClient
+
 	log.Printf("[DEBUG] url: %s, username: %s, password: %s", creds.URL, creds.Username, creds.Password)
 
 	tr := &http.Transport{
@@ -95,7 +102,7 @@ func getSessionKey(creds Creds) (string, error) {
 	}
 
 	if response.StatusCode != 200 {
-		return "", fmt.Errorf("Did not return a 200 while authenticating, recieved a %d", response.StatusCode)
+		return "", fmt.Errorf("Did not return a 200 while authenticating, received a %d", response.StatusCode)
 	}
 
 	body, err := io.ReadAll(response.Body)
