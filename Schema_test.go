@@ -2,8 +2,9 @@ package aspace
 
 import (
 	"flag"
-	goaspacetest "github.com/nyudlts/go-aspace/goaspace_testing"
 	"testing"
+
+	goaspacetest "github.com/nyudlts/go-aspace/goaspace_testing"
 )
 
 func TestSchemas(t *testing.T) {
@@ -27,7 +28,7 @@ func TestSchemas(t *testing.T) {
 		t.Log("Successfully got a list of schemas")
 
 		keys := make([]string, 0, len(schemas))
-		for k, _ := range schemas {
+		for k := range schemas {
 			keys = append(keys, k)
 		}
 
