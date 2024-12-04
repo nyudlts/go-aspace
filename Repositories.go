@@ -22,6 +22,9 @@ func (a *ASClient) GetRepositories() ([]int, error) {
 
 	reps := make([]map[string]interface{}, 1, 1)
 	err = json.Unmarshal(body, &reps)
+	if err != nil {
+		return repIds, err
+	}
 
 	for i := range reps {
 		rep := fmt.Sprintf("%v", reps[i]["uri"])
