@@ -39,6 +39,9 @@ func (a *ASClient) GetAgent(agentType string, agentID int) (Agent, error) {
 	}
 
 	err = json.Unmarshal(body, &agent)
+	if err != nil {
+		return agent, err
+	}
 	return agent, nil
 }
 
