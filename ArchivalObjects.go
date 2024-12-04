@@ -4,8 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"regexp"
-	"strings"
 )
 
 func (a *ASClient) GetArchivalObjectIDs(repositoryID int) ([]int, error) {
@@ -91,14 +89,14 @@ func (a *ASClient) UpdateArchivalObject(repositoryId int, archivalObjectId int, 
 	return responseMessage, nil
 }
 
-func getChildArchivalObjectURIs(children []ResourceTree, aos *[]string) {
-	for _, child := range children {
-		*aos = append(*aos, child.RecordURI)
-		if child.HasChildren {
-			getChildArchivalObjectURIs(child.Children, aos)
-		}
-	}
-}
+// func getChildArchivalObjectURIs(children []ResourceTree, aos *[]string) {
+// 	for _, child := range children {
+// 		*aos = append(*aos, child.RecordURI)
+// 		if child.HasChildren {
+// 			getChildArchivalObjectURIs(child.Children, aos)
+// 		}
+// 	}
+// }
 
 func (a ASClient) DeleteArchivalObject(repositoryID int, archivalObjectID int) (string, error) {
 	responseMessage := ""
@@ -119,18 +117,18 @@ func (a ASClient) DeleteArchivalObject(repositoryID int, archivalObjectID int) (
 	return responseMessage, nil
 }
 
-func getChildArchivalObjectURIsFiltered(children []ResourceTree, aos *[]string, filter string) {
-	matcher := regexp.MustCompile(filter)
-	for _, child := range children {
-		if matcher.MatchString(strings.Join(child.InstanceTypes, " ")) == true {
-			*aos = append(*aos, child.RecordURI)
-		}
+// func getChildArchivalObjectURIsFiltered(children []ResourceTree, aos *[]string, filter string) {
+// 	matcher := regexp.MustCompile(filter)
+// 	for _, child := range children {
+// 		if matcher.MatchString(strings.Join(child.InstanceTypes, " ")) == true {
+// 			*aos = append(*aos, child.RecordURI)
+// 		}
 
-		if child.HasChildren {
-			getChildArchivalObjectURIs(child.Children, aos)
-		}
-	}
-}
+// 		if child.HasChildren {
+// 			getChildArchivalObjectURIs(child.Children, aos)
+// 		}
+// 	}
+// }
 
 func (a *ASClient) GetRandomArchivalObject(repositoryID int, resourceID int) (int, int, error) {
 

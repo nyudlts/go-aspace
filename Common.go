@@ -105,15 +105,15 @@ func (a *ASClient) PostEndpoint(endpoint string, requestBody string, authenticat
 	return response, nil
 }
 
-// slice contains methods
-func containsInt(list []int, id int) bool {
-	for _, i := range list {
-		if id == i {
-			return true
-		}
-	}
-	return false
-}
+// // slice contains methods
+// func containsInt(list []int, id int) bool {
+// 	for _, i := range list {
+// 		if id == i {
+// 			return true
+// 		}
+// 	}
+// 	return false
+// }
 
 type CreateOrUpdateResponse struct {
 	Status      string   `json:"status"`
