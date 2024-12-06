@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"os"
 	"time"
@@ -48,8 +47,6 @@ func NewClient(configFile string, environment string, timeout int) (*ASClient, e
 func NewClientFromCreds(creds Creds, timeout int) (*ASClient, error) {
 
 	var client *ASClient
-
-	log.Printf("[DEBUG] url: %s, username: %s, password: %s", creds.URL, creds.Username, creds.Password)
 
 	tr := &http.Transport{
 		MaxIdleConns:       10,
