@@ -1,8 +1,14 @@
 ## CHANGELOG
 
-
 #### v0.7.1
   - remove debug print from `NewClientFromCreds()`
+  - remove debug print statement from ASClient
+  - tidy go mod files (removed unused libxml2, yaml.v2 packages)
+  - tweak range statement per linter recommendation
+  - add missing error check
+  - comment out unused code
+  - add error check to (a *ADClient)GetAgent()
+  - update CHANGELOG, bump to v0.7.1
 
 #### v0.7.0
   - add `func (a *ASClient) FindArchivalObjectsByID(...)([]string, error)`
@@ -28,5 +34,3 @@
   - force `bool` key/value pairs to always be sent in marshaled JSON for selected types
     - remove `omitempty` option from `DigitalObject` type `bool` JSON tags
     - remove `omitempty` option from `FileVersion` type `bool` JSON tags
-
-
