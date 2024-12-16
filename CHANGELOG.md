@@ -2,7 +2,7 @@
 
 #### v0.7.1
   - remove debug print from `NewClientFromCreds()`
-  - tidy go mod files (removed unused libxml2, yaml.v2 packages)
+  - tidy go mod files (removed unused libxml2 package)
   - tweak range statement per linter recommendation
   - add missing error check
   - comment out unused code
