@@ -2,7 +2,6 @@
 
 #### v0.7.1
   - remove debug print from `NewClientFromCreds()`
-  - remove debug print statement from ASClient
   - tidy go mod files (removed unused libxml2, yaml.v2 packages)
   - tweak range statement per linter recommendation
   - add missing error check
