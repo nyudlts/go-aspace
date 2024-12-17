@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-var LibraryVersion = "v0.7.0"
+var LibraryVersion = "v0.7.1"
 
 var seed = rand.NewSource(time.Now().UnixNano())
 var rGen = rand.New(seed)
@@ -105,15 +105,15 @@ func (a *ASClient) PostEndpoint(endpoint string, requestBody string, authenticat
 	return response, nil
 }
 
-// slice contains methods
-func containsInt(list []int, id int) bool {
-	for _, i := range list {
-		if id == i {
-			return true
-		}
-	}
-	return false
-}
+// // slice contains methods
+// func containsInt(list []int, id int) bool {
+// 	for _, i := range list {
+// 		if id == i {
+// 			return true
+// 		}
+// 	}
+// 	return false
+// }
 
 type CreateOrUpdateResponse struct {
 	Status      string   `json:"status"`
