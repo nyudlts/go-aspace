@@ -7,18 +7,18 @@ import (
 )
 
 func (a *ASClient) GetRootNode(repositoryID int, resourceID int) (Node, error) {
-	Node := Node{}
+	node := Node{}
 	endpoint := fmt.Sprintf("/repositories/%d/resources/%d/tree/root", repositoryID, resourceID)
 	response, err := a.get(endpoint, true)
 	if err != nil {
-		return Node, err
+		return node, err
 	}
 	body, _ := io.ReadAll(response.Body)
-	err = json.Unmarshal(body, &Node)
+	err = json.Unmarshal(body, &node)
 	if err != nil {
-		return Node, err
+		return node, err
 	}
-	return Node, nil
+	return node, nil
 }
 
 func (a *ASClient) GetNode(repositoryID int, resourceID int, uri string) (Node, error) {
