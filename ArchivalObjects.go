@@ -33,12 +33,12 @@ func (a *ASClient) GetArchivalObjectFromURI(aoURI string) (ArchivalObject, error
 
 	ao := ArchivalObject{}
 
-	reponse, err := a.get(aoURI, true)
+	response, err := a.get(aoURI, true)
 	if err != nil {
 		return ao, err
 	}
 
-	body, err := io.ReadAll(reponse.Body)
+	body, err := io.ReadAll(response.Body)
 	if err != nil {
 		return ao, err
 	}
@@ -62,6 +62,29 @@ func (a *ASClient) GetArchivalObjectsForResource(repositoryId int, resourceId in
 	aos = []string{}
 
 	for _, node := range rootNode.PrecomputedWaypoints[""].Nodes {
+		fmt.Printf("DEBUG: Title: %s, ChildCount: %d\n", node.Title, node.ChildCount)
+		aos = append(aos, node.URI)
+		if node.ChildCount > 0 {
+			_, aoID, _ := URISplit(node.URI)
+			childAos, err := getChildArchivalObjectURIs(repositoryId, aoID, a)
+			if err != nil {
+				return aos, err
+			}
+			aos = append(aos, childAos...)
+		}
+	}
+
+	return aos, nil
+}
+
+func getChildArchivalObjectURIs(repositoryID int, aoID int, client *ASClient) ([]string, error) {
+	aos := []string{}
+	rootNode, err := client.GetRootNode(repositoryID, aoID)
+	if err != nil {
+		return aos, err
+	}
+	for _, node := range rootNode.PrecomputedWaypoints[""].Nodes {
+		fmt.Printf("DEBUG: CHILD - Title: %s, ChildCount: %d\n", node.Title, node.ChildCount)
 		aos = append(aos, node.URI)
 	}
 

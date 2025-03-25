@@ -342,6 +342,11 @@ type LinkedRepository struct {
 	Resolved Repository `json:"_resolved,omitempty"`
 }
 
+type LinkedTree struct {
+	Ref      string       `json:"ref,omitempty"`
+	Resolved ResourceTree `json:"_resolved,omitempty"`
+}
+
 type Name struct {
 	LockVersion          int           `json:"lock_version,omitempty"`
 	PrimaryName          string        `json:"primary_name,omitempty"`
@@ -471,6 +476,10 @@ type Repository struct {
 	JSONModelType         string         `json:"jsonmodel_type,omitempty"`
 }
 
+type PrecomputedWaypoint struct {
+	Nodes []Node `json:"0,omitempty"`
+}
+
 type Resource struct {
 	Classifications            []Classification    `json:"classifications,omitempty"`
 	CollectionManagement       []interface{}       `json:"collection_management,omitempty"`
@@ -525,21 +534,12 @@ type Resource struct {
 	URI                        string              `json:"uri,omitempty"`
 }
 
-type LinkedTree struct {
-	Ref      string       `json:"ref,omitempty"`
-	Resolved ResourceTree `json:"_resolved,omitempty"`
-}
-
-type PrecomputedWaypoint struct {
-	Nodes []Node `json:"0,omitempty"`
-}
-
 type ResourceTree struct {
 	Title         string         `json:"title,omitempty"`
 	Id            int            `json:"id,omitempty"`
 	NodeType      string         `json:"node_type,omitempty"`
 	Publish       bool           `json:"publish,omitempty"`
-	Suppressed    bool           `json:"suppressed,omitempty"`
+	Suppressed    int            `json:"suppressed,omitempty"`
 	HasChildren   bool           `json:"has_children,omitempty"`
 	Children      []ResourceTree `json:"children,omitempty"`
 	RecordURI     string         `json:"record_uri,omitempty"`
