@@ -194,13 +194,13 @@ func (a *ASClient) GetAccessionList(repositoryID int, resourceID int) ([]Accessi
 func processAccessionList(list *AccessionSearchResult, repoID int, resourceID int) ([]AccessionEntry, error) {
 	accessions := []AccessionEntry{}
 	for _, accession := range list.Results {
-		_, accessionID, err := URISplit(accession.ID)
+		aspaceURI, err := ParseAspaceURI(accession.ID)
 		if err != nil {
 			return nil, err
 		}
 		accession.ResourceID = resourceID
 		accession.RespositoryID = repoID
-		accession.AccessionID = accessionID
+		accession.AccessionID = aspaceURI.ObjectID
 		accessions = append(accessions, accession)
 	}
 	return accessions, nil

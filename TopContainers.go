@@ -116,12 +116,12 @@ func (a *ASClient) GetTopContainersForResource(repositoryID int, resourceID int)
 		return tcs, err
 	}
 	for _, tcId := range tcIds {
-		_, tcId, err := URISplit(tcId)
+		aspaceURI, err := ParseAspaceURI(tcId)
 		if err != nil {
 			return tcs, err
 		}
 
-		tc, err := a.GetTopContainer(repositoryID, tcId)
+		tc, err := a.GetTopContainer(repositoryID, aspaceURI.ObjectID)
 		if err != nil {
 			return tcs, err
 		}

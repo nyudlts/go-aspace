@@ -48,23 +48,16 @@ func TestTopContainers(t *testing.T) {
 		t.Log("Top Container", topContainer.URI, "serialized")
 	})
 
-	/*
-		t.Run("Test Get Top Container Ids for Resource", func(t *testing.T) {
-			topContainers, err := client.GetTopContainerIDsForResource(repositoryID, resourceIDs[0])
-			if err != nil {
-				t.Error(err)
-			}
-			fmt.Println(topContainers)
-		})
-
-		t.Run("Test Get Top Containers for Resource", func(t *testing.T) {
-			topContainers, err := client.GetTopContainersForResource(repositoryID, resourceIDs[0])
-			if err != nil {
-				t.Error(err)
-			}
-			for k, v := range topContainers {
-				fmt.Println(k, "->", v.Barcode)
-			}
-		})
-	*/
+	t.Run("Test Get Top Container Ids for Resource", func(t *testing.T) {
+		repositoryID, resourceID, err := client.GetRandomResourceID()
+		if err != nil {
+			t.Error(err)
+		}
+		t.Log("testing repository:", repositoryID, "resource:", resourceID)
+		topContainers, err := client.GetTopContainerIDsForResource(repositoryID, resourceID)
+		if err != nil {
+			t.Error(err)
+		}
+		t.Log(topContainers)
+	})
 }

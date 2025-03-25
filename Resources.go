@@ -227,12 +227,12 @@ func (a *ASClient) GetResourceList(repositoryID int) ([]ResourceListEntry, error
 func processEntryList(resourceList *ResourceList) ([]ResourceListEntry, error) {
 	resources := []ResourceListEntry{}
 	for _, resource := range resourceList.Results {
-		repoId, resID, err := URISplit(resource.ID)
+		aspaceURI, err := ParseAspaceURI(resource.ID)
 		if err != nil {
 			return nil, err
 		}
-		resource.RepositoryID = repoId
-		resource.ResourceID = resID
+		resource.RepositoryID = aspaceURI.RepositoryID
+		resource.ResourceID = aspaceURI.ObjectID
 		resources = append(resources, resource)
 	}
 
