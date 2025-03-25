@@ -20,7 +20,6 @@ func PrintClientVersion() {
 	fmt.Println("Go Aspace", LibraryVersion)
 }
 
-// Deprecated: Use AspaceURI type
 func URISplit(uri string) (int, int, error) {
 	splitURI := strings.Split(uri, "/")
 	resourceId, err := strconv.Atoi(splitURI[2])
