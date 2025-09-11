@@ -22,9 +22,10 @@ type Creds struct {
 	URL      string `yaml:"url"`
 	Username string `yaml:"username"`
 	Password string `yaml:"password"`
+	Timeout  int    `yaml:"timeout"`
 }
 
-func NewClient(configFile string, environment string, timeout int) (*ASClient, error) {
+func NewClient(configFile string, environment string) (*ASClient, error) {
 
 	var client *ASClient
 	if _, err := os.Stat(configFile); os.IsNotExist(err) {
@@ -36,21 +37,21 @@ func NewClient(configFile string, environment string, timeout int) (*ASClient, e
 		return client, err
 	}
 
-	creds, err := getCreds(environment, bytes)
+	creds, err := GetCreds(environment, bytes)
 	if err != nil {
 		return client, err
 	}
 
-	return NewClientFromCreds(creds, timeout)
+	return NewClientFromCreds(creds)
 }
 
-func NewClientFromCreds(creds Creds, timeout int) (*ASClient, error) {
+func NewClientFromCreds(creds Creds) (*ASClient, error) {
 
 	var client *ASClient
 
 	tr := &http.Transport{
 		MaxIdleConns:       10,
-		IdleConnTimeout:    time.Duration(timeout) * time.Second,
+		IdleConnTimeout:    time.Duration(creds.Timeout) * time.Second,
 		DisableCompression: true,
 	}
 
@@ -72,7 +73,7 @@ func NewClientFromCreds(creds Creds, timeout int) (*ASClient, error) {
 	return client, err
 }
 
-func getCreds(environment string, configBytes []byte) (Creds, error) {
+func GetCreds(environment string, configBytes []byte) (Creds, error) {
 	credsMap := map[string]Creds{}
 
 	err := yaml.Unmarshal(configBytes, &credsMap)
@@ -128,9 +129,9 @@ func (a *ASClient) GetSessionKey() string {
 
 func (a *ASClient) do(request *http.Request, authenticated bool) (*http.Response, error) {
 	var response *http.Response
-
 	if authenticated {
 		request.Header.Add("X-ArchivesSpace-Session", a.sessionKey)
+		request.Header.Add("Content-Type", "application/json")
 	}
 
 	response, err := a.nclient.Do(request)
@@ -167,6 +168,7 @@ func (a *ASClient) get(endpoint string, authenticated bool) (*http.Response, err
 func (a *ASClient) post(endpoint string, authenticated bool, body string) (*http.Response, error) {
 	var response *http.Response
 	url := a.RootURL + endpoint
+
 	request, err := http.NewRequest("POST", url, bytes.NewBufferString(body))
 	if err != nil {
 		return response, err

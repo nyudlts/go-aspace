@@ -73,6 +73,7 @@ func (a *ASClient) UpdateAccession(repositoryID int, accessionID int, accession 
 	if err != nil {
 		return "", err
 	}
+
 	response, err := a.post(endpoint, true, string(body))
 	if err != nil {
 		return "", err
@@ -97,6 +98,7 @@ func (a *ASClient) CreateAccession(repositoryID int, accession Accession) (strin
 	if err != nil {
 		return "", err
 	}
+	defer response.Body.Close()
 
 	msg, err := io.ReadAll(response.Body)
 	if err != nil {

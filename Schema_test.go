@@ -9,7 +9,7 @@ import (
 
 func TestSchemas(t *testing.T) {
 	flag.Parse()
-	client, err := NewClient(goaspacetest.Config, goaspacetest.Environment, 20)
+	client, err := NewClient(goaspacetest.Config, goaspacetest.Environment)
 	if err != nil {
 		t.Error(err)
 	}

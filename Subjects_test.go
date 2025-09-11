@@ -2,13 +2,14 @@ package aspace
 
 import (
 	"flag"
-	goaspacetest "github.com/nyudlts/go-aspace/goaspace_testing"
 	"testing"
+
+	goaspacetest "github.com/nyudlts/go-aspace/goaspace_testing"
 )
 
 func TestSubjects(t *testing.T) {
 	flag.Parse()
-	client, err := NewClient(goaspacetest.Config, goaspacetest.Environment, 20)
+	client, err := NewClient(goaspacetest.Config, goaspacetest.Environment)
 	if err != nil {
 		t.Error(err)
 	}

@@ -47,6 +47,15 @@ type Accession struct {
 	Parent                 map[string]string              `json:"parent,omitempty"`
 }
 
+type APIResponse struct {
+	Status      string   `json:"status"`
+	ID          int      `json:"id"`
+	LockVersion int      `json:"lock_version"`
+	Stale       bool     `json:"stale"`
+	URI         string   `json:"uri"`
+	Warnings    []string `json:"warnings,omitempty"`
+}
+
 type AccessionSiblingRelationship struct {
 	JSONModelType string `json:"jsonmodel_type"`
 	Relator       string `json:"relator"`
