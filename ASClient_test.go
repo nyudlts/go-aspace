@@ -9,7 +9,10 @@ import (
 	goaspacetest "github.com/nyudlts/go-aspace/goaspace_testing"
 )
 
-var creds Creds
+var (
+	testClient *ASClient
+	creds      Creds
+)
 
 func TestASClient(t *testing.T) {
 	flag.Parse()
@@ -36,11 +39,12 @@ func TestASClient(t *testing.T) {
 	})
 
 	t.Run("Test ASpace Client Initialization", func(t *testing.T) {
-		client, err := NewClient(goaspacetest.Config, goaspacetest.Environment)
+		var err error
+		testClient, err := NewClient(goaspacetest.Config, goaspacetest.Environment)
 		if err != nil {
 			t.Error(err)
 		}
-		t.Logf("ASpace Client initialized successfully: %s", client.RootURL)
+		t.Logf("ASpace Client initialized successfully: %s", testClient.RootURL)
 	})
 
 }

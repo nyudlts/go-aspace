@@ -2,29 +2,21 @@ package aspace
 
 import (
 	"encoding/json"
-	"flag"
 	"os"
 	"path/filepath"
 	"testing"
 
 	"github.com/nyudlts/go-aspace/goaspace_testing"
-	goaspacetest "github.com/nyudlts/go-aspace/goaspace_testing"
 )
 
-var (
-	agentPerson *Agent
-	client      *ASClient
-	agentID     int
-)
+func TestPersonAgents(t *testing.T) {
 
-func TestAgents(t *testing.T) {
-	flag.Parse()
-	var err error
-	client, err = NewClient(goaspacetest.Config, goaspacetest.Environment)
-	if err != nil {
-		t.Error(err)
-	}
-	t.Run("test unmarshaling agents", func(t *testing.T) {
+	var (
+		agentPerson *Agent
+		agentID     int
+	)
+
+	t.Run("test unmarshaling person agents", func(t *testing.T) {
 
 		person, err := os.ReadFile(filepath.Join(goaspace_testing.TestDataDir, "agent_person.json"))
 		if err != nil {
@@ -39,8 +31,8 @@ func TestAgents(t *testing.T) {
 	})
 
 	t.Run("test create an agent", func(t *testing.T) {
-
-		apiResponse, err := client.CreateAgent("people", *agentPerson)
+		var err error
+		apiResponse, err := testClient.CreateAgent("people", *agentPerson)
 		if err != nil {
 			t.Errorf("Error creating agent: %v", err)
 		}
@@ -53,7 +45,8 @@ func TestAgents(t *testing.T) {
 	})
 
 	t.Run("test get a person agent", func(t *testing.T) {
-		agentPerson, err = client.GetAgent("people", agentID)
+		var err error
+		agentPerson, err = testClient.GetAgent("people", agentID)
 		if err != nil {
 			t.Error(err)
 		}
@@ -66,7 +59,7 @@ func TestAgents(t *testing.T) {
 		updatedSortName := "Updated Sort Name"
 		agentPerson.Names[0].SortName = updatedSortName
 
-		apiResponse, err := client.UpdateAgent("people", agentID, agentPerson)
+		apiResponse, err := testClient.UpdateAgent("people", agentID, agentPerson)
 		if err != nil {
 			t.Error(err)
 		}
@@ -79,7 +72,8 @@ func TestAgents(t *testing.T) {
 	})
 
 	t.Run("test delete an agent", func(t *testing.T) {
-		apiResponse, err := client.DeleteAgent("people", agentID)
+		var err error
+		apiResponse, err := testClient.DeleteAgent("people", agentID)
 		if err != nil {
 			t.Error(err)
 		}
@@ -90,14 +84,48 @@ func TestAgents(t *testing.T) {
 
 		t.Logf("Successfully deleted agent with ID %d\n", agentID)
 	})
+}
+
+func TestFamilyAgents(t *testing.T) {
+	var (
+		agentFamily *Agent
+	)
+	t.Run("test unmarshalling example family agent", func(t *testing.T) {
+		family, err := os.ReadFile(filepath.Join(goaspace_testing.TestDataDir, "agent_family.json"))
+		if err != nil {
+			t.Error(err)
+		}
+		agentFamily = &Agent{}
+		if err := json.Unmarshal(family, agentFamily); err != nil {
+			t.Errorf("Error unmarshalling family agent: %v", err)
+		}
+
+		t.Logf("Successfully unmarshalled family agent: %s", agentFamily.Names[0].SortName)
+	})
+
+}
+
+func TestCorporateEntityAgents(t *testing.T) {
+	agentCorporate := &Agent{}
+	t.Run("test unmarshalling example corporate entity agent", func(t *testing.T) {
+		corporateEntity, err := os.ReadFile(filepath.Join(goaspace_testing.TestDataDir, "agent_corporate.json"))
+		if err != nil {
+			t.Error(err)
+		}
+		agentCorporate = &Agent{}
+		if err := json.Unmarshal(corporateEntity, agentCorporate); err != nil {
+			t.Errorf("Error unmarshalling corporate entity agent: %v", err)
+		}
+		t.Logf("Successfully unmarshalled corporate entity agent: %s", agentCorporate.Names[0].SortName)
+	})
 
 	t.Run("Test get a corporate entitiy agent", func(t *testing.T) {
-		agentId, err := client.GetRandomAgentID("corporate_entities")
+		agentId, err := testClient.GetRandomAgentID("corporate_entities")
 		if err != nil {
 			t.Error(err)
 		}
 
-		agent, err := client.GetAgent("corporate_entities", agentId)
+		agent, err := testClient.GetAgent("corporate_entities", agentId)
 		if err != nil {
 			t.Error(err)
 		} else {
@@ -105,28 +133,4 @@ func TestAgents(t *testing.T) {
 		}
 
 	})
-
-	/*
-
-
-
-
-
-		t.Run("Test a family agent", func(t *testing.T) {
-			agentId, err := client.GetRandomAgentID("families")
-			if err != nil {
-				t.Error(err)
-			}
-
-			agent, err := client.GetAgent("families", agentId)
-			if err != nil {
-				t.Error(err)
-			} else {
-				t.Logf("Successfully requested and serialized family agent %s: %s\n", agent.URI, agent.Names[0].SortName)
-			}
-
-		})
-
-
-	*/
 }

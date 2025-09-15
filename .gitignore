@@ -4,3 +4,4 @@ json_files/*
 go-aspace.yml
 lab/*
 *.http
+schemas/*

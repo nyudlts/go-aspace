@@ -22,7 +22,9 @@ var (
 func TestAccessions(t *testing.T) {
 	//get a client
 	flag.Parse()
-	client, err := NewClient(goaspacetest.Config, goaspacetest.Environment)
+
+	var err error
+	testClient, err = NewClient(goaspacetest.Config, goaspacetest.Environment)
 	if err != nil {
 		t.Error(err)
 	}
@@ -44,7 +46,7 @@ func TestAccessions(t *testing.T) {
 
 	t.Run("Test create an accession", func(t *testing.T) {
 
-		apiResponse, err := client.CreateAccession(testRepoID, *testAccession)
+		apiResponse, err := testClient.CreateAccession(testRepoID, *testAccession)
 		if err != nil {
 			t.Error(err)
 		}
@@ -56,13 +58,13 @@ func TestAccessions(t *testing.T) {
 
 	//get a list of accessions
 	t.Run("Test get Accession List for Resource", func(t *testing.T) {
-		testRepoID, testResourceID, err = client.GetRandomResourceID()
+		testRepoID, testResourceID, err = testClient.GetRandomResourceID()
 		if err != nil {
 			t.Error(err)
 		}
 
 		t.Logf("Testing GetAccessionList for Repository ID %d, ResourceID %d", testRepoID, testResourceID)
-		testAccessionIDs, err = client.GetAccessionList(testRepoID, testResourceID)
+		testAccessionIDs, err = testClient.GetAccessionList(testRepoID, testResourceID)
 		if err != nil {
 			t.Error(err)
 		}
@@ -73,7 +75,7 @@ func TestAccessions(t *testing.T) {
 
 	t.Run("Test get an accession", func(t *testing.T) {
 
-		acc, err := client.GetAccession(testRepoID, testAccessionID)
+		acc, err := testClient.GetAccession(testRepoID, testAccessionID)
 		if err != nil {
 			t.Error(err)
 		}
@@ -88,7 +90,7 @@ func TestAccessions(t *testing.T) {
 		testAccession.ID2 = RandStringRunes(4)
 		testAccession.ID3 = RandStringRunes(4)
 
-		apiResponse, err := client.UpdateAccession(testRepoID, testAccessionID, *testAccession)
+		apiResponse, err := testClient.UpdateAccession(testRepoID, testAccessionID, *testAccession)
 		if err != nil {
 			t.Error(err)
 		}
@@ -100,8 +102,8 @@ func TestAccessions(t *testing.T) {
 	})
 
 	t.Run("Test delete an accession", func(t *testing.T) {
-		t.Logf("testing delete accession for RepoID %d, AccessionID %d", testRepoID, testAccessionID)
-		apiResponse, err := client.DeleteAccession(testRepoID, testAccessionID)
+
+		apiResponse, err := testClient.DeleteAccession(testRepoID, testAccessionID)
 		if err != nil {
 			t.Error(err)
 		}
