@@ -1,49 +1,98 @@
 package aspace
 
 import (
-	"flag"
+	"encoding/json"
+	"os"
+	"path/filepath"
 	"testing"
 
-	goaspacetest "github.com/nyudlts/go-aspace/goaspace_testing"
+	"github.com/nyudlts/go-aspace/goaspace_testing"
 )
 
 func TestArchivalObject(t *testing.T) {
-	flag.Parse()
-	client, err := NewClient(goaspacetest.Config, goaspacetest.Environment)
-	if err != nil {
-		t.Error(err)
-	}
+	var (
+		ao               *ArchivalObject
+		aoID             int
+		testRepositoryID = 2
+	)
 
-	t.Run("Test serialize an archival object", func(t *testing.T) {
-		repositoryID, resourceID, err := client.GetRandomResourceID()
+	t.Run("test serialize example archival object", func(t *testing.T) {
+		aoBytes, err := os.ReadFile(filepath.Join(goaspace_testing.TestDataDir, "archival_object.json"))
 		if err != nil {
 			t.Error(err)
 		}
 
-		t.Log("Testing repoID: ", repositoryID, " resourceID: ", resourceID)
+		ao = &ArchivalObject{}
+		err = json.Unmarshal(aoBytes, ao)
+		if err != nil {
+			t.Errorf("Error unmarshalling archival object: %v", err)
+		}
 
-		repositoryID, aoID, err := client.GetRandomArchivalObject(repositoryID, resourceID)
+		t.Logf("Successfully unmarshalled archival object: %s", ao.Title)
+	})
+
+	t.Run("test create an archival object", func(t *testing.T) {
+		apiResponse, err := testClient.CreateArchivalObject(testRepositoryID, ao)
 		if err != nil {
 			t.Error(err)
 		}
 
-		ao, err := client.GetArchivalObject(repositoryID, aoID)
+		if apiResponse.Status != "Created" {
+			t.Errorf("Expected status 'Created', got '%s'", apiResponse.Status)
+		}
+
+		t.Logf("Successfully created archival object with ID %d: %s", apiResponse.ID, ao.Title)
+		aoID = apiResponse.ID
+	})
+
+	t.Run("test get an archival object", func(t *testing.T) {
+		ao, err := testClient.GetArchivalObject(testRepositoryID, aoID)
 		if err != nil {
 			t.Error(err)
-		} else {
-			t.Logf("Successfully requested and serialized archival object %s: %s\n", ao.URI, ao.Title)
+		}
+
+		t.Logf("Successfully retrieved archival object %d: %s", aoID, ao.Title)
+	})
+
+	t.Run("test update an archival object", func(t *testing.T) {
+		ao.Title = "Updated Title"
+		apiResponse, err := testClient.UpdateArchivalObject(testRepositoryID, aoID, ao)
+		if err != nil {
+			t.Error(err)
+		}
+		if apiResponse.Status != "Updated" {
+			t.Errorf("Expected status 'Updated', got '%s'", apiResponse.Status)
+		}
+
+		t.Logf("Successfully updated archival object %d: %s", aoID, ao.Title)
+	})
+
+	t.Run("test delete an archival object", func(t *testing.T) {
+		apiResponse, err := testClient.DeleteArchivalObject(testRepositoryID, aoID)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if apiResponse.Status != "Deleted" {
+			t.Errorf("Expected status 'Deleted', got '%s'", apiResponse.Status)
+		}
+	})
+}
+
+/*
+
+	this is broken
+	t.Run("test basic search", func(t *testing.T) {
+
+		aos, err := testClient.SearchArchivalObjects(2, "Archival Object title")
+		if err != nil {
+			t.Error(err)
+		}
+
+		if len(aos) == 0 {
+			t.Error("Expected to find at least one archival object, but found none")
 		}
 	})
 
-	/*
-		t.Run("Test Basic Search", func(t *testing.T) {
-
-			aos, err := client.SearchArchivalObjects(2, "Broadway")
-			if err != nil {
-				t.Error(err)
-			}
-
-			t.Logf("Search returned %d results", len(aos))
-		})
-	*/
 }
+*/

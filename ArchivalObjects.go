@@ -6,6 +6,33 @@ import (
 	"io"
 )
 
+func (a *ASClient) CreateArchivalObject(repositoryID int, archivalObject *ArchivalObject) (*APIResponse, error) {
+	endpoint := fmt.Sprintf("/repositories/%d/archival_objects", repositoryID)
+	body, err := json.Marshal(&archivalObject)
+	if err != nil {
+		return nil, err
+	}
+
+	response, err := a.post(endpoint, true, string(body))
+	if err != nil {
+		return nil, err
+	}
+	defer response.Body.Close()
+
+	responseBody, err := io.ReadAll(response.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	apiResponse := &APIResponse{}
+	if err = json.Unmarshal(responseBody, apiResponse); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal API response: %v", err)
+	}
+
+	return apiResponse, nil
+
+}
+
 func (a *ASClient) GetArchivalObjectIDs(repositoryID int) ([]int, error) {
 	aoIds := []int{}
 	endpoint := fmt.Sprintf("/repositories/%d/archival_objects?all_ids=true", repositoryID)
@@ -68,25 +95,29 @@ func (a *ASClient) GetArchivalObjectsForResource(repositoryId int, resourceId in
 	return aos, nil
 }
 
-func (a *ASClient) UpdateArchivalObject(repositoryId int, archivalObjectId int, archivalObject ArchivalObject) (string, error) {
-	responseMessage := ""
+func (a *ASClient) UpdateArchivalObject(repositoryId int, archivalObjectId int, archivalObject *ArchivalObject) (*APIResponse, error) {
+
 	endpoint := fmt.Sprintf("/repositories/%d/archival_objects/%d", repositoryId, archivalObjectId)
 	body, err := json.Marshal(archivalObject)
 	if err != nil {
-		return responseMessage, err
+		return nil, err
 	}
 	response, err := a.post(endpoint, true, string(body))
 	if err != nil {
-		return responseMessage, err
+		return nil, err
 	}
+	defer response.Body.Close()
 
 	responseBody, err := io.ReadAll(response.Body)
 	if err != nil {
-		return responseMessage, err
+		return nil, err
 	}
 
-	responseMessage = string(responseBody)
-	return responseMessage, nil
+	apiResponse := &APIResponse{}
+	if err = json.Unmarshal(responseBody, apiResponse); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal API response: %v", err)
+	}
+	return apiResponse, nil
 }
 
 // func getChildArchivalObjectURIs(children []ResourceTree, aos *[]string) {
@@ -98,23 +129,27 @@ func (a *ASClient) UpdateArchivalObject(repositoryId int, archivalObjectId int, 
 // 	}
 // }
 
-func (a ASClient) DeleteArchivalObject(repositoryID int, archivalObjectID int) (string, error) {
-	responseMessage := ""
+func (a ASClient) DeleteArchivalObject(repositoryID int, archivalObjectID int) (*APIResponse, error) {
+
 	endpoint := fmt.Sprintf("/repositories/%d/archival_objects/%d", repositoryID, archivalObjectID)
 
 	response, err := a.delete(endpoint)
 	if err != nil {
-		return responseMessage, err
+		return nil, err
 	}
+	defer response.Body.Close()
 
 	responseBody, err := io.ReadAll(response.Body)
 	if err != nil {
-		return responseMessage, err
+		return nil, err
 	}
 
-	responseMessage = string(responseBody)
+	apiResponse := &APIResponse{}
+	if err = json.Unmarshal(responseBody, apiResponse); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal API response: %v", err)
+	}
 
-	return responseMessage, nil
+	return apiResponse, nil
 }
 
 // func getChildArchivalObjectURIsFiltered(children []ResourceTree, aos *[]string, filter string) {
