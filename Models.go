@@ -72,7 +72,7 @@ type AdvancedSearch struct {
 }
 
 type Agent struct {
-	LockVersion                     int                `json:"lock_version,omitempty"`
+	LockVersion                     int                `json:"lock_version"`
 	Publish                         bool               `json:"publish,omitempty"`
 	IsSlugAuto                      bool               `json:"is_slug_auto,omitempty"`
 	JSONModelType                   string             `json:"jsonmodel_type"`

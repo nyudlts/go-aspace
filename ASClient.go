@@ -169,6 +169,8 @@ func (a *ASClient) post(endpoint string, authenticated bool, body string) (*http
 	var response *http.Response
 	url := a.RootURL + endpoint
 
+	fmt.Println("URL:", url)
+
 	request, err := http.NewRequest("POST", url, bytes.NewBufferString(body))
 	if err != nil {
 		return response, err

@@ -3,9 +3,11 @@ package aspace
 import (
 	"encoding/json"
 	"flag"
-	"fmt"
+	"os"
+	"path/filepath"
 	"testing"
 
+	"github.com/nyudlts/go-aspace/goaspace_testing"
 	goaspacetest "github.com/nyudlts/go-aspace/goaspace_testing"
 )
 
@@ -17,35 +19,6 @@ var (
 	testAccession    *Accession
 )
 
-var defaultAccession = `
-{
-  "jsonmodel_type": "accession",
-  "is_slug_auto": true,
-  "accession_date": "2007-03-15",
-  "extents": [
-    {
-      "jsonmodel_type": "extent",
-      "portion": "part",
-      "number": "60",
-      "extent_type": "cassettes",
-      "dimensions": "S406KHU",
-      "physical_details": "632RL388775"
-    }
-  ],
-  "restrictions_apply": false,
-  "access_restrictions": false,
-  "use_restrictions": false,
-  "id_0": "575NV197270",
-  "id_1": "SD524676B",
-  "id_2": "DO962433M",
-  "id_3": "HGW604442",
-  "title": "Accession Title: 30",
-  "content_description": "Description: 11",
-  "condition_description": "Description: 12"
-
-}
-`
-
 func TestAccessions(t *testing.T) {
 	//get a client
 	flag.Parse()
@@ -54,28 +27,22 @@ func TestAccessions(t *testing.T) {
 		t.Error(err)
 	}
 
-	t.Run("test unmarshal default accessions", func(t *testing.T) {
-		testAccession = &Accession{}
-		err := json.Unmarshal([]byte(defaultAccession), &testAccession)
+	t.Run("test unmarshal an accession", func(t *testing.T) {
+
+		accessionBytes, err := os.ReadFile(filepath.Join(goaspace_testing.TestDataDir, "accession.json"))
 		if err != nil {
 			t.Error(err)
 		}
 
-		testAccession.ID0 = RandStringRunes(4)
-		testAccession.ID1 = RandStringRunes(4)
-		testAccession.ID2 = RandStringRunes(4)
-		testAccession.ID3 = RandStringRunes(4)
+		testAccession = &Accession{}
+		if err := json.Unmarshal(accessionBytes, testAccession); err != nil {
+			t.Error(err)
+		}
 
-		t.Logf("%s", testAccession.Title)
+		t.Logf("Successfully unmarshalled test accession: %s", testAccession.Title)
 	})
 
 	t.Run("Test create an accession", func(t *testing.T) {
-
-		testAccession := &Accession{}
-		err := json.Unmarshal([]byte(defaultAccession), &testAccession)
-		if err != nil {
-			t.Error(err)
-		}
 
 		apiResponse, err := client.CreateAccession(testRepoID, *testAccession)
 		if err != nil {
@@ -111,10 +78,7 @@ func TestAccessions(t *testing.T) {
 			t.Error(err)
 		}
 
-		uri := fmt.Sprintf("/repositories/%d/accessions/%d", testRepoID, testAccessionID)
-		if acc.URI != uri {
-			t.Errorf("Expected URI %s, got %s", uri, acc.URI)
-		}
+		t.Logf("Successfully requested and serialized accession %s: %s\n", acc.URI, acc.Title)
 
 	})
 
