@@ -8,7 +8,6 @@ import (
 	"testing"
 
 	"github.com/nyudlts/go-aspace/goaspace_testing"
-	goaspacetest "github.com/nyudlts/go-aspace/goaspace_testing"
 )
 
 var (
@@ -23,11 +22,13 @@ func TestAccessions(t *testing.T) {
 	//get a client
 	flag.Parse()
 
-	var err error
-	testClient, err = NewClient(goaspacetest.Config, goaspacetest.Environment)
-	if err != nil {
-		t.Error(err)
-	}
+	/*
+		var err error
+		testClient, err = NewClient(goaspacetest.Config, goaspacetest.Environment)
+		if err != nil {
+			t.Error(err)
+		}
+	*/
 
 	t.Run("test unmarshal an accession", func(t *testing.T) {
 
@@ -58,6 +59,7 @@ func TestAccessions(t *testing.T) {
 
 	//get a list of accessions
 	t.Run("Test get Accession List for Resource", func(t *testing.T) {
+		var err error
 		testRepoID, testResourceID, err = testClient.GetRandomResourceID()
 		if err != nil {
 			t.Error(err)

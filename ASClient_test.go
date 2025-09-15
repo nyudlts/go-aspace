@@ -1,8 +1,8 @@
 package aspace
 
 import (
+	"encoding/hex"
 	"flag"
-	"net/http"
 	"os"
 	"testing"
 
@@ -17,7 +17,7 @@ var (
 func TestASClient(t *testing.T) {
 	flag.Parse()
 
-	t.Run("Test get creds", func(t *testing.T) {
+	t.Run("test get creds", func(t *testing.T) {
 
 		configBytes, err := os.ReadFile(goaspacetest.Config)
 		if err != nil {
@@ -30,21 +30,33 @@ func TestASClient(t *testing.T) {
 		}
 	})
 
-	t.Run("Test Endpoint", func(t *testing.T) {
-		resp, err := http.Get(creds.URL)
-		if err != nil {
-			t.Error(err)
-		}
-		defer resp.Body.Close()
-	})
-
-	t.Run("Test ASpace Client Initialization", func(t *testing.T) {
+	t.Run("test ASpace Client Initialization", func(t *testing.T) {
 		var err error
-		testClient, err := NewClient(goaspacetest.Config, goaspacetest.Environment)
+		testClient, err = NewClient(goaspacetest.Config, goaspacetest.Environment)
 		if err != nil {
 			t.Error(err)
 		}
 		t.Logf("ASpace Client initialized successfully: %s", testClient.RootURL)
+	})
+
+	//this is a dumb test
+	t.Run("test validate a session key", func(t *testing.T) {
+		_, err := hex.DecodeString(testClient.sessionKey)
+		if err != nil {
+			t.Error(err)
+		}
+
+		t.Log("successffully decoded session key")
+	})
+
+	t.Run("test get the ASpace server info", func(t *testing.T) {
+		var err error
+		info, err := testClient.GetAspaceInfo()
+		if err != nil {
+			t.Error(err)
+		}
+
+		t.Logf("ASpace Server Info: %s %s", info.ArchivesSpaceVersion, info.Build)
 	})
 
 }

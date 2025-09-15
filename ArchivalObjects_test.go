@@ -81,7 +81,7 @@ func TestArchivalObject(t *testing.T) {
 
 /*
 
-	this is broken
+	//this is broken
 	t.Run("test basic search", func(t *testing.T) {
 
 		aos, err := testClient.SearchArchivalObjects(2, "Archival Object title")
