@@ -67,60 +67,77 @@ func (a *ASClient) GetRandomAccessionID() (int, int, error) {
 }
 
 // Update an Accession record for a given Repository and Accession ID
-func (a *ASClient) UpdateAccession(repositoryID int, accessionID int, accession Accession) (string, error) {
+func (a *ASClient) UpdateAccession(repositoryID int, accessionID int, accession Accession) (*APIResponse, error) {
 	endpoint := fmt.Sprintf("/repositories/%d/accessions/%d", repositoryID, accessionID)
 	body, err := json.Marshal(accession)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	response, err := a.post(endpoint, true, string(body))
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	msg, err := io.ReadAll(response.Body)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	return string(msg), nil
+	apiResponse := &APIResponse{}
+	if err = json.Unmarshal(msg, apiResponse); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal API response: %v", err)
+	}
+
+	return apiResponse, nil
 }
 
 // Create a new Accession with in a given Repository
-func (a *ASClient) CreateAccession(repositoryID int, accession Accession) (string, error) {
+func (a *ASClient) CreateAccession(repositoryID int, accession Accession) (*APIResponse, error) {
 	endpoint := fmt.Sprintf("/repositories/%d/accessions", repositoryID)
 	body, err := json.Marshal(accession)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
+
 	response, err := a.post(endpoint, true, string(body))
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	defer response.Body.Close()
 
-	msg, err := io.ReadAll(response.Body)
+	responseBody, err := io.ReadAll(response.Body)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	return string(msg), nil
+	apiResponse := &APIResponse{}
+	if err = json.Unmarshal(responseBody, apiResponse); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal API response: %v", err)
+	}
+
+	return apiResponse, nil
 }
 
 // Delete an Accession within a Repository
-func (a *ASClient) DeleteAccession(repositoryID int, accessionID int) (string, error) {
+func (a *ASClient) DeleteAccession(repositoryID int, accessionID int) (*APIResponse, error) {
 	endpoint := fmt.Sprintf("/repositories/%d/accessions/%d", repositoryID, accessionID)
 	response, err := a.delete(endpoint)
 	if err != nil {
-		return fmt.Sprintf("code %d", response.StatusCode), err
+		return nil, err
 	}
+	defer response.Body.Close()
 	msg, err := io.ReadAll(response.Body)
 	if err != nil {
-		return fmt.Sprintf("code %d", response.StatusCode), err
+		return nil, err
 	}
 
-	return string(msg), nil
+	apiResponse := &APIResponse{}
+	if err = json.Unmarshal(msg, apiResponse); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal API response: %v", err)
+	}
+
+	return apiResponse, nil
 
 }
 

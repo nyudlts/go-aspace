@@ -3,13 +3,14 @@ package aspace
 import (
 	"encoding/json"
 	"flag"
+	"fmt"
 	"testing"
 
 	goaspacetest "github.com/nyudlts/go-aspace/goaspace_testing"
 )
 
 var (
-	testRepoID       int
+	testRepoID       = 2
 	testResourceID   = 1
 	testAccessionIDs = []AccessionEntry{}
 	testAccessionID  int
@@ -41,6 +42,7 @@ var defaultAccession = `
   "title": "Accession Title: 30",
   "content_description": "Description: 11",
   "condition_description": "Description: 12"
+
 }
 `
 
@@ -67,6 +69,24 @@ func TestAccessions(t *testing.T) {
 		t.Logf("%s", testAccession.Title)
 	})
 
+	t.Run("Test create an accession", func(t *testing.T) {
+
+		testAccession := &Accession{}
+		err := json.Unmarshal([]byte(defaultAccession), &testAccession)
+		if err != nil {
+			t.Error(err)
+		}
+
+		apiResponse, err := client.CreateAccession(testRepoID, *testAccession)
+		if err != nil {
+			t.Error(err)
+		}
+
+		testAccessionID = apiResponse.ID
+
+		t.Logf("Successfully created accession: %s", apiResponse.URI)
+	})
+
 	//get a list of accessions
 	t.Run("Test get Accession List for Resource", func(t *testing.T) {
 		testRepoID, testResourceID, err = client.GetRandomResourceID()
@@ -86,31 +106,16 @@ func TestAccessions(t *testing.T) {
 
 	t.Run("Test get an accession", func(t *testing.T) {
 
-		t.Logf("Testing GetAccession for Repository ID %d, AccessionID %d", testRepoID, testAccessionIDs[0].AccessionID)
-		testAccession2, err := client.GetAccession(testRepoID, testAccessionIDs[0].AccessionID)
+		acc, err := client.GetAccession(testRepoID, testAccessionID)
 		if err != nil {
 			t.Error(err)
 		}
 
-		t.Logf("Successfully unmarshalled %s %s", testAccession2.URI, testAccession2.Title)
-
-	})
-
-	t.Run("Test create an accession", func(t *testing.T) {
-
-		str, err := client.CreateAccession(testRepoID, *testAccession)
-		if err != nil {
-			t.Error(err)
+		uri := fmt.Sprintf("/repositories/%d/accessions/%d", testRepoID, testAccessionID)
+		if acc.URI != uri {
+			t.Errorf("Expected URI %s, got %s", uri, acc.URI)
 		}
 
-		apiResponse := &APIResponse{}
-		err = json.Unmarshal([]byte(str), apiResponse)
-		if err != nil {
-			t.Error(err)
-		} else {
-			t.Logf("%v", apiResponse)
-		}
-		testAccessionID = apiResponse.ID
 	})
 
 	t.Run("Test update an accession", func(t *testing.T) {
@@ -119,31 +124,26 @@ func TestAccessions(t *testing.T) {
 		testAccession.ID2 = RandStringRunes(4)
 		testAccession.ID3 = RandStringRunes(4)
 
-		str, err := client.UpdateAccession(testRepoID, testAccessionID, *testAccession)
+		apiResponse, err := client.UpdateAccession(testRepoID, testAccessionID, *testAccession)
 		if err != nil {
 			t.Error(err)
 		}
-		apiResponse := &APIResponse{}
-		err = json.Unmarshal([]byte(str), apiResponse)
-		if err != nil {
-			t.Error(err)
-		} else {
-			t.Logf("%v", apiResponse)
+
+		if apiResponse.Status != "Updated" {
+			t.Errorf("Expected status 'Updated', got '%s'", apiResponse.Status)
 		}
+
 	})
 
 	t.Run("Test delete an accession", func(t *testing.T) {
 		t.Logf("testing delete accession for RepoID %d, AccessionID %d", testRepoID, testAccessionID)
-		str, err := client.DeleteAccession(testRepoID, testAccessionID)
+		apiResponse, err := client.DeleteAccession(testRepoID, testAccessionID)
 		if err != nil {
 			t.Error(err)
 		}
-		APIResponse := &APIResponse{}
-		err = json.Unmarshal([]byte(str), APIResponse)
-		if err != nil {
-			t.Error(err)
-		} else {
-			t.Logf("%v", APIResponse)
+
+		if apiResponse.Status != "Deleted" {
+			t.Errorf("Expected status 'Deleted', got '%s'", apiResponse.Status)
 		}
 	})
 }
