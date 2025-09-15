@@ -38,6 +38,51 @@ func (a *ASClient) GetRepositories() ([]int, error) {
 	return repIds, nil
 }
 
+func (a *ASClient) CreateRepository(repository *Repository) (*APIResponse, error) {
+	endpoint := "/repositories"
+	body, err := json.Marshal(repository)
+	if err != nil {
+		return nil, err
+	}
+
+	response, err := a.post(endpoint, true, string(body))
+	if err != nil {
+		return nil, err
+	}
+	defer response.Body.Close()
+
+	responseBody, err := io.ReadAll(response.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	apiResponse := &APIResponse{}
+	if err = json.Unmarshal(responseBody, apiResponse); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal API response: %v", err)
+	}
+
+	return apiResponse, nil
+}
+
+func (a *ASClient) DeleteRepository(repositoryID int) (*APIResponse, error) {
+	endpoint := fmt.Sprintf("/repositories/%d", repositoryID)
+	response, err := a.delete(endpoint)
+	if err != nil {
+		return nil, err
+	}
+	defer response.Body.Close()
+
+	responseBody, err := io.ReadAll(response.Body)
+	if err != nil {
+		return nil, err
+	}
+	apiResponse := &APIResponse{}
+	if err = json.Unmarshal(responseBody, apiResponse); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal API response: %v", err)
+	}
+	return apiResponse, nil
+}
+
 // Return a Repository struct for given Repository ID
 func (a *ASClient) GetRepository(repositoryID int) (Repository, error) {
 	repository := Repository{}
@@ -58,6 +103,31 @@ func (a *ASClient) GetRepository(repositoryID int) (Repository, error) {
 	}
 
 	return repository, nil
+}
+
+func (a *ASClient) UpdateRepository(repositoryID int, repository *Repository) (*APIResponse, error) {
+	endpoint := fmt.Sprintf("/repositories/%d", repositoryID)
+	body, err := json.Marshal(repository)
+	if err != nil {
+		return nil, err
+	}
+	response, err := a.post(endpoint, true, string(body))
+	if err != nil {
+		return nil, err
+	}
+	defer response.Body.Close()
+
+	responseBody, err := io.ReadAll(response.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	apiResponse := &APIResponse{}
+	if err = json.Unmarshal(responseBody, apiResponse); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal API response: %v", err)
+	}
+
+	return apiResponse, nil
 }
 
 // Get a random Repository ID

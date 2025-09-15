@@ -476,7 +476,7 @@ type Repository struct {
 	Slug                  string         `json:"slug,omitempty"`
 	IsSlugAuto            bool           `json:"is_slug_auto"`
 	AgentRepresentation   AgentReference `json:"agent_representation"`
-	LockVersion           int            `json:"lock_version,omitempty"`
+	LockVersion           int            `json:"lock_version"`
 	JSONModelType         string         `json:"jsonmodel_type,omitempty"`
 }
 
