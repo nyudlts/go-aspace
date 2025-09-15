@@ -10,8 +10,10 @@ import (
 )
 
 var (
-	testClient *ASClient
-	creds      Creds
+	testClient     *ASClient
+	creds          Creds
+	testRepoID     = 2
+	testResourceID = 1
 )
 
 func TestASClient(t *testing.T) {

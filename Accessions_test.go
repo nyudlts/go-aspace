@@ -2,7 +2,6 @@ package aspace
 
 import (
 	"encoding/json"
-	"flag"
 	"os"
 	"path/filepath"
 	"testing"
@@ -11,24 +10,12 @@ import (
 )
 
 var (
-	testRepoID       = 2
-	testResourceID   = 1
 	testAccessionIDs = []AccessionEntry{}
 	testAccessionID  int
 	testAccession    *Accession
 )
 
 func TestAccessions(t *testing.T) {
-	//get a client
-	flag.Parse()
-
-	/*
-		var err error
-		testClient, err = NewClient(goaspacetest.Config, goaspacetest.Environment)
-		if err != nil {
-			t.Error(err)
-		}
-	*/
 
 	t.Run("test unmarshal an accession", func(t *testing.T) {
 

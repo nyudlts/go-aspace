@@ -46,60 +46,76 @@ func (a *ASClient) GetDigitalObjectFromURI(doURI string) (DigitalObject, error) 
 	return do, nil
 }
 
-func (a *ASClient) UpdateDigitalObject(repositoryId int, daoId int, dao DigitalObject) (string, error) {
+func (a *ASClient) UpdateDigitalObject(repositoryId int, daoId int, dao *DigitalObject) (*APIResponse, error) {
 	endpoint := fmt.Sprintf("/repositories/%d/digital_objects/%d", repositoryId, daoId)
 	body, err := json.Marshal(dao)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	response, err := a.post(endpoint, true, string(body))
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	body, err = io.ReadAll(response.Body)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	return string(body), nil
+	apiResponse := &APIResponse{}
+	if err := json.Unmarshal(body, apiResponse); err != nil {
+		return nil, err
+	}
+
+	return apiResponse, nil
 }
 
-func (a *ASClient) CreateDigitalObject(repositoryId int, dao DigitalObject) (string, error) {
+func (a *ASClient) CreateDigitalObject(repositoryId int, dao *DigitalObject) (*APIResponse, error) {
 	endpoint := fmt.Sprintf("/repositories/%d/digital_objects", repositoryId)
 	body, err := json.Marshal(dao)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	response, err := a.post(endpoint, true, string(body))
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	body, err = io.ReadAll(response.Body)
 	if err != nil {
-		return "", err
+		return nil, err
+	}
+	defer response.Body.Close()
+
+	apiResponse := &APIResponse{}
+	if err := json.Unmarshal(body, apiResponse); err != nil {
+		return nil, err
 	}
 
-	return string(body), nil
+	return apiResponse, nil
 }
 
-func (a *ASClient) DeleteDigitalObject(repositoryId int, doId int) (string, error) {
+func (a *ASClient) DeleteDigitalObject(repositoryId int, doId int) (*APIResponse, error) {
 	doURI := fmt.Sprintf("/repositories/%d/digital_objects/%d", repositoryId, doId)
 
 	return a.DeleteDigitalObjectFromURI(doURI)
 }
 
-func (a *ASClient) DeleteDigitalObjectFromURI(doURI string) (string, error) {
+func (a *ASClient) DeleteDigitalObjectFromURI(doURI string) (*APIResponse, error) {
 	response, err := a.delete(doURI)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	body, err := io.ReadAll(response.Body)
 	if err != nil {
-		return string(body), err
+		return nil, err
 	}
-	return string(body), nil
+	defer response.Body.Close()
+	apiResponse := &APIResponse{}
+	if err := json.Unmarshal(body, apiResponse); err != nil {
+		return nil, err
+	}
+	return apiResponse, nil
 }
 
 func (a *ASClient) GetRandomDigitalObject() (int, int, error) {

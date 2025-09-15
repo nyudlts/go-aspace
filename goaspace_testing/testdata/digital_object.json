@@ -1,0 +1,81 @@
+{
+  "jsonmodel_type": "digital_object",
+  "extents": [
+    {
+      "jsonmodel_type": "extent",
+      "portion": "part",
+      "number": "29",
+      "extent_type": "megabytes",
+      "dimensions": "QPT449A",
+      "physical_details": "462166NAO"
+    }
+  ],
+  "lang_materials": [
+    {
+      "jsonmodel_type": "lang_material",
+      "notes": [
+
+      ],
+      "language_and_script": {
+        "jsonmodel_type": "language_and_script",
+        "language": "mak",
+        "script": "Zyyy"
+      }
+    }
+  ],
+  "dates": [
+    {
+      "jsonmodel_type": "date",
+      "date_type": "bulk",
+      "label": "creation",
+      "begin": "2019-08-10",
+      "end": "2019-08-10",
+      "certainty": "inferred",
+      "era": "ce",
+      "calendar": "gregorian",
+      "expression": "346367357735646"
+    },
+    {
+      "jsonmodel_type": "date",
+      "date_type": "range",
+      "label": "creation",
+      "begin": "1994-05-08",
+      "end": "1994-05-08",
+      "certainty": "inferred",
+      "era": "ce",
+      "calendar": "gregorian",
+      "expression": "LN823MV"
+    },
+    {
+      "jsonmodel_type": "date",
+      "date_type": "single",
+      "label": "creation",
+      "begin": "1971-04-07",
+      "end": "1971-04-07",
+      "certainty": "inferred",
+      "era": "ce",
+      "calendar": "gregorian",
+      "expression": "AL104103T"
+    }
+  ],
+  "is_slug_auto": true,
+  "file_versions": [
+    {
+      "jsonmodel_type": "file_version",
+      "is_representative": false,
+      "file_uri": "R202631VN",
+      "use_statement": "image-thumbnail",
+      "xlink_actuate_attribute": "none",
+      "xlink_show_attribute": "none",
+      "file_format_name": "aiff",
+      "file_format_version": "PN46911J",
+      "file_size_bytes": 73,
+      "checksum": "9T763P608",
+      "checksum_method": "sha-512",
+      "publish": true
+    }
+  ],
+  "restrictions": false,
+  "title": "Digital Object Title: 1",
+  "digital_object_id": "BK867D509"
+}

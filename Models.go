@@ -204,7 +204,7 @@ type Deaccession struct {
 }
 
 type DigitalObject struct {
-	LockVersion          *int                   `json:"lock_version,omitempty"`
+	LockVersion          int                    `json:"lock_version"`
 	DigitalObjectID      string                 `json:"digital_object_id,omitempty"`
 	Title                string                 `json:"title,omitempty"`
 	Publish              bool                   `json:"publish"`
@@ -214,7 +214,7 @@ type DigitalObject struct {
 	JSONModelType        string                 `json:"jsonmodel_type,omitempty"`
 	ExternalIds          []ExternalID           `json:"external_ids,omitempty"`
 	Subjects             []SubjectReference     `json:"subjects,omitempty"`
-	LinkedEvents         []map[string]string    `json:"linked_events,omitempty"`
+	LinkedEvents         []LinkedEvent          `json:"linked_events,omitempty"`
 	Extents              []Extent               `json:"extents,omitempty"`
 	LangMaterials        []LangMaterial         `json:"lang_materials,omitempty"`
 	Dates                []Date                 `json:"dates,omitempty"`
