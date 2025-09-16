@@ -22,51 +22,87 @@ func (a *ASClient) GetResourceIDs(repositoryId int) ([]int, error) {
 	return repositoryIds, nil
 }
 
-func (a *ASClient) GetResource(repositoryId int, resourceId int) (Resource, error) {
+func (a *ASClient) CreateResource(repositoryId int, resource *Resource) (*APIResponse, error) {
 
-	r := Resource{}
+	endpoint := fmt.Sprintf("/repositories/%d", repositoryId)
+	body, err := json.Marshal(resource)
+	if err != nil {
+		return nil, err
+	}
+	response, err := a.post(endpoint, true, string(body))
+	if err != nil {
+		return nil, err
+	}
+	defer response.Body.Close()
+
+	responseBody, err := io.ReadAll(response.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	apiResponse := &APIResponse{}
+	err = json.Unmarshal(responseBody, apiResponse)
+	if err != nil {
+		return nil, err
+	}
+
+	return apiResponse, nil
+}
+
+func (a *ASClient) GetResource(repositoryId int, resourceId int) (*Resource, error) {
+
+	resource := &Resource{}
 
 	endpoint := fmt.Sprintf("/repositories/%d/resources/%d", repositoryId, resourceId)
 	response, err := a.get(endpoint, true)
 
 	if err != nil {
-		return r, err
+		return nil, err
 	}
 
 	body, err := io.ReadAll(response.Body)
 	if err != nil {
-		return r, err
+		return nil, err
+	}
+	defer response.Body.Close()
+
+	err = json.Unmarshal(body, resource)
+	if err != nil {
+		return nil, err
 	}
 
-	err = json.Unmarshal(body, &r)
-	if err != nil {
-		return r, err
-	}
-	r.Json = body
-	return r, nil
+	return resource, nil
 }
 
-func (a *ASClient) UpdateResource(repositoryId int, resourceId int, resource Resource) (string, error) {
-	responseMessage := ""
+func (a *ASClient) UpdateResource(repositoryId int, resourceId int, resource Resource) (*APIResponse, error) {
+
 	endpoint := fmt.Sprintf("/repositories/%d/resources/%d", repositoryId, resourceId)
 	body, err := json.Marshal(resource)
 	if err != nil {
-		return responseMessage, err
+		return nil, err
 	}
 	response, err := a.post(endpoint, true, string(body))
 	if err != nil {
-		return responseMessage, err
+		return nil, err
 	}
+	defer response.Body.Close()
 
 	responseBody, err := io.ReadAll(response.Body)
 	if err != nil {
-		return responseMessage, err
+		return nil, err
 	}
 
-	responseMessage = string(responseBody)
-	return responseMessage, nil
+	apiResponse := &APIResponse{}
+	err = json.Unmarshal(responseBody, apiResponse)
+	if err != nil {
+		return nil, err
+	}
+
+	return apiResponse, nil
+
 }
 
+// Deprecated: user UpadateResource instead
 func (a *ASClient) UpdateResourceJson(repositoryID int, resourceID int, resourceJSON []byte) (int, string, error) {
 
 	responseMessage := ""
@@ -87,44 +123,28 @@ func (a *ASClient) UpdateResourceJson(repositoryID int, resourceID int, resource
 
 }
 
-func (a *ASClient) CreateResource(repositoryId int, resource Resource) (string, error) {
-	responseMessage := ""
-	endpoint := fmt.Sprintf("/repositories/%d", repositoryId)
-	body, err := json.Marshal(resource)
-	if err != nil {
-		return responseMessage, err
-	}
-	response, err := a.post(endpoint, true, string(body))
-	if err != nil {
-		return responseMessage, err
-	}
+func (a *ASClient) DeleteResource(repositoryId int, resourceId int) (*APIResponse, error) {
 
-	responseBody, err := io.ReadAll(response.Body)
-	if err != nil {
-		return responseMessage, err
-	}
-
-	responseMessage = string(responseBody)
-	return responseMessage, nil
-}
-
-func (a *ASClient) DeleteResource(repositoryId int, resourceId int) (string, error) {
-	responseMessage := ""
 	endpoint := fmt.Sprintf("/repositories/%d/resources/%d", repositoryId, resourceId)
 
 	response, err := a.delete(endpoint)
 	if err != nil {
-		return responseMessage, err
+		return nil, err
 	}
+	defer response.Body.Close()
 
 	responseBody, err := io.ReadAll(response.Body)
 	if err != nil {
-		return responseMessage, err
+		return nil, err
 	}
 
-	responseMessage = string(responseBody)
+	apiResponse := &APIResponse{}
+	err = json.Unmarshal(responseBody, apiResponse)
+	if err != nil {
+		return nil, err
+	}
 
-	return responseMessage, nil
+	return apiResponse, nil
 }
 
 func (a *ASClient) GetResourceTree(repositoryId int, resourceId int) (ResourceTree, error) {
@@ -195,7 +215,7 @@ type ResourceListEntry struct {
 	Title        string `json:"title"`
 }
 
-func (a *ASClient) GetResourceList(repositoryID int) ([]ResourceListEntry, error) {
+func (a *ASClient) GetResourceIDsForRepository(repositoryID int) ([]ResourceListEntry, error) {
 	currentPage := 1
 	resourceList, err := a.getResourcePage(repositoryID, currentPage)
 	if err != nil {

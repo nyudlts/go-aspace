@@ -514,7 +514,7 @@ type Resource struct {
 	Level                      string              `json:"level,omitempty"`
 	LinkedAgents               []LinkedAgent       `json:"linked_agents,omitempty"`
 	LinkedEvents               []map[string]string `json:"linked_events,omitempty"`
-	LockVersion                int                 `json:"lock_version,omitempty"`
+	LockVersion                int                 `json:"lock_version"`
 	Notes                      []Note              `json:"notes,omitempty"`
 	OtherLevel                 string              `json:"other_level,omitempty"`
 	Publish                    bool                `json:"publish,omitempty"`

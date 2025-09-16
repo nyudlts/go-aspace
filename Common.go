@@ -11,10 +11,13 @@ import (
 	"time"
 )
 
-var LibraryVersion = "v0.7.1"
-
+var LibraryVersion = "v0.8.0"
 var seed = rand.NewSource(time.Now().UnixNano())
 var rGen = rand.New(seed)
+
+const CREATED = "Created"
+const UPDATED = "Updated"
+const DELETED = "Deleted"
 
 func PrintClientVersion() {
 	fmt.Println("Go Aspace", LibraryVersion)
@@ -69,13 +72,14 @@ type AspaceInfo struct {
 }
 
 func (a AspaceInfo) String() string {
-	msg := fmt.Sprintf("== ArchivesSpace Version: %s\n", a.ArchivesSpaceVersion)
-	msg = msg + fmt.Sprintf("== Database Type: %s\n", a.DatabaseProductName)
-	msg = msg + fmt.Sprintf("== Database Version: %s\n", a.DatabaseProductVersion)
-	msg = msg + fmt.Sprintf("== Ruby Version: %s\n", a.RubyVersion)
-	msg = msg + fmt.Sprintf("== Host OS: %s\n", a.HostOS)
-	msg = msg + fmt.Sprintf("== Host CPU: %s\n", a.HostCPU)
-	msg = msg + fmt.Sprintf("== Java Version: %s\n", a.Build)
+	msg := fmt.Sprintf("ArchivesSpace Version: %s\n", a.ArchivesSpaceVersion)
+	msg = msg + fmt.Sprintf("Database Type: %s\n", a.DatabaseProductName)
+	msg = msg + fmt.Sprintf("Database Version: %s\n", a.DatabaseProductVersion)
+	msg = msg + fmt.Sprintf("Ruby Version: %s\n", a.RubyVersion)
+	msg = msg + fmt.Sprintf("Host OS: %s\n", a.HostOS)
+	msg = msg + fmt.Sprintf("Host CPU: %s\n", a.HostCPU)
+	msg = msg + fmt.Sprintf("Java Version: %s\n", a.Build)
+	msg = msg + fmt.Sprintf("Go-Aspace Version: %s\n", LibraryVersion)
 	return msg
 }
 
