@@ -8,7 +8,7 @@ import (
 var (
 	Config      string
 	Environment string
-	TestDataDir string = filepath.Join("goaspace_testing", "testdata")
+	TestDataDir string = filepath.Join("goaspace_testing", "testdata", "json")
 )
 
 func init() {
