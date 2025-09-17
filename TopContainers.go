@@ -6,6 +6,32 @@ import (
 	"io"
 )
 
+func (a *ASClient) CreateTopContainer(repositoryID int, topContainer *TopContainer) (*APIResponse, error) {
+	endpoint := fmt.Sprintf("/repositories/%d/top_containers", repositoryID)
+	body, err := json.Marshal(topContainer)
+	if err != nil {
+		return nil, err
+	}
+	response, err := a.post(endpoint, true, string(body))
+	if err != nil {
+		return nil, err
+	}
+	defer response.Body.Close()
+
+	responseBody, err := io.ReadAll(response.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	apiResponse := &APIResponse{}
+	err = json.Unmarshal(responseBody, apiResponse)
+	if err != nil {
+		return nil, fmt.Errorf("could not unmarshal API response: %v", err)
+	}
+
+	return apiResponse, nil
+}
+
 func (a *ASClient) GetTopContainerIDs(repositoryID int) ([]int, error) {
 	var topContainers = []int{}
 	endpoint := fmt.Sprintf("/repositories/%d/top_containers?all_ids=true", repositoryID)
@@ -17,69 +43,82 @@ func (a *ASClient) GetTopContainerIDs(repositoryID int) ([]int, error) {
 	if err != nil {
 		return topContainers, err
 	}
-	err = json.Unmarshal(body, &topContainers)
-	if err != nil {
+	if err = json.Unmarshal(body, &topContainers); err != nil {
 		return topContainers, err
 	}
 
 	return topContainers, nil
 }
 
-func (a *ASClient) GetTopContainer(repositoryID int, topContainerID int) (TopContainer, error) {
-	tc := TopContainer{}
+func (a *ASClient) GetTopContainer(repositoryID int, topContainerID int) (*TopContainer, error) {
+
 	endpoint := fmt.Sprintf("/repositories/%d/top_containers/%d", repositoryID, topContainerID)
 
-	reponse, err := a.get(endpoint, true)
+	response, err := a.get(endpoint, true)
 	if err != nil {
-		return tc, err
+		return nil, err
+	}
+	defer response.Body.Close()
+
+	body, err := io.ReadAll(response.Body)
+	if err != nil {
+		return nil, err
 	}
 
-	body, err := io.ReadAll(reponse.Body)
-	if err != nil {
-		return tc, err
+	topContainer := &TopContainer{}
+	if err := json.Unmarshal(body, topContainer); err != nil {
+		return nil, err
 	}
 
-	err = json.Unmarshal(body, &tc)
-	if err != nil {
-		return tc, err
-	}
-
-	return tc, nil
+	return topContainer, nil
 }
 
 // Update a Top Container for a given Repository and Accession ID
-func (a *ASClient) UpdateTopContainer(repositoryID int, topContainerID int, topContainer TopContainer) (string, error) {
+func (a *ASClient) UpdateTopContainer(repositoryID int, topContainerID int, topContainer *TopContainer) (*APIResponse, error) {
 	endpoint := fmt.Sprintf("/repositories/%d/top_containers/%d", repositoryID, topContainerID)
 	body, err := json.Marshal(topContainer)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	response, err := a.post(endpoint, true, string(body))
 	if err != nil {
-		return "", err
+		return nil, err
 	}
+	response.Body.Close()
 
-	msg, err := io.ReadAll(response.Body)
+	responseBody, err := io.ReadAll(response.Body)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	return string(msg), nil
+	apiResponse := &APIResponse{}
+	if err = json.Unmarshal(responseBody, apiResponse); err != nil {
+		return nil, fmt.Errorf("could not unmarshal API response: %v", err)
+	}
+
+	return apiResponse, nil
 }
 
 // Delete a Top Container
-func (a *ASClient) DeleteTopContainer(repositoryID int, topContainerID int) (string, error) {
+func (a *ASClient) DeleteTopContainer(repositoryID int, topContainerID int) (*APIResponse, error) {
 	endpoint := fmt.Sprintf("/repositories/%d/top_containers/%d", repositoryID, topContainerID)
 	response, err := a.delete(endpoint)
 	if err != nil {
-		return fmt.Sprintf("code %d", response.StatusCode), err
+		return nil, err
 	}
-	msg, err := io.ReadAll(response.Body)
+	defer response.Body.Close()
+
+	responseBody, err := io.ReadAll(response.Body)
 	if err != nil {
-		return fmt.Sprintf("code %d", response.StatusCode), err
+		return nil, err
 	}
 
-	return string(msg), nil
+	apiResponse := &APIResponse{}
+	if err = json.Unmarshal(responseBody, apiResponse); err != nil {
+		return nil, fmt.Errorf("could not unmarshal API response: %v", err)
+	}
+
+	return apiResponse, nil
 }
 
 func (a *ASClient) GetTopContainerIDsForResource(repositoryID int, resourceID int) ([]string, error) {
@@ -109,8 +148,8 @@ func (a *ASClient) GetTopContainerIDsForResource(repositoryID int, resourceID in
 	return tcs, nil
 }
 
-func (a *ASClient) GetTopContainersForResource(repositoryID int, resourceID int) ([]TopContainer, error) {
-	tcs := []TopContainer{}
+func (a *ASClient) GetTopContainersForResource(repositoryID int, resourceID int) ([]*TopContainer, error) {
+	tcs := []*TopContainer{}
 	tcIds, err := a.GetTopContainerIDsForResource(repositoryID, resourceID)
 	if err != nil {
 		return tcs, err

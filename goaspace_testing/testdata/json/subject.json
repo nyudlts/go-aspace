@@ -1,0 +1,21 @@
+{
+    "jsonmodel_type": "subject",
+    "external_ids": [],
+    "publish": true,
+    "is_slug_auto": true,
+    "used_within_repositories": [],
+    "used_within_published_repositories": [],
+    "terms": [
+        {
+            "jsonmodel_type": "term",
+            "term": "Term 1",
+            "term_type": "topical",
+            "vocabulary": "/vocabularies/2"
+        }
+    ],
+    "external_documents": [],
+    "vocabulary": "/vocabularies/3",
+    "authority_id": "http://www.example-18.com",
+    "scope_note": "440FVOO",
+    "source": "lcsh"
+}

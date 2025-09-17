@@ -44,7 +44,7 @@ func TestResource(t *testing.T) {
 
 		resourceID = apiResponse.ID
 
-		t.Logf("Successfully created resource with ID: %d", resource.URI)
+		t.Logf("Successfully created resource: %s", resource.URI)
 	})
 
 	t.Run("test get resource by ID", func(t *testing.T) {
@@ -103,7 +103,7 @@ func TestResource(t *testing.T) {
 			t.Fatalf("Expected resource title %s, got %s", updatedTitle, resource.Title)
 		}
 
-		t.Logf("Successfully updated resource with uri: %d", resource.URI)
+		t.Logf("Successfully updated resource: %s", resource.URI)
 	})
 
 	t.Run("test delete resource", func(t *testing.T) {

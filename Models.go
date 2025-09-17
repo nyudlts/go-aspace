@@ -618,7 +618,7 @@ type SubContainer struct {
 }
 
 type Subject struct {
-	LockVersion                     int                `json:"lock_version,omitempty"`
+	LockVersion                     int                `json:"lock_version"`
 	Title                           string             `json:"title,omitempty"`
 	IsSlugAuto                      bool               `json:"is_slug_auto,omitempty"`
 	Source                          string             `json:"source,omitempty"`
