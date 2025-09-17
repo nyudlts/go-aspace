@@ -29,6 +29,7 @@ func TestRepository(t *testing.T) {
 	})
 
 	t.Run("test create repository", func(t *testing.T) {
+		repository.RepoCode = RandStringRunes(10)
 		apiResponse, err := testClient.CreateRepository(repository)
 		if err != nil {
 			t.Fatal(err)

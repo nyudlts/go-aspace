@@ -24,12 +24,12 @@ func (a *ASClient) GetResourceIDs(repositoryId int) ([]int, error) {
 
 func (a *ASClient) CreateResource(repositoryId int, resource *Resource) (*APIResponse, error) {
 
-	endpoint := fmt.Sprintf("/repositories/%d", repositoryId)
-	body, err := json.Marshal(resource)
+	endpoint := fmt.Sprintf("/repositories/%d/resources", repositoryId)
+	j, err := resource.GetJSON()
 	if err != nil {
 		return nil, err
 	}
-	response, err := a.post(endpoint, true, string(body))
+	response, err := a.post(endpoint, true, j)
 	if err != nil {
 		return nil, err
 	}
@@ -74,7 +74,7 @@ func (a *ASClient) GetResource(repositoryId int, resourceId int) (*Resource, err
 	return resource, nil
 }
 
-func (a *ASClient) UpdateResource(repositoryId int, resourceId int, resource Resource) (*APIResponse, error) {
+func (a *ASClient) UpdateResource(repositoryId int, resourceId int, resource *Resource) (*APIResponse, error) {
 
 	endpoint := fmt.Sprintf("/repositories/%d/resources/%d", repositoryId, resourceId)
 	body, err := json.Marshal(resource)
@@ -278,4 +278,12 @@ func (a *ASClient) getResourcePage(repositoryID int, page int) (*ResourceList, e
 	json.Unmarshal(body, &resourceList)
 
 	return &resourceList, nil
+}
+
+func (r *Resource) GetJSON() (string, error) {
+	resourceBin, err := json.MarshalIndent(r, "", "  ")
+	if err != nil {
+		return "", err
+	}
+	return string(resourceBin), nil
 }

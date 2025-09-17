@@ -79,3 +79,34 @@ func TestSubjects(t *testing.T) {
 		t.Logf("Successfully deleted subject with id %d", subjectID)
 	})
 }
+
+/*
+
+
+
+	t.Run("test get subject", func(t *testing.T) {
+		var err error
+		subject, err = testClient.GetSubject(subjectID)
+		if err != nil {
+			t.Fatalf("Failed to get subject with id %d: %v", subjectID, err)
+		}
+		t.Logf("Successfully retrieved subject with uri %s: %s", subject.URI, subject.Title)
+	})
+
+	t.Run("test update a subject", func(t *testing.T) {
+		updatedTitle := "Updated Subject Title"
+		subject.Title = updatedTitle
+		apiResponse, err := testClient.UpdateSubject(subjectID, subject)
+		if err != nil {
+			t.Fatalf("Failed to update subject with id %d: %v", subjectID, err)
+		}
+
+		if apiResponse.Status != UPDATED {
+			t.Fatalf("Expected status %s, got %s", UPDATED, apiResponse.Status)
+		}
+
+		t.Logf("Successfully updated subject with id %d to new title: %s", subjectID, updatedTitle)
+	})
+
+
+*/

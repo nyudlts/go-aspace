@@ -146,11 +146,11 @@ type ArchivalObject struct {
 	Instances               []Instance          `json:"instances,omitempty"`
 	Notes                   []Note              `json:"notes,omitempty"`
 	URI                     string              `json:"uri,omitempty"`
-	Repository              Repository          `json:"repository,omitempty"`
+	Repository              *LinkedRepository   `json:"repository,omitempty"`
 	Parent                  map[string]string   `json:"parent,omitempty"`
 	HasUnpublishedAncestors bool                `json:"has_unpublished_ancestors,omitempty"`
-	Resource                map[string]string   `json:"resource"`
-	RepresentativeImage     FileVersion         `json:"representative_image,omitempty"`
+	Resource                LinkedResource      `json:"resource"`
+	RepresentativeImage     *FileVersion        `json:"representative_image,omitempty"`
 	ArkName                 interface{}         `json:"ark_name,omitempty"`
 }
 
@@ -346,9 +346,14 @@ type LinkedRecord struct {
 	Resolved Agent  `json:"_resolved,omitempty"`
 }
 
+type LinkedResource struct {
+	Ref      string      `json:"ref,omitempty"`
+	Resolved *Repository `json:"_resolved,omitempty"`
+}
+
 type LinkedRepository struct {
-	Ref      string     `json:"ref"`
-	Resolved Repository `json:"_resolved,omitempty"`
+	Ref      string      `json:"ref"`
+	Resolved *Repository `json:"_resolved,omitempty"`
 }
 
 type Name struct {
@@ -480,6 +485,10 @@ type Repository struct {
 	JSONModelType         string         `json:"jsonmodel_type,omitempty"`
 }
 
+type RelatedAccession struct {
+	Ref string `json:"ref"`
+}
+
 type Resource struct {
 	Classifications            []Classification    `json:"classifications,omitempty"`
 	CollectionManagement       []interface{}       `json:"collection_management,omitempty"`
@@ -488,7 +497,7 @@ type Resource struct {
 	EADID                      string              `json:"ead_id,omitempty"`
 	EADLocation                string              `json:"ead_location,omitempty"`
 	Extents                    []Extent            `json:"extents,omitempty"`
-	ExternalArkURL             string              `json:"external_ark_url"`
+	ExternalArkURL             string              `json:"external_ark_url,omitempty"`
 	ExternalIDs                []ExternalID        `json:"external_ids,omitempty"`
 	FindingAidAuthor           string              `json:"finding_aid_author,omitempty"`
 	FindingAidDate             string              `json:"finding_aid_date,omitempty"`
@@ -518,8 +527,8 @@ type Resource struct {
 	Notes                      []Note              `json:"notes,omitempty"`
 	OtherLevel                 string              `json:"other_level,omitempty"`
 	Publish                    bool                `json:"publish,omitempty"`
-	RelatedAccessions          []map[string]string `json:"related_accessions,omitempty"`
-	Repository                 map[string]string   `json:"repository,omitempty"`
+	RelatedAccessions          []RelatedAccession  `json:"related_accessions,omitempty"`
+	Repository                 *LinkedRepository   `json:"repository,omitempty"`
 	RepositoryProcessingNote   string              `json:"repository_processing_note,omitempty"`
 	Restrictions               bool                `json:"restrictions,omitempty"`
 	ResourceType               string              `json:"resource_type,omitempty"`
@@ -530,7 +539,7 @@ type Resource struct {
 	Suppressed                 bool                `json:"suppressed,omitempty"`
 	Title                      string              `json:"title,omitempty"`
 	Tree                       map[string]string   `json:"tree,omitempty"`
-	UserDefined                UserDefined         `json:"user_defined,omitempty"`
+	UserDefined                *UserDefined        `json:"user_defined,omitempty"`
 	URI                        string              `json:"uri,omitempty"`
 }
 
@@ -672,7 +681,8 @@ type TopContainer struct {
 	Series                    []interface{}     `json:"series"`
 	Collection                []interface{}     `json:"collection"`
 	Repository                map[string]string `json:"repository"`
-	JSONModelType             string            `json:"json_model_type"`
+	JSONModelType             string            `json:"jsonmodel_type"`
+	LockVersion               int               `json:"lock_version"`
 }
 
 type Node struct {

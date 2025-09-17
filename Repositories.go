@@ -5,37 +5,37 @@ import (
 	"fmt"
 	"io"
 	"strconv"
+	"strings"
 )
 
 // Return a slice of Repository IDs for the instance
 func (a *ASClient) GetRepositories() ([]int, error) {
-	repIds := []int{}
+
+	repoIds := []int{}
 	endpoint := "/repositories"
 	response, err := a.get(endpoint, false)
 	if err != nil {
-		return repIds, err
+		return repoIds, err
 	}
+	defer response.Body.Close()
+
 	body, err := io.ReadAll(response.Body)
 	if err != nil {
-		return repIds, err
+		return repoIds, err
 	}
 
-	reps := make([]map[string]interface{}, 1, 1)
-	err = json.Unmarshal(body, &reps)
-	if err != nil {
-		return repIds, err
+	repos := []Repository{}
+	if err = json.Unmarshal(body, &repos); err != nil {
+		return repoIds, fmt.Errorf("failed to unmarshal repositories: %v", err)
 	}
-
-	for i := range reps {
-		rep := fmt.Sprintf("%v", reps[i]["uri"])
-		repId, err := strconv.Atoi(rep[len(rep)-1:])
+	for _, repo := range repos {
+		i, err := strconv.Atoi(strings.Split(repo.URI, "/")[2])
 		if err != nil {
-			return repIds, err
+			return repoIds, fmt.Errorf("failed to parse repository ID from URI %s: %v", repo.URI, err)
 		}
-		repIds = append(repIds, repId)
+		repoIds = append(repoIds, i)
 	}
-
-	return repIds, nil
+	return repoIds, nil
 }
 
 func (a *ASClient) CreateRepository(repository *Repository) (*APIResponse, error) {

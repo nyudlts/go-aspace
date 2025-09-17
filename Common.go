@@ -172,3 +172,14 @@ func RandStringRunes(n int) string {
 	}
 	return string(b)
 }
+
+func (a APIResponse) String() string {
+	r := fmt.Sprintf("Status: %s ID: %d LockVersion: %d Stale: %t URI: %s\n", a.Status, a.ID, a.LockVersion, a.Stale, a.URI)
+	if len(a.Warnings) > 0 {
+		r += "Warnings:\n"
+		for _, warning := range a.Warnings {
+			r += fmt.Sprintf("- %s\n", warning)
+		}
+	}
+	return r
+}

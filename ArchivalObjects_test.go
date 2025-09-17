@@ -2,6 +2,7 @@ package aspace
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
 	"testing"
@@ -11,9 +12,8 @@ import (
 
 func TestArchivalObject(t *testing.T) {
 	var (
-		ao               *ArchivalObject
-		aoID             int
-		testRepositoryID = 2
+		ao   *ArchivalObject
+		aoID int
 	)
 
 	t.Run("test serialize example archival object", func(t *testing.T) {
@@ -32,7 +32,8 @@ func TestArchivalObject(t *testing.T) {
 	})
 
 	t.Run("test create an archival object", func(t *testing.T) {
-		apiResponse, err := testClient.CreateArchivalObject(testRepositoryID, ao)
+		ao.Resource.Ref = fmt.Sprintf("/repositories/%d/resources/%d", testRepoID, testResourceID) // Set the resource reference
+		apiResponse, err := testClient.CreateArchivalObject(testRepoID, ao)
 		if err != nil {
 			t.Error(err)
 		}
@@ -46,7 +47,7 @@ func TestArchivalObject(t *testing.T) {
 	})
 
 	t.Run("test get an archival object", func(t *testing.T) {
-		ao, err := testClient.GetArchivalObject(testRepositoryID, aoID)
+		ao, err := testClient.GetArchivalObject(testRepoID, aoID)
 		if err != nil {
 			t.Error(err)
 		}
@@ -55,8 +56,8 @@ func TestArchivalObject(t *testing.T) {
 	})
 
 	t.Run("test update an archival object", func(t *testing.T) {
-		ao.Title = "Updated Title"
-		apiResponse, err := testClient.UpdateArchivalObject(testRepositoryID, aoID, ao)
+		ao.Title = "Updated Archival Object Title"
+		apiResponse, err := testClient.UpdateArchivalObject(testRepoID, aoID, ao)
 		if err != nil {
 			t.Error(err)
 		}
@@ -68,7 +69,7 @@ func TestArchivalObject(t *testing.T) {
 	})
 
 	t.Run("test delete an archival object", func(t *testing.T) {
-		apiResponse, err := testClient.DeleteArchivalObject(testRepositoryID, aoID)
+		apiResponse, err := testClient.DeleteArchivalObject(testRepoID, aoID)
 		if err != nil {
 			t.Error(err)
 		}

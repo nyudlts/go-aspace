@@ -10,23 +10,20 @@ import (
 	"github.com/nyudlts/go-aspace/goaspace_testing"
 )
 
-var topContainerID int
-var repositoryID int
-var resourceID int
-
 func TestTopContainers(t *testing.T) {
 	var (
 		topContainer   *TopContainer
 		topContainerID int
 	)
+
 	t.Run("test unmarshaling top container", func(t *testing.T) {
 		tcBin, err := os.ReadFile(filepath.Join(goaspace_testing.TestDataDir, "top_container.json"))
 		if err != nil {
 			t.Fatalf("could not read top_container.json: %v", err)
 		}
 
-		if err = json.Unmarshal(tcBin, topContainer); err != nil {
-			t.Fatalf("could not unmarshal top_container.json: %v", err)
+		if err := json.Unmarshal(tcBin, &topContainer); err != nil {
+			t.Fatalf("could not unmarshal top container: %v", err)
 		}
 	})
 
@@ -41,6 +38,22 @@ func TestTopContainers(t *testing.T) {
 		}
 		topContainerID = apiResponse.ID
 		t.Logf("Created top container with ID %d", topContainerID)
+	})
+
+	t.Run("Test Get TopContainer IDS", func(t *testing.T) {
+		topContainers, err := testClient.GetTopContainerIDs(testRepoID)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if len(topContainers) <= 0 {
+			t.Error("Array of less than 1 returned")
+		} else {
+			t.Log("returned", len(topContainers), "Top Containers")
+		}
+
+		topContainerID = topContainers[0]
+
 	})
 
 	t.Run("test get top container", func(t *testing.T) {
@@ -72,6 +85,7 @@ func TestTopContainers(t *testing.T) {
 
 		t.Logf("Updated top container with ID %d", topContainerID)
 	})
+
 	t.Run("test delete top container", func(t *testing.T) {
 		apiResponse, err := testClient.DeleteTopContainer(testRepoID, topContainerID)
 		if err != nil {
@@ -84,17 +98,12 @@ func TestTopContainers(t *testing.T) {
 
 		t.Logf("Deleted top container with ID %d", topContainerID)
 	})
-	/*
-		flag.Parse()
-		client, err := NewClient(goaspacetest.Config, goaspacetest.Environment)
-		if err != nil {
-			t.Error(err)
-		}
 
-		repositoryID, _ = client.GetRandomRepository()
-		t.Log("Testing on repository", repositoryID)
-		//resourceIDs, _ := client.GetResourceIDs(repositoryID)
-		t.Log("Testing on Resource", resourceID)
+	/*
+
+
+
+
 
 		t.Run("Test Get TopContainer IDS", func(t *testing.T) {
 			topContainers, err := client.GetTopContainerIDs(repositoryID)
@@ -133,5 +142,7 @@ func TestTopContainers(t *testing.T) {
 			}
 			t.Log(topContainers)
 		})
+
 	*/
+
 }

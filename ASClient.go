@@ -197,18 +197,25 @@ func (a *ASClient) delete(endpoint string) (*http.Response, error) {
 	return response, nil
 }
 
-func (a *ASClient) JsonRequest(endpoint string, method string, body string) (*http.Response, error) {
-	var response *http.Response
+func (a *ASClient) JsonRequest(method string, endpoint string, body string) (string, error) {
+
 	url := a.RootURL + endpoint
 	request, err := http.NewRequest(method, url, bytes.NewBufferString(body))
 	if err != nil {
-		return response, err
+		return "", err
 	}
 
-	response, err = a.do(request, true)
+	response, err := a.do(request, true)
 	if err != nil {
-		return response, err
+		return "", err
+	}
+	defer response.Body.Close()
+
+	b, err := io.ReadAll(response.Body)
+	if err != nil {
+		return "", err
 	}
 
-	return response, nil
+	return string(b), nil
+
 }

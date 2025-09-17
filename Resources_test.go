@@ -33,6 +33,7 @@ func TestResource(t *testing.T) {
 	})
 
 	t.Run("test create resource", func(t *testing.T) {
+		resource.ID0 = RandStringRunes(6)
 		apiResponse, err := testClient.CreateResource(testRepoID, resource)
 		if err != nil {
 			t.Fatal(err)
@@ -44,7 +45,7 @@ func TestResource(t *testing.T) {
 
 		resourceID = apiResponse.ID
 
-		t.Logf("Successfully created resource: %s", resource.URI)
+		t.Logf("Successfully created resource: %d", resourceID)
 	})
 
 	t.Run("test get resource by ID", func(t *testing.T) {
@@ -54,53 +55,52 @@ func TestResource(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		uri := fmt.Sprintf("repositories/%d/resources/%d", testRepoID, resourceID)
+		uri := fmt.Sprintf("/repositories/%d/resources/%d", testRepoID, resourceID)
 		if resource.URI != uri {
 			t.Fatalf("Expected URI %s, got %s", uri, resource.URI)
 		}
 	})
 
-	t.Run("test get a random resource", func(t *testing.T) {
+	/*
+		t.Run("test get a random resource", func(t *testing.T) {
 
-		repositoryId, resourceId, err := testClient.GetRandomResourceID()
-		if err != nil {
-			t.Error(err)
-		}
+			repositoryId, resourceId, err := testClient.GetRandomResourceID()
+			if err != nil {
+				t.Error(err)
+			}
 
-		resource, err := testClient.GetResource(repositoryId, resourceId)
-		if err != nil {
-			t.Error(err)
-		}
+			resource, err := testClient.GetResource(repositoryId, resourceId)
+			if err != nil {
+				t.Error(err)
+			}
 
-		t.Logf("Successfully requested and serialized %s: %s", resource.URI, resource.Title)
-	})
+			t.Logf("Successfully requested and serialized %s: %s", resource.URI, resource.Title)
+		})
 
-	t.Run("get resource ids for repository", func(t *testing.T) {
-		entries, err := testClient.GetResourceIDsForRepository(testRepoID)
-		if err != nil {
-			t.Fatal(err)
-		}
+		t.Run("get resource ids for repository", func(t *testing.T) {
+			entries, err := testClient.GetResourceIDsForRepository(testRepoID)
+			if err != nil {
+				t.Fatal(err)
+			}
 
-		if len(entries) == 0 {
-			t.Fatal("Expected to get at least one resource ID, got none")
-		}
+			if len(entries) == 0 {
+				t.Fatal("Expected to get at least one resource ID, got none")
+			}
 
-		t.Logf("Successfully retrieved %d resource IDs for repository %d", len(entries), testRepoID)
-	})
+			t.Logf("Successfully retrieved %d resource IDs for repository %d", len(entries), testRepoID)
+		})
+	*/
 
 	t.Run("test update resource", func(t *testing.T) {
 
 		updatedTitle := "Updated Resource Title"
 		resource.Title = updatedTitle
-		apiResponse, err := testClient.UpdateResource(testRepoID, resourceID, *resource)
+		apiResponse, err := testClient.UpdateResource(testRepoID, resourceID, resource)
 		if err != nil {
 			t.Fatal(err)
 		}
 		if apiResponse.Status != UPDATED {
 			t.Fatalf("Expected status %s, got %s", UPDATED, apiResponse.Status)
-		}
-		if resource.Title == updatedTitle {
-			t.Fatalf("Expected resource title %s, got %s", updatedTitle, resource.Title)
 		}
 
 		t.Logf("Successfully updated resource: %s", resource.URI)

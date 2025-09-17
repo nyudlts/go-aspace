@@ -4,8 +4,8 @@
     {
       "jsonmodel_type": "extent",
       "portion": "part",
-      "number": "72",
-      "extent_type": "volume",
+      "number": "1",
+      "extent_type": "linear_feet",
       "dimensions": "653RXP161",
       "physical_details": "DQEUE"
     }
@@ -13,9 +13,7 @@
   "lang_materials": [
     {
       "jsonmodel_type": "lang_material",
-      "notes": [
-
-      ],
+      "notes": [],
       "language_and_script": {
         "jsonmodel_type": "language_and_script",
         "language": "bai",
@@ -56,28 +54,10 @@
       "description": "427XORU"
     }
   ],
-  "instances": [
-    {
-      "jsonmodel_type": "instance",
-      "is_representative": false,
-      "instance_type": "Mixed materials",
-      "sub_container": {
-        "jsonmodel_type": "sub_container",
-        "top_container": {
-          "ref": "/repositories/99/top_containers/99"
-        },
-        "type_2": "video-cassette",
-        "indicator_2": "X31WRA",
-        "barcode_2": "40RGFS",
-        "type_3": "digital-materials",
-        "indicator_3": "QMKSK"
-      }
-    }
-  ],
   "title": "Resource Title: <emph render='italic'>5</emph>",
   "id_0": "LGPKO",
   "level": "series",
-  "finding_aid_description_rules": "Describing Archives: A Content Standard",
+  "finding_aid_description_rules": "dacs",
   "finding_aid_date": "FPL809P",
   "finding_aid_series_statement": "VS410Q440",
   "finding_aid_language": "srr",

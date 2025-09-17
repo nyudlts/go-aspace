@@ -37,11 +37,11 @@ func TestSchemas(t *testing.T) {
 	})
 
 	t.Run("Test Getting A Schema", func(t *testing.T) {
-		schema, err := client.GetSchema(randomSchema)
+		_, err := client.GetSchema(randomSchema)
 		if err != nil {
 			t.Error(err)
 		}
 
-		t.Logf("Successfully got schema for %s: %v\n", randomSchema, schema)
+		t.Logf("Successfully got schema for %s\n", randomSchema)
 	})
 }

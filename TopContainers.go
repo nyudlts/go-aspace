@@ -39,6 +39,8 @@ func (a *ASClient) GetTopContainerIDs(repositoryID int) ([]int, error) {
 	if err != nil {
 		return topContainers, err
 	}
+	defer response.Body.Close()
+
 	body, err := io.ReadAll(response.Body)
 	if err != nil {
 		return topContainers, err
@@ -75,16 +77,18 @@ func (a *ASClient) GetTopContainer(repositoryID int, topContainerID int) (*TopCo
 
 // Update a Top Container for a given Repository and Accession ID
 func (a *ASClient) UpdateTopContainer(repositoryID int, topContainerID int, topContainer *TopContainer) (*APIResponse, error) {
+
 	endpoint := fmt.Sprintf("/repositories/%d/top_containers/%d", repositoryID, topContainerID)
 	body, err := json.Marshal(topContainer)
 	if err != nil {
 		return nil, err
 	}
+
 	response, err := a.post(endpoint, true, string(body))
 	if err != nil {
 		return nil, err
 	}
-	response.Body.Close()
+	defer response.Body.Close()
 
 	responseBody, err := io.ReadAll(response.Body)
 	if err != nil {
