@@ -7,6 +7,7 @@ import (
 )
 
 func (a *ASClient) GetSchemas() (map[string]interface{}, error) {
+	fmt.Println("test")
 	schemas := map[string]interface{}{}
 	endpoint := "/schemas"
 	response, err := a.get(endpoint, true)
@@ -28,17 +29,19 @@ func (a *ASClient) GetSchemas() (map[string]interface{}, error) {
 	return schemas, nil
 }
 
-func (a *ASClient) GetSchema(s string) (string, error) {
-	var schema []byte
+func (a *ASClient) GetSchema(s string) ([]byte, error) {
+
 	endpoint := fmt.Sprintf("/schemas/%s", s)
 	response, err := a.get(endpoint, true)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	schema, err = io.ReadAll(response.Body)
+	defer response.Body.Close()
+	schema, err := io.ReadAll(response.Body)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	return string(schema), nil
+	return schema, nil
+
 }
