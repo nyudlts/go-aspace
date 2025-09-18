@@ -3,7 +3,7 @@ a Go library for ArchivesSpace integrations
 
 ## Use
 1. Get the go-aspace library: $go get github.com/nyudlts/go-aspace.
-2. Edit the config file `$GOROOT/github.com/nyudlts/go-aspace/go-aspace.yml_template`, enter your aspace credentials
+2. Edit the config file `$GOROOT/github.com/nyudlts/go-aspace/go-aspace.yml_template`, enter your aspace credentials, and save it somewhere as `go-aspace.yml`
 4. Import "github.com/nyudlts/go-aspace" into your project
 5. Create an instance of the aspace client:
 
@@ -16,7 +16,7 @@ import (
 )
 
 func main() {
-    aspaceClient, err := aspace.NewClient(/path/to/go-aspace.yml, "environment to use from config", timeout)
+    aspaceClient, err := aspace.NewClient(/path/to/go-aspace.yml, "environment to use from config")
     if err != nil {
         panic(err)
     }
