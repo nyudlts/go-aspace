@@ -38,11 +38,13 @@ dev:
   url: https://your-archivesspace-api.url:8089
   username: your-username
   password: your-password
+  timeout: 20
   
 local:
   url: http://localhost:8089
   username: your-username
   password: your-password
+  timeout: 20
 ```
 
 ## Example
@@ -57,4 +59,4 @@ to run the test suite
 ```shell
 go test -v --config /path/to/go-aspace.yml --environment the-environment-to-use
 ```
-The test suite will select random objects from the specified aspace instance, which may fail serialization to go structs
+Note the test suite is designed to be run against a blank database, it will create and delete repository, resource, archival_object, etc. do not use on an actual aspace database.  

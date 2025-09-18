@@ -2,8 +2,10 @@ dev:
   url: https://your-archivesspace-api.url:8089
   username: your-username
   password: your-password
+  timeout: 20
 
 local:
   url: https:/localhost:8089
   username: your-username
   password: your-password
+  timeout: 20
