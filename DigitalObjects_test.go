@@ -15,7 +15,7 @@ func TestDigitalObject(t *testing.T) {
 	)
 
 	t.Run("test unmarshal a digital object", func(t *testing.T) {
-		doBytes, err := os.ReadFile(goaspace_testing.TestDataDir + "/digital_object.json")
+		doBytes, err := os.ReadFile(goaspace_testing.TestDataDirJson + "/digital_object.json")
 		if err != nil {
 			t.Error(err)
 		}

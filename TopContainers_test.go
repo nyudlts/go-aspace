@@ -17,7 +17,7 @@ func TestTopContainers(t *testing.T) {
 	)
 
 	t.Run("test unmarshaling top container", func(t *testing.T) {
-		tcBin, err := os.ReadFile(filepath.Join(goaspace_testing.TestDataDir, "top_container.json"))
+		tcBin, err := os.ReadFile(filepath.Join(goaspace_testing.TestDataDirJson, "top_container.json"))
 		if err != nil {
 			t.Fatalf("could not read top_container.json: %v", err)
 		}

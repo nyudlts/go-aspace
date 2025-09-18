@@ -18,7 +18,7 @@ func TestResource(t *testing.T) {
 	)
 
 	t.Run("test unmarshal resource json to struct", func(t *testing.T) {
-		resourceBin, err := os.ReadFile(filepath.Join(goaspace_testing.TestDataDir, "resource.json"))
+		resourceBin, err := os.ReadFile(filepath.Join(goaspace_testing.TestDataDirJson, "resource.json"))
 		if err != nil {
 			t.Fatal(err)
 		}

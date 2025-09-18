@@ -18,7 +18,7 @@ var (
 func TestAccessions(t *testing.T) {
 	t.Run("test unmarshal an accession", func(t *testing.T) {
 
-		accessionBytes, err := os.ReadFile(filepath.Join(goaspace_testing.TestDataDir, "accession.json"))
+		accessionBytes, err := os.ReadFile(filepath.Join(goaspace_testing.TestDataDirJson, "accession.json"))
 		if err != nil {
 			t.Fatal(err)
 		}

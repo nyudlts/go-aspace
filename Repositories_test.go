@@ -15,7 +15,7 @@ func TestRepository(t *testing.T) {
 		repositoryID int
 	)
 	t.Run("test unmarshal example repository", func(t *testing.T) {
-		repoBytes, err := os.ReadFile(filepath.Join(goaspace_testing.TestDataDir, "repository.json"))
+		repoBytes, err := os.ReadFile(filepath.Join(goaspace_testing.TestDataDirJson, "repository.json"))
 		if err != nil {
 			t.Fatalf("Failed to read repository file: %v", err)
 		}

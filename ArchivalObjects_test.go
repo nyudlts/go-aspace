@@ -17,7 +17,7 @@ func TestArchivalObject(t *testing.T) {
 	)
 
 	t.Run("test serialize example archival object", func(t *testing.T) {
-		aoBytes, err := os.ReadFile(filepath.Join(goaspace_testing.TestDataDir, "archival_object.json"))
+		aoBytes, err := os.ReadFile(filepath.Join(goaspace_testing.TestDataDirJson, "archival_object.json"))
 		if err != nil {
 			t.Error(err)
 		}
