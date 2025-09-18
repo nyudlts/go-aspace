@@ -2,6 +2,7 @@ package aspace
 
 import (
 	"flag"
+	"path/filepath"
 	"testing"
 
 	goaspacetest "github.com/nyudlts/go-aspace/goaspace_testing"
@@ -46,7 +47,7 @@ func TestSchemas(t *testing.T) {
 	})
 
 	t.Run("Test Writing Schema to File", func(t *testing.T) {
-		if err := client.WriteSchemaFileToDir(randomSchema, "schemas", 0644); err != nil {
+		if err := client.WriteSchemaFileToDir(randomSchema, filepath.Join("goaspace_testing", "testdata", "schemas"), 0644); err != nil {
 			t.Fatalf("Error writing schema %s: %v", randomSchema, err)
 		}
 
@@ -54,7 +55,7 @@ func TestSchemas(t *testing.T) {
 	})
 
 	t.Run("Test Writing All Schemas to Dir", func(t *testing.T) {
-		if err := client.WriteAllSchemasToDir("schemas", 0644); err != nil {
+		if err := client.WriteAllSchemasToDir(filepath.Join("goaspace_testing", "testdata", "schemas"), 0644); err != nil {
 			t.Fatalf("Error writing all schemas: %v", err)
 		}
 

@@ -6,3 +6,5 @@ lab/*
 *.http
 schemas/*
 tmp/*
+goaspace_testing/testdata/xml
+goaspace_testing/testdata/schemas
