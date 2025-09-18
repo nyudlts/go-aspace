@@ -22,51 +22,87 @@ func (a *ASClient) GetResourceIDs(repositoryId int) ([]int, error) {
 	return repositoryIds, nil
 }
 
-func (a *ASClient) GetResource(repositoryId int, resourceId int) (Resource, error) {
+func (a *ASClient) CreateResource(repositoryId int, resource *Resource) (*APIResponse, error) {
 
-	r := Resource{}
+	endpoint := fmt.Sprintf("/repositories/%d/resources", repositoryId)
+	j, err := resource.GetJSON()
+	if err != nil {
+		return nil, err
+	}
+	response, err := a.post(endpoint, true, j)
+	if err != nil {
+		return nil, err
+	}
+	defer response.Body.Close()
+
+	responseBody, err := io.ReadAll(response.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	apiResponse := &APIResponse{}
+	err = json.Unmarshal(responseBody, apiResponse)
+	if err != nil {
+		return nil, err
+	}
+
+	return apiResponse, nil
+}
+
+func (a *ASClient) GetResource(repositoryId int, resourceId int) (*Resource, error) {
+
+	resource := &Resource{}
 
 	endpoint := fmt.Sprintf("/repositories/%d/resources/%d", repositoryId, resourceId)
 	response, err := a.get(endpoint, true)
 
 	if err != nil {
-		return r, err
+		return nil, err
 	}
 
 	body, err := io.ReadAll(response.Body)
 	if err != nil {
-		return r, err
+		return nil, err
+	}
+	defer response.Body.Close()
+
+	err = json.Unmarshal(body, resource)
+	if err != nil {
+		return nil, err
 	}
 
-	err = json.Unmarshal(body, &r)
-	if err != nil {
-		return r, err
-	}
-	r.Json = body
-	return r, nil
+	return resource, nil
 }
 
-func (a *ASClient) UpdateResource(repositoryId int, resourceId int, resource Resource) (string, error) {
-	responseMessage := ""
+func (a *ASClient) UpdateResource(repositoryId int, resourceId int, resource *Resource) (*APIResponse, error) {
+
 	endpoint := fmt.Sprintf("/repositories/%d/resources/%d", repositoryId, resourceId)
 	body, err := json.Marshal(resource)
 	if err != nil {
-		return responseMessage, err
+		return nil, err
 	}
 	response, err := a.post(endpoint, true, string(body))
 	if err != nil {
-		return responseMessage, err
+		return nil, err
 	}
+	defer response.Body.Close()
 
 	responseBody, err := io.ReadAll(response.Body)
 	if err != nil {
-		return responseMessage, err
+		return nil, err
 	}
 
-	responseMessage = string(responseBody)
-	return responseMessage, nil
+	apiResponse := &APIResponse{}
+	err = json.Unmarshal(responseBody, apiResponse)
+	if err != nil {
+		return nil, err
+	}
+
+	return apiResponse, nil
+
 }
 
+// Deprecated: user UpadateResource instead
 func (a *ASClient) UpdateResourceJson(repositoryID int, resourceID int, resourceJSON []byte) (int, string, error) {
 
 	responseMessage := ""
@@ -87,44 +123,28 @@ func (a *ASClient) UpdateResourceJson(repositoryID int, resourceID int, resource
 
 }
 
-func (a *ASClient) CreateResource(repositoryId int, resource Resource) (string, error) {
-	responseMessage := ""
-	endpoint := fmt.Sprintf("/repositories/%d", repositoryId)
-	body, err := json.Marshal(resource)
-	if err != nil {
-		return responseMessage, err
-	}
-	response, err := a.post(endpoint, true, string(body))
-	if err != nil {
-		return responseMessage, err
-	}
+func (a *ASClient) DeleteResource(repositoryId int, resourceId int) (*APIResponse, error) {
 
-	responseBody, err := io.ReadAll(response.Body)
-	if err != nil {
-		return responseMessage, err
-	}
-
-	responseMessage = string(responseBody)
-	return responseMessage, nil
-}
-
-func (a *ASClient) DeleteResource(repositoryId int, resourceId int) (string, error) {
-	responseMessage := ""
 	endpoint := fmt.Sprintf("/repositories/%d/resources/%d", repositoryId, resourceId)
 
 	response, err := a.delete(endpoint)
 	if err != nil {
-		return responseMessage, err
+		return nil, err
 	}
+	defer response.Body.Close()
 
 	responseBody, err := io.ReadAll(response.Body)
 	if err != nil {
-		return responseMessage, err
+		return nil, err
 	}
 
-	responseMessage = string(responseBody)
+	apiResponse := &APIResponse{}
+	err = json.Unmarshal(responseBody, apiResponse)
+	if err != nil {
+		return nil, err
+	}
 
-	return responseMessage, nil
+	return apiResponse, nil
 }
 
 func (a *ASClient) GetResourceTree(repositoryId int, resourceId int) (ResourceTree, error) {
@@ -154,7 +174,10 @@ func (a *ASClient) GetResourceTree(repositoryId int, resourceId int) (ResourceTr
 func (a *ASClient) GetRandomResourceID() (int, int, error) {
 	var repositoryID int
 	var resourceID int
-	repositoryIDs := []int{2, 3, 6}
+	repositoryIDs, err := a.GetRepositories()
+	if err != nil {
+		return 0, 0, err
+	}
 
 	repositoryID = repositoryIDs[rGen.Intn(len(repositoryIDs))]
 
@@ -192,7 +215,7 @@ type ResourceListEntry struct {
 	Title        string `json:"title"`
 }
 
-func (a *ASClient) GetResourceList(repositoryID int) ([]ResourceListEntry, error) {
+func (a *ASClient) GetResourceIDsForRepository(repositoryID int) ([]ResourceListEntry, error) {
 	currentPage := 1
 	resourceList, err := a.getResourcePage(repositoryID, currentPage)
 	if err != nil {
@@ -255,4 +278,12 @@ func (a *ASClient) getResourcePage(repositoryID int, page int) (*ResourceList, e
 	json.Unmarshal(body, &resourceList)
 
 	return &resourceList, nil
+}
+
+func (r *Resource) GetJSON() (string, error) {
+	resourceBin, err := json.MarshalIndent(r, "", "  ")
+	if err != nil {
+		return "", err
+	}
+	return string(resourceBin), nil
 }

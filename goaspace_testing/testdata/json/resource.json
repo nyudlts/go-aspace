@@ -1,0 +1,67 @@
+{
+  "jsonmodel_type": "resource",
+  "extents": [
+    {
+      "jsonmodel_type": "extent",
+      "portion": "part",
+      "number": "1",
+      "extent_type": "linear_feet",
+      "dimensions": "653RXP161",
+      "physical_details": "DQEUE"
+    }
+  ],
+  "lang_materials": [
+    {
+      "jsonmodel_type": "lang_material",
+      "notes": [],
+      "language_and_script": {
+        "jsonmodel_type": "language_and_script",
+        "language": "bai",
+        "script": "Sara"
+      }
+    }
+  ],
+  "dates": [
+    {
+      "jsonmodel_type": "date",
+      "date_type": "range",
+      "label": "creation",
+      "begin": "1978-10-18",
+      "end": "1978-10-18",
+      "certainty": "inferred",
+      "era": "ce",
+      "calendar": "gregorian",
+      "expression": "10818OW128"
+    },
+    {
+      "jsonmodel_type": "date",
+      "date_type": "single",
+      "label": "creation",
+      "begin": "1977-01-29",
+      "certainty": "inferred",
+      "era": "ce",
+      "calendar": "gregorian",
+      "expression": "970OJ750Q"
+    }
+  ],
+  "is_slug_auto": true,
+  "restrictions": false,
+  "is_finding_aid_status_published": true,
+  "revision_statements": [
+    {
+      "jsonmodel_type": "revision_statement",
+      "date": "E10SA307",
+      "description": "427XORU"
+    }
+  ],
+  "title": "Resource Title: <emph render='italic'>5</emph>",
+  "id_0": "LGPKO",
+  "level": "series",
+  "finding_aid_description_rules": "dacs",
+  "finding_aid_date": "FPL809P",
+  "finding_aid_series_statement": "VS410Q440",
+  "finding_aid_language": "srr",
+  "finding_aid_script": "Bali",
+  "finding_aid_note": "829D46VX",
+  "ead_location": "M126953OI"
+}

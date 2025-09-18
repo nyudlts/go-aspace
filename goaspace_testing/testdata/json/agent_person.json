@@ -1,0 +1,64 @@
+{
+  "jsonmodel_type": "agent_person",
+  "dates_of_existence": [
+    {
+      "jsonmodel_type": "structured_date_label",
+      "date_type_structured": "single",
+      "date_label": "existence",
+      "structured_date_single": {
+        "jsonmodel_type": "structured_date_single",
+        "date_role": "begin",
+        "date_expression": "Yesterday",
+        "date_standardized": "2019-06-01",
+        "date_standardized_type": "standard"
+      },
+      "date_certainty": "approximate",
+      "date_era": "ce",
+      "date_calendar": "gregorian"
+    }
+  ],
+  "is_slug_auto": true,
+  "names": [
+    {
+      "jsonmodel_type": "name_person",
+      "use_dates": [
+        {
+          "jsonmodel_type": "structured_date_label",
+          "date_type_structured": "single",
+          "date_label": "existence",
+          "structured_date_single": {
+            "jsonmodel_type": "structured_date_single",
+            "date_role": "begin",
+            "date_expression": "Yesterday",
+            "date_standardized": "2019-06-01",
+            "date_standardized_type": "standard"
+          },
+          "date_certainty": "approximate",
+          "date_era": "ce",
+          "date_calendar": "gregorian"
+        }
+      ],
+      "authorized": false,
+      "is_display_name": false,
+      "sort_name_auto_generate": true,
+      "parallel_names": [
+
+      ],
+      "rules": "local",
+      "source": "local",
+      "primary_name": "Name Number 29",
+      "sort_name": "SORT g - 21",
+      "name_order": "inverted",
+      "number": "907RMK317",
+      "dates": "M553CAX",
+      "qualifier": "S528748OL",
+      "fuller_form": "G751DCH",
+      "prefix": "L375140721H",
+      "title": "RG165715138",
+      "suffix": "EKII354",
+      "rest_of_name": "F416AFS",
+      "authority_id": "http://www.example-51-1750874580.com"
+    }
+  ],
+  "agent_type": "agent_person"
+}

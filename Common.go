@@ -11,10 +11,13 @@ import (
 	"time"
 )
 
-var LibraryVersion = "v0.7.1"
-
+var LibraryVersion = "v0.8.0"
 var seed = rand.NewSource(time.Now().UnixNano())
 var rGen = rand.New(seed)
+
+const CREATED = "Created"
+const UPDATED = "Updated"
+const DELETED = "Deleted"
 
 func PrintClientVersion() {
 	fmt.Println("Go Aspace", LibraryVersion)
@@ -69,13 +72,14 @@ type AspaceInfo struct {
 }
 
 func (a AspaceInfo) String() string {
-	msg := fmt.Sprintf("== ArchivesSpace Version: %s\n", a.ArchivesSpaceVersion)
-	msg = msg + fmt.Sprintf("== Database Type: %s\n", a.DatabaseProductName)
-	msg = msg + fmt.Sprintf("== Database Version: %s\n", a.DatabaseProductVersion)
-	msg = msg + fmt.Sprintf("== Ruby Version: %s\n", a.RubyVersion)
-	msg = msg + fmt.Sprintf("== Host OS: %s\n", a.HostOS)
-	msg = msg + fmt.Sprintf("== Host CPU: %s\n", a.HostCPU)
-	msg = msg + fmt.Sprintf("== Java Version: %s\n", a.Build)
+	msg := fmt.Sprintf("ArchivesSpace Version: %s\n", a.ArchivesSpaceVersion)
+	msg = msg + fmt.Sprintf("Database Type: %s\n", a.DatabaseProductName)
+	msg = msg + fmt.Sprintf("Database Version: %s\n", a.DatabaseProductVersion)
+	msg = msg + fmt.Sprintf("Ruby Version: %s\n", a.RubyVersion)
+	msg = msg + fmt.Sprintf("Host OS: %s\n", a.HostOS)
+	msg = msg + fmt.Sprintf("Host CPU: %s\n", a.HostCPU)
+	msg = msg + fmt.Sprintf("Java Version: %s\n", a.Build)
+	msg = msg + fmt.Sprintf("Go-Aspace Version: %s\n", LibraryVersion)
 	return msg
 }
 
@@ -157,4 +161,25 @@ func ParseCreateOrUpdateResponse(body string) *CreateOrUpdateResponse {
 		return nil
 	}
 	return &cour
+}
+
+var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+func RandStringRunes(n int) string {
+	b := make([]rune, n)
+	for i := range b {
+		b[i] = letterRunes[rand.Intn(len(letterRunes))]
+	}
+	return string(b)
+}
+
+func (a APIResponse) String() string {
+	r := fmt.Sprintf("Status: %s ID: %d LockVersion: %d Stale: %t URI: %s\n", a.Status, a.ID, a.LockVersion, a.Stale, a.URI)
+	if len(a.Warnings) > 0 {
+		r += "Warnings:\n"
+		for _, warning := range a.Warnings {
+			r += fmt.Sprintf("- %s\n", warning)
+		}
+	}
+	return r
 }

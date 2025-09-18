@@ -1,0 +1,90 @@
+{
+  "jsonmodel_type": "agent_corporate_entity",
+  "agent_contacts": [
+    {
+      "jsonmodel_type": "agent_contact",
+      "telephones": [
+        {
+          "jsonmodel_type": "telephone",
+          "number": "7648 8066 62112 5787 4265"
+        }
+      ],
+      "notes": [
+        {
+          "jsonmodel_type": "note_contact_note",
+          "date_of_contact": "311E650PS",
+          "contact_notes": "AF840WM"
+        }
+      ],
+      "is_representative": false,
+      "name": "Name Number 5",
+      "address_1": "IXAMQ",
+      "address_2": "473G950743I",
+      "address_3": "155107985217J",
+      "city": "257VORG",
+      "country": "JCQFN",
+      "post_code": "994P79BP",
+      "fax": "541673UJY",
+      "email": "R566DQC"
+    }
+  ],
+  "dates_of_existence": [
+    {
+      "jsonmodel_type": "structured_date_label",
+      "date_type_structured": "single",
+      "date_label": "existence",
+      "structured_date_single": {
+        "jsonmodel_type": "structured_date_single",
+        "date_role": "begin",
+        "date_expression": "Yesterday",
+        "date_standardized": "2019-06-01",
+        "date_standardized_type": "standard"
+      },
+      "date_certainty": "approximate",
+      "date_era": "ce",
+      "date_calendar": "gregorian"
+    }
+  ],
+  "is_slug_auto": true,
+  "names": [
+    {
+      "jsonmodel_type": "name_corporate_entity",
+      "use_dates": [
+        {
+          "jsonmodel_type": "structured_date_label",
+          "date_type_structured": "single",
+          "date_label": "existence",
+          "structured_date_single": {
+            "jsonmodel_type": "structured_date_single",
+            "date_role": "begin",
+            "date_expression": "Yesterday",
+            "date_standardized": "2019-06-01",
+            "date_standardized_type": "standard"
+          },
+          "date_certainty": "approximate",
+          "date_era": "ce",
+          "date_calendar": "gregorian"
+        }
+      ],
+      "authorized": false,
+      "is_display_name": false,
+      "sort_name_auto_generate": true,
+      "conference_meeting": false,
+      "jurisdiction": false,
+      "parallel_names": [
+
+      ],
+      "rules": "dacs",
+      "primary_name": "Name Number 4",
+      "subordinate_name_1": "P101RN258",
+      "subordinate_name_2": "486CJV384",
+      "number": "CSNHD",
+      "sort_name": "SORT a - 3",
+      "qualifier": "GKJPU",
+      "dates": "RPBNY",
+      "authority_id": "http://www.example-9-1750874576.com",
+      "source": "porthu"
+    }
+  ],
+  "agent_type": "agent_corporate_entity"
+}

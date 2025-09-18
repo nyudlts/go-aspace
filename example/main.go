@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+
 	aspace "github.com/nyudlts/go-aspace"
 )
 
@@ -18,7 +19,7 @@ func init() {
 
 func main() {
 	flag.Parse()
-	client, err := aspace.NewClient(config, environment, 20)
+	client, err := aspace.NewClient(config, environment)
 	if err != nil {
 		panic(err)
 	}

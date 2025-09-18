@@ -2,6 +2,7 @@ package aspace
 
 import (
 	"flag"
+	"path/filepath"
 	"testing"
 
 	goaspacetest "github.com/nyudlts/go-aspace/goaspace_testing"
@@ -9,7 +10,7 @@ import (
 
 func TestSchemas(t *testing.T) {
 	flag.Parse()
-	client, err := NewClient(goaspacetest.Config, goaspacetest.Environment, 20)
+	client, err := NewClient(goaspacetest.Config, goaspacetest.Environment)
 	if err != nil {
 		t.Error(err)
 	}
@@ -37,11 +38,27 @@ func TestSchemas(t *testing.T) {
 	})
 
 	t.Run("Test Getting A Schema", func(t *testing.T) {
-		schema, err := client.GetSchema(randomSchema)
+		_, err := client.GetSchema(randomSchema)
 		if err != nil {
 			t.Error(err)
 		}
 
-		t.Logf("Successfully got schema for %s: %v\n", randomSchema, schema)
+		t.Logf("Successfully got schema for %s\n", randomSchema)
+	})
+
+	t.Run("Test Writing Schema to File", func(t *testing.T) {
+		if err := client.WriteSchemaFileToDir(randomSchema, filepath.Join("goaspace_testing", "testdata", "schemas"), 0644); err != nil {
+			t.Fatalf("Error writing schema %s: %v", randomSchema, err)
+		}
+
+		t.Logf("Successfully wrote schema %s to file\n", randomSchema)
+	})
+
+	t.Run("Test Writing All Schemas to Dir", func(t *testing.T) {
+		if err := client.WriteAllSchemasToDir(filepath.Join("goaspace_testing", "testdata", "schemas"), 0644); err != nil {
+			t.Fatalf("Error writing all schemas: %v", err)
+		}
+
+		t.Logf("Successfully wrote all schemas to schemas directory\n")
 	})
 }

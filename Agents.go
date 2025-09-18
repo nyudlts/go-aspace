@@ -26,79 +26,100 @@ func (a *ASClient) GetAgentIds(agentType string) ([]int, error) {
 	return agentIDs, nil
 }
 
-func (a *ASClient) GetAgent(agentType string, agentID int) (Agent, error) {
-	agent := Agent{}
+func (a *ASClient) GetAgent(agentType string, agentID int) (*Agent, error) {
+	agent := &Agent{}
 	endpoint := fmt.Sprintf("/agents/%s/%d", agentType, agentID)
 	response, err := a.get(endpoint, true)
 	if err != nil {
-		return agent, err
+		return nil, err
 	}
 	body, err := io.ReadAll(response.Body)
 	if err != nil {
-		return agent, err
+		return nil, err
 	}
 
 	err = json.Unmarshal(body, &agent)
 	if err != nil {
-		return agent, err
+		return nil, err
 	}
 	return agent, nil
 }
 
-func (a *ASClient) CreateAgent(agentType string, agent Agent) (string, error) {
+func (a *ASClient) CreateAgent(agentType string, agent Agent) (*APIResponse, error) {
 
-	endpoint := fmt.Sprintf("/agents/%s/", agentType)
+	endpoint := fmt.Sprintf("/agents/%s", agentType)
 	body, err := json.Marshal(agent)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
+
 	response, err := a.post(endpoint, true, string(body))
 	if err != nil {
-		return "", err
+		return nil, err
 	}
+	defer response.Body.Close()
 
-	r, err := io.ReadAll(response.Body)
+	responseBody, err := io.ReadAll(response.Body)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	return string(r), err
+	aPIResponse := &APIResponse{}
+	err = json.Unmarshal(responseBody, aPIResponse)
+	if err != nil {
+		return nil, fmt.Errorf("error unmarshalling API response: %v", err)
+	}
+
+	return aPIResponse, nil
 }
 
-func (a *ASClient) UpdateAgent(agentType string, agentId int, agent Agent) (string, error) {
+func (a *ASClient) UpdateAgent(agentType string, agentId int, agent *Agent) (*APIResponse, error) {
 
 	endpoint := fmt.Sprintf("/agents/%s/%d", agentType, agentId)
 	body, err := json.Marshal(agent)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	response, err := a.post(endpoint, true, string(body))
 	if err != nil {
-		return "", err
+		return nil, err
 	}
+	defer response.Body.Close()
 
-	r, err := io.ReadAll(response.Body)
+	responseBody, err := io.ReadAll(response.Body)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	return string(r), err
+	aPIResponse := &APIResponse{}
+	if err = json.Unmarshal(responseBody, aPIResponse); err != nil {
+		return nil, fmt.Errorf("error unmarshalling API response: %v", err)
+	}
+
+	return aPIResponse, nil
 }
 
-func (a *ASClient) DeleteAgent(agentType string, agentId int) (string, error) {
+func (a *ASClient) DeleteAgent(agentType string, agentId int) (*APIResponse, error) {
 
 	endpoint := fmt.Sprintf("/agents/%s/%d", agentType, agentId)
 	response, err := a.delete(endpoint)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
+	defer response.Body.Close()
 
-	r, err := io.ReadAll(response.Body)
+	responseBody, err := io.ReadAll(response.Body)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	return string(r), err
+	aPIResponse := &APIResponse{}
+	if err = json.Unmarshal(responseBody, aPIResponse); err != nil {
+		return nil, fmt.Errorf("error unmarshalling API response: %v", err)
+	}
+
+	return aPIResponse, nil
+
 }
 
 func (a *ASClient) GetRandomAgentID(agentType string) (int, error) {

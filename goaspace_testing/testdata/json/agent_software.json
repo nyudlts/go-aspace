@@ -1,0 +1,57 @@
+{
+  "jsonmodel_type": "agent_software",
+  "dates_of_existence": [
+    {
+      "jsonmodel_type": "structured_date_label",
+      "date_type_structured": "single",
+      "date_label": "existence",
+      "structured_date_single": {
+        "jsonmodel_type": "structured_date_single",
+        "date_role": "begin",
+        "date_expression": "Yesterday",
+        "date_standardized": "2019-06-01",
+        "date_standardized_type": "standard"
+      },
+      "date_certainty": "approximate",
+      "date_era": "ce",
+      "date_calendar": "gregorian"
+    }
+  ],
+  "is_slug_auto": true,
+  "names": [
+    {
+      "jsonmodel_type": "name_software",
+      "use_dates": [
+        {
+          "jsonmodel_type": "structured_date_label",
+          "date_type_structured": "single",
+          "date_label": "existence",
+          "structured_date_single": {
+            "jsonmodel_type": "structured_date_single",
+            "date_role": "begin",
+            "date_expression": "Yesterday",
+            "date_standardized": "2019-06-01",
+            "date_standardized_type": "standard"
+          },
+          "date_certainty": "approximate",
+          "date_era": "ce",
+          "date_calendar": "gregorian"
+        }
+      ],
+      "authorized": false,
+      "is_display_name": false,
+      "sort_name_auto_generate": true,
+      "parallel_names": [
+
+      ],
+      "rules": "rda",
+      "source": "munzing",
+      "software_name": "Name Number 26",
+      "sort_name": "SORT u - 19",
+      "qualifier": "H219KQL",
+      "dates": "464MIY880",
+      "authority_id": "http://www.example-49-1750874579.com"
+    }
+  ],
+  "agent_type": "agent_software"
+}

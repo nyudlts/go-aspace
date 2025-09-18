@@ -1,16 +1,93 @@
 package aspace
 
 import (
-	"flag"
-	"slices"
+	"encoding/json"
+	"os"
 	"testing"
 
-	goaspacetest "github.com/nyudlts/go-aspace/goaspace_testing"
+	"github.com/nyudlts/go-aspace/goaspace_testing"
 )
 
 func TestDigitalObject(t *testing.T) {
-	flag.Parse()
-	client, err := NewClient(goaspacetest.Config, goaspacetest.Environment, 20)
+	var (
+		do   *DigitalObject
+		doID int
+	)
+
+	t.Run("test unmarshal a digital object", func(t *testing.T) {
+		doBytes, err := os.ReadFile(goaspace_testing.TestDataDir + "/digital_object.json")
+		if err != nil {
+			t.Error(err)
+		}
+
+		do = &DigitalObject{}
+		if err := json.Unmarshal(doBytes, do); err != nil {
+			t.Error(err)
+		} else {
+			t.Logf("Successfully unmarshalled digital object: %s", do.Title)
+		}
+	})
+
+	t.Run("test create a digital object", func(t *testing.T) {
+		apiResponse, err := testClient.CreateDigitalObject(testRepoID, do)
+		if err != nil {
+			t.Error(err)
+		} else {
+
+			if apiResponse.Status != "Created" {
+				t.Errorf("Expected status 'Created' but got '%s'", apiResponse.Status)
+			} else {
+				doID = apiResponse.ID
+				t.Logf("Successfully created digital object: %s", apiResponse.URI)
+			}
+		}
+	})
+
+	t.Run("test update a digital object", func(t *testing.T) {
+		do.Title = "Updated Digital Object Title"
+		apiResponse, err := testClient.UpdateDigitalObject(testRepoID, doID, do)
+		if err != nil {
+			t.Error(err)
+		} else {
+			if apiResponse.Status != "Updated" {
+				t.Errorf("Expected status 'Updated' but got '%s'", apiResponse.Status)
+			} else {
+				t.Logf("Successfully updated digital object: %s", apiResponse.URI)
+			}
+		}
+	})
+
+	t.Run("test get digital object uris for resource", func(t *testing.T) {
+		doURIs, err := testClient.GetDigitalObjectIDs(testRepoID)
+		if err != nil {
+			t.Error(err)
+		} else {
+			if len(doURIs) == 0 {
+				t.Error("Expected to find digital object URIs but got none")
+			} else {
+				t.Logf("Found %d digital object URIs for repository %d", len(doURIs), testRepoID)
+			}
+		}
+	})
+
+	t.Run("test delete a digital object", func(t *testing.T) {
+		apiResponse, err := testClient.DeleteDigitalObject(testRepoID, doID)
+		if err != nil {
+			t.Error(err)
+		} else {
+
+			if apiResponse.Status != "Deleted" {
+				t.Errorf("Expected status 'Deleted' but got '%s'", apiResponse.Status)
+			} else {
+				t.Logf("Successfully deleted digital object %s", do.URI)
+			}
+		}
+	})
+
+}
+
+/*
+	client, err := NewClient(goaspacetest.Config, goaspacetest.Environment)
 	if err != nil {
 		t.Error(err)
 	}
@@ -87,3 +164,4 @@ func TestDigitalObject(t *testing.T) {
 		t.Logf("Successfully retrieved DigitalObjectIDs for archival object: %s\n", aoURI)
 	})
 }
+*/
