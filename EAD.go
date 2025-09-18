@@ -6,14 +6,10 @@ import (
 )
 
 func (a *ASClient) GetEADAsByteArray(repositoryId int, resourceId int, unpublished bool) ([]byte, error) {
-	eadBytes := []byte{}
-	endpoint := fmt.Sprintf("/repositories/%d/resource_descriptions/%d.xml?include_unpublished=%t&include_daos=%t&numbered_cs=%t&ead3=%t&print_pdf=%t", repositoryId, resourceId, unpublished, true, false, false, false)
-	response, err := a.get(endpoint, true)
+	eadBytes, err := a.SerializeEAD(repositoryId, resourceId, true, unpublished, false, false, false)
 	if err != nil {
-		return eadBytes, err
+		return nil, err
 	}
-
-	eadBytes, err = io.ReadAll(response.Body)
 	return eadBytes, err
 }
 

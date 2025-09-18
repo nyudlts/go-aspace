@@ -44,4 +44,20 @@ func TestSchemas(t *testing.T) {
 
 		t.Logf("Successfully got schema for %s\n", randomSchema)
 	})
+
+	t.Run("Test Writing Schema to File", func(t *testing.T) {
+		if err := client.WriteSchemaFileToDir(randomSchema, "schemas", 0644); err != nil {
+			t.Fatalf("Error writing schema %s: %v", randomSchema, err)
+		}
+
+		t.Logf("Successfully wrote schema %s to file\n", randomSchema)
+	})
+
+	t.Run("Test Writing All Schemas to Dir", func(t *testing.T) {
+		if err := client.WriteAllSchemasToDir("schemas", 0644); err != nil {
+			t.Fatalf("Error writing all schemas: %v", err)
+		}
+
+		t.Logf("Successfully wrote all schemas to schemas directory\n")
+	})
 }
