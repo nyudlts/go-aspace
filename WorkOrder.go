@@ -98,6 +98,10 @@ func (wo *WorkOrder) Load(r io.Reader) error {
 	return nil
 }
 
+func (wor *WorkOrderRow) ToStringSlice() []string {
+	return []string{wor.GetResourceID(), wor.GetRefID(), wor.GetURI(), wor.GetContainerIndicator1(), wor.GetContainerIndicator2(), wor.GetContainerIndicator3(), wor.GetTitle(), wor.GetComponentID()}
+}
+
 // accessors
 
 // GetResourceID returns the "Resource ID" value for the WorkOrderRow
