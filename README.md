@@ -59,4 +59,4 @@ to run the test suite
 ```shell
 go test -v --config /path/to/go-aspace.yml --environment the-environment-to-use
 ```
-**!!! Note** the test suite is designed to be run against a blank archivesspace database, it will create and delete repository, resource, archival_object, etc. do not use on an aspace database containing any actual data it will blank all repositories and resopurces prior to starting tests
+**!!! Note** the test suite is designed to be run against a blank archivesspace database, it will create and delete repository, resource, archival_object, etc. do not use on an aspace database containing any actual data it will blank all repositories and resources prior to starting tests
