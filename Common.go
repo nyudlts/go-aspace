@@ -23,7 +23,6 @@ func PrintClientVersion() {
 	fmt.Println("Go Aspace", LibraryVersion)
 }
 
-// Deprecated: Use AspaceURI type
 func URISplit(uri string) (int, int, error) {
 	splitURI := strings.Split(uri, "/")
 	resourceId, err := strconv.Atoi(splitURI[2])
@@ -134,33 +133,23 @@ func (a *ASClient) PostEndpoint(endpoint string, requestBody string, authenticat
 	return response, nil
 }
 
-// // slice contains methods
-// func containsInt(list []int, id int) bool {
-// 	for _, i := range list {
-// 		if id == i {
-// 			return true
-// 		}
-// 	}
-// 	return false
-// }
-
-type CreateOrUpdateResponse struct {
+type APIResponse struct {
 	Status      string   `json:"status"`
 	Error       string   `json:"error"`
-	ID          int      `json:"id,omitempty"`
-	LockVersion int      `json:"lock_version,omitempty"`
-	Stale       bool     `json:"stale,omitempty"`
-	URI         string   `json:"uri,omitempty"`
+	ID          int      `json:"id"`
+	LockVersion int      `json:"lock_version"`
+	Stale       bool     `json:"stale"`
+	URI         string   `json:"uri"`
 	Warnings    []string `json:"warnings,omitempty"`
 }
 
-func ParseCreateOrUpdateResponse(body string) *CreateOrUpdateResponse {
-	var cour CreateOrUpdateResponse
-	err := json.Unmarshal([]byte(body), &cour)
+func ParseAPIResponse(body string) *APIResponse {
+	apiResponse := &APIResponse{}
+	err := json.Unmarshal([]byte(body), apiResponse)
 	if err != nil {
 		return nil
 	}
-	return &cour
+	return apiResponse
 }
 
 var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
