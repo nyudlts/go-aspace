@@ -18,7 +18,7 @@ func TestPersonAgents(t *testing.T) {
 
 	t.Run("test unmarshaling person agents", func(t *testing.T) {
 
-		person, err := os.ReadFile(filepath.Join(goaspace_testing.TestDataDir, "agent_person.json"))
+		person, err := os.ReadFile(filepath.Join(goaspace_testing.TestDataDirJson, "agent_person.json"))
 		if err != nil {
 			t.Error(err)
 		}
@@ -105,7 +105,7 @@ func TestFamilyAgents(t *testing.T) {
 		agentFamily *Agent
 	)
 	t.Run("test unmarshalling example family agent", func(t *testing.T) {
-		family, err := os.ReadFile(filepath.Join(goaspace_testing.TestDataDir, "agent_family.json"))
+		family, err := os.ReadFile(filepath.Join(goaspace_testing.TestDataDirJson, "agent_family.json"))
 		if err != nil {
 			t.Error(err)
 		}
@@ -122,7 +122,7 @@ func TestFamilyAgents(t *testing.T) {
 func TestCorporateEntityAgents(t *testing.T) {
 	agentCorporate := &Agent{}
 	t.Run("test unmarshalling example corporate entity agent", func(t *testing.T) {
-		corporateEntity, err := os.ReadFile(filepath.Join(goaspace_testing.TestDataDir, "agent_corporate.json"))
+		corporateEntity, err := os.ReadFile(filepath.Join(goaspace_testing.TestDataDirJson, "agent_corporate.json"))
 		if err != nil {
 			t.Error(err)
 		}
@@ -137,7 +137,7 @@ func TestCorporateEntityAgents(t *testing.T) {
 func TestSoftwareAgents(t *testing.T) {
 	var agentSoftware = &Agent{}
 	t.Run("test unmarshalling example software agent", func(t *testing.T) {
-		software, err := os.ReadFile(filepath.Join(goaspace_testing.TestDataDir, "agent_software.json"))
+		software, err := os.ReadFile(filepath.Join(goaspace_testing.TestDataDirJson, "agent_software.json"))
 		if err != nil {
 			t.Error(err)
 		}

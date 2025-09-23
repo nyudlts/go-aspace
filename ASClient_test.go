@@ -4,6 +4,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"flag"
+	"fmt"
 	"os"
 	"path/filepath"
 	"testing"
@@ -17,6 +18,36 @@ var (
 	testRepoID     int
 	testResourceID int
 )
+
+func TestRemoveTestData(t *testing.T) {
+	t.Run("test remove test xml directory", func(t *testing.T) {
+		if _, err := os.Stat(goaspacetest.TestDataDirXml); err == nil {
+			if err := os.RemoveAll(goaspacetest.TestDataDirXml); err != nil {
+				t.Fatalf("Failed to remove test data directory: %v", err)
+			}
+		}
+
+		if err := os.Mkdir(goaspacetest.TestDataDirXml, 0755); err != nil {
+			t.Fatalf("Failed to recreate test xml data directory: %v", err)
+		}
+
+		t.Log("Successfully removed and recreated test xml data directory")
+	})
+
+	t.Run("test remove test schemas directory", func(t *testing.T) {
+		if _, err := os.Stat(goaspacetest.TestDataDirSchema); err == nil {
+			if err := os.RemoveAll(goaspacetest.TestDataDirSchema); err != nil {
+				t.Fatalf("Failed to remove test schemas directory: %v", err)
+			}
+		}
+
+		if err := os.Mkdir(goaspacetest.TestDataDirSchema, 0755); err != nil {
+			t.Fatalf("Failed to recreate test xml data directory: %v", err)
+		}
+
+		t.Log("Successfully removed and recreated test schema directory")
+	})
+}
 
 func TestASClient(t *testing.T) {
 	flag.Parse()
@@ -63,11 +94,18 @@ func TestASClient(t *testing.T) {
 		t.Logf("ASpace Server Info: %s %s", info.ArchivesSpaceVersion, info.Build)
 	})
 
-	//create basic object types
+	//drop existing repository and resources
+	t.Run("test delete existing repository and resources", func(t *testing.T) {
+		if err := dropAll(); err != nil {
+			t.Fatalf("Failed to drop all repositories and resources: %v", err)
+		}
+		t.Log("Successfully dropped all repositories and resources")
+	})
 
+	//create basic object types
 	t.Run("test create a repository for testing", func(t *testing.T) {
 
-		repoBin, err := os.ReadFile(filepath.Join(goaspacetest.TestDataDir, "repository.json"))
+		repoBin, err := os.ReadFile(filepath.Join(goaspacetest.TestDataDirJson, "repository.json"))
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -95,7 +133,7 @@ func TestASClient(t *testing.T) {
 		// see if resource 1 exists
 		_, err := testClient.GetResource(testRepoID, testResourceID)
 		if err != nil {
-			resourceBin, err := os.ReadFile(filepath.Join(goaspacetest.TestDataDir, "resource.json"))
+			resourceBin, err := os.ReadFile(filepath.Join(goaspacetest.TestDataDirJson, "resource.json"))
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -118,4 +156,38 @@ func TestASClient(t *testing.T) {
 		}
 	})
 
+}
+
+func dropAll() error {
+	repositoryIDs, err := testClient.GetRepositories()
+	if err != nil {
+		return err
+	}
+
+	for _, i := range repositoryIDs {
+
+		fmt.Println("Deleting repository ID:", i)
+		resourceIDs, err := testClient.GetResourceIDs(i)
+		if err != nil {
+			return err
+		}
+
+		for _, resourceID := range resourceIDs {
+			fmt.Println("Deleting resource:", resourceID)
+			if _, err := testClient.DeleteResource(i, resourceID); err != nil {
+				return err
+			}
+		}
+
+		fmt.Println("All resources deleted successfully.")
+
+		_, err = testClient.DeleteRepository(i)
+		if err != nil {
+			return err
+		}
+
+		fmt.Println("Repository deleted successfully.")
+
+	}
+	return nil
 }

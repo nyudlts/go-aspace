@@ -17,7 +17,7 @@ func TestSubjects(t *testing.T) {
 	)
 
 	t.Run("test unmarshal subject from example JSON", func(t *testing.T) {
-		subjectBin, err := os.ReadFile(filepath.Join(goaspace_testing.TestDataDir, "subject.json"))
+		subjectBin, err := os.ReadFile(filepath.Join(goaspace_testing.TestDataDirJson, "subject.json"))
 		if err != nil {
 			t.Fatalf("Failed to read subject JSON file: %v", err)
 		}

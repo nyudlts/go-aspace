@@ -6,9 +6,11 @@ import (
 )
 
 var (
-	Config      string
-	Environment string
-	TestDataDir string = filepath.Join("goaspace_testing", "testdata", "json")
+	Config            string
+	Environment       string
+	TestDataDirJson   string = filepath.Join("goaspace_testing", "testdata", "json")
+	TestDataDirSchema string = filepath.Join("goaspace_testing", "testdata", "schemas")
+	TestDataDirXml    string = filepath.Join("goaspace_testing", "testdata", "xml")
 )
 
 func init() {
