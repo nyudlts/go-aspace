@@ -135,20 +135,21 @@ func (a *ASClient) do(request *http.Request, authenticated bool) (*http.Response
 	}
 
 	response, err := a.nclient.Do(request)
-	if response.StatusCode != 200 {
-		body, err := io.ReadAll(response.Body)
-		if err != nil {
-			return response, fmt.Errorf("ArchivesSpace responded with a non-200: status-code: %d", response.StatusCode)
-		} else {
-			return response, fmt.Errorf("ArchivesSpace responded with a non-200: status-code: %d error: %s", response.StatusCode, string(body))
-		}
-	}
-
 	if err != nil {
-		return response, err
-	}
+		return response, fmt.Errorf("Error making request to %s: %s", request.URL.String(), err.Error())
+	} else {
 
-	return response, nil
+		if response.StatusCode != 200 {
+			body, err := io.ReadAll(response.Body)
+			if err != nil {
+				return response, fmt.Errorf("ArchivesSpace responded with a non-200: status-code: %d", response.StatusCode)
+			} else {
+				return response, fmt.Errorf("ArchivesSpace responded with a non-200: status-code: %d error: %s", response.StatusCode, string(body))
+			}
+		}
+
+		return response, nil
+	}
 }
 
 func (a *ASClient) get(endpoint string, authenticated bool) (*http.Response, error) {
