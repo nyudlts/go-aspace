@@ -87,7 +87,7 @@ func GetCreds(environment string, configBytes []byte) (Creds, error) {
 		}
 	}
 
-	return Creds{}, fmt.Errorf("Credentials file did not contain %s\n", environment)
+	return Creds{}, fmt.Errorf("credentials file did not contain %s\n", environment)
 }
 
 func getSessionKey(creds Creds) (string, error) {
@@ -119,7 +119,7 @@ func getSessionKey(creds Creds) (string, error) {
 	if sessionKey != "" {
 		return sessionKey, nil
 	} else {
-		return sessionKey, fmt.Errorf("Session field was empty")
+		return sessionKey, fmt.Errorf("session field was empty")
 	}
 }
 
@@ -135,12 +135,8 @@ func (a *ASClient) do(request *http.Request, authenticated bool) (*http.Response
 	}
 
 	response, err := a.nclient.Do(request)
-	if err != nil {
-		return response, fmt.Errorf("ArchivesSpace responded with an error: %s", err.Error())
-	}
-
-	if response.StatusCode != 200 {
-		return response, fmt.Errorf("ArchivesSpace responded with a non-200: status code: %d", response.StatusCode)
+	if err != nil || response.StatusCode != 200 {
+		return response, fmt.Errorf("%d", response.StatusCode)
 	}
 
 	return response, nil
@@ -165,32 +161,32 @@ func (a *ASClient) get(endpoint string, authenticated bool) (*http.Response, err
 }
 
 func (a *ASClient) post(endpoint string, authenticated bool, body string) (*http.Response, error) {
-	var response *http.Response
+
 	url := a.RootURL + endpoint
 
 	request, err := http.NewRequest("POST", url, bytes.NewBufferString(body))
 	if err != nil {
-		return response, err
+		return nil, err
 	}
 
-	response, err = a.do(request, authenticated)
+	response, err := a.do(request, authenticated)
 	if err != nil {
-		return response, err
+		return nil, err
 	}
 
 	return response, nil
 }
 
 func (a *ASClient) delete(endpoint string) (*http.Response, error) {
-	var response *http.Response
+
 	url := a.RootURL + endpoint
 	request, err := http.NewRequest("DELETE", url, nil)
 	if err != nil {
-		return response, err
+		return nil, err
 	}
-	response, err = a.do(request, true)
+	response, err := a.do(request, true)
 	if err != nil {
-		return response, err
+		return nil, err
 	}
 
 	return response, nil
